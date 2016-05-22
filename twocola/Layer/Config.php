@@ -17,7 +17,7 @@ if(APP_CONFIG_MODE == "include"){
 /* 常规常量量检查（APP_开头的常量） */
 if(defined("SYSTEM_CONSTANT") && SYSTEM_CONSTANT===true){
   /* APP_前缀常量检查 */
-  $content = "DEBUG|TPL|TPL_FIX|NAME|DB_TYPE|DB_HOST|DB_PORT|DB_NAME|DB_USERNAME|DB_PASSWORD";
+  $content = "DEBUG|TPL_FIX|NAME|DB_TYPE|DB_HOST|DB_PORT|DB_NAME|DB_USERNAME|DB_PASSWORD";
   $array = explode("|",$content);
   foreach($array as $name){
     $name = "APP_".$name;

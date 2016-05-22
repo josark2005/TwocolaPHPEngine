@@ -34,8 +34,8 @@ function cookie($name,$value=null,$expire=0,$path="/"){
 }
 /* Vender */
 function vender($file){
-  if(file_exists(EZ_PATH."/Vender/{$file}")){
-    include EZ_PATH."/Vender/{$file}";
+  if(file_exists(TCE_PATH."/Vender/{$file}")){
+    include TCE_PATH."/Vender/{$file}";
     return true;
   }else{
     return false;
@@ -43,8 +43,8 @@ function vender($file){
 }
 /* Org */
 function org($file){
-  if(file_exists(EZ_PATH."/Org/{$file}")){
-    include EZ_PATH."/Org/{$file}";
+  if(file_exists(TCE_PATH."/Org/{$file}")){
+    include TCE_PATH."/Org/{$file}";
     return true;
   }else{
     return false;

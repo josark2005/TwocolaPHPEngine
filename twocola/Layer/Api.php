@@ -1,5 +1,5 @@
 <?php
-  $api = EZ_PATH."/API/".PI_BEHAVIOR.".class.php";
+  $api = TCE_PATH."/API/".PI_BEHAVIOR.".class.php";
   if(file_exists($api)){
     require($api);  //载入api模块
     $api_name = PI_BEHAVIOR."API";

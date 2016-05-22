@@ -1,1 +1,0 @@
-<!DOCTYPE html><html lang='zh-cn'><head><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><meta charset='utf-8'><title>TCE框架引擎</title></head><body><h1>系统成功创建！</h1><p>本页引用./tpl/public/html/404.tpl<br />您可以通过修改此文件建立404页面</p><small>TCE框架-Beta</small></body></html>
