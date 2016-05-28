@@ -18,6 +18,6 @@ define("APP_CONFIG_MODE","include");  //应用配置模式，默认default（读
 define("APP_VERSION","1.0beta");  //定义站点程序版本
 define("APP_PATH","./Applications");  //定义站点程序目录
 define("SYSTEM_CONSTANT",true); //常规常量检查，如果环境允许建议开启以保证应用质量
-define("SYSTEM_DEFAULT_MODULE","messenger"); //定义默认模块
+define("SYSTEM_DEFAULT_MODULE","FirstApp"); //定义默认模块
 require("./twocola/TCPHPEngine.php"); //引入框架引擎
 ?>

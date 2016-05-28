@@ -64,7 +64,6 @@ class Template extends TemplateEngine {
   /* 系统方法：_getTplPath */
   public function _getTplPath($tpl=""){
     $tpl = (empty($tpl)) ? $this->TPL.$this->_Behavior."/".$this->_Method.$this->TplSuffix : $this->TPL.$tpl.$this->TplSuffix;
-    var_dump($tpl);
     return $tpl;
   }
   /* 系统方法：_getRuntimePath */
