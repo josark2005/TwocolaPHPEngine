@@ -8,22 +8,18 @@
 namespace TCE;
 use TCE\TemplateEngine;
 class Template extends TemplateEngine {
-  private $_Behavior; //全局变量PI_BEHAVIOR
-  private $_Method; //全局变量PI_METHOD
   /* 初始化 */
   public function __construct(){
     parent::__construct();
-    $this->_Behavior = PI_BEHAVIOR ;
-    $this->_Method = PI_METHOD ;
   }
   /* 系统方法：createTpl，根据$this->content写出模板缓存文件 */
-  protected function createTpl($tpl=""){
+  public function createTpl($tpl=""){
     $tpl = $this->_getRuntimePath($tpl);
     file_put_contents($tpl,$this->content);
     return $tpl;  //返回缓存文件路径
   }
   /* 用户方法：show显示页面 */
-  protected function show($tpl=""){
+  public function show($tpl=""){
     $tpl = $this->_getTplPath($tpl);
     if(file_exists($tpl)){
       $this->content .= $this->getTpl(file_get_contents($tpl));
@@ -42,12 +38,13 @@ class Template extends TemplateEngine {
     }
   }
   /* 用户方法：showT显示页面 */
-  protected function show_t($title=""){
+  public function show_t($title=""){
+    $title = ($title=="") ? APP_NAME : $title;
     $this->assign("TITLE",$title);
     $this->show();
   }
   /* 用户方法：assign，替换变量，格式{$变量名} */
-  protected function assign($name,$var,$inTag=false){
+  public function assign($name,$var,$inTag=false){
     $this->content = "<?php \${$name}=".var_export($var,true)." ?>".$this->content;
   }
   /*用户方法：getContent，返回原始页面内容*/
@@ -65,13 +62,14 @@ class Template extends TemplateEngine {
     include($this->createTpl($name));
   }
   /* 系统方法：_getTplPath */
-  protected function _getTplPath($tpl=""){
-    return $tpl = (empty($tpl)) ? $this->TPL."/View/".$this->_Behavior."/".$this->_Method.$this->TplSuffix : $this->TPL."/View/".$tpl.$this->TplSuffix;
+  public function _getTplPath($tpl=""){
+    $tpl = (empty($tpl)) ? $this->TPL.$this->_Behavior."/".$this->_Method.$this->TplSuffix : $this->TPL.$tpl.$this->TplSuffix;
+    var_dump($tpl);
+    return $tpl;
   }
   /* 系统方法：_getRuntimePath */
-  protected function _getRuntimePath($tpl=""){
+  public function _getRuntimePath($tpl=""){
     return $tpl = (empty($tpl)) ? $this->Runtime.$this->_Behavior.$this->_Method.".runtime.php" : $this->Runtime.$tpl.".runtime.php";
   }
-
 }
 ?>

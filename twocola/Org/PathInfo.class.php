@@ -10,10 +10,11 @@
 class PathInfo {
   /* 定义模式 */
   Public $Type = "REWRITE";
-  Public $Path = "./";
+  Public $Path = "./";  //运行根地址
   Public $Subdoamin = "";
-  Public $Behavior = "";
-  Public $Method = "";
+  Public $Module = "";
+  Public $Controller = "index";
+  Public $Method = "index";
   /* 初始构建 */
   public function __construct(){
     //获取运行地址
@@ -25,8 +26,11 @@ class PathInfo {
       $this->Rewrite();
     }
   }
-  public function getBehavior(){
-    return $this->Behavior;
+  public function getModule(){
+    return $this->Module;
+  }
+  public function getController(){
+    return $this->Controller;
   }
   public function getMethod(){
     return $this->Method;
@@ -41,6 +45,11 @@ class PathInfo {
   protected function Rewrite(){
     // echo "REQ:".$_SERVER['REQUEST_URI']."<br />";
     $path = str_replace("/","\/",$this->Path);
+    /* 去除path前的.号 */
+    $pattern = "/\.(.)+/U";
+    $preg = preg_match($pattern,$path,$match);
+    $path = ($preg==0) ? $path : str_replace(".","",$path);
+    //取出Modual\Controller\Behavior等
     $pattern = "/".$path."(.*)$/U";
     preg_match($pattern,$_SERVER['REQUEST_URI'],$match);
     // var_dump($match);
@@ -59,24 +68,24 @@ class PathInfo {
       $path_info = substr($path_info,0,strlen($path_info)-$length);
     }
     unset($match);  //避免问题释放资源
-    // echo $path_info; //提取的path_info
     $path_info = explode("/",$path_info);
-    // var_dump($path_info);
-    //设置PI_BEHAVIOR
+    //设置PI_MODULE
     if(!empty($path_info[0])){
-      $this->Behavior = $path_info[0];
-      // define("PI_BEHAVIOR",$path_info[0]);
+      $this->Module = $path_info[0];
     }else{
-      $this->Behavior = "index";
-      // define("PI_BEHAVIOR","index");
+      $this->Module = "";
+    }
+    //设置PI_CONTROLLER
+    if(!empty($path_info[1])){
+      $this->Controller = $path_info[1];
+    }else{
+      $this->Controller = "index";
     }
     //设置PI_METHOD
-    if(!empty($path_info[1])){
-      $this->Method = $path_info[1];
-      // define("PI_METHOD",$path_info[1]);
+    if(!empty($path_info[2])){
+      $this->Method = $path_info[2];
     }else{
       $this->Method = "index";
-      // define("PI_METHOD","index");
     }
   }
 
@@ -88,7 +97,7 @@ class PathInfo {
     if($preg!=0){
       $runPath = str_replace($match[0],"",$_SERVER['PHP_SELF']);
     }
-    $runPath = ($runPath=="") ? "./" : $runPath ;
+    $runPath = ($runPath=="") ? "/" : $runPath ;
     $this->Path = $runPath;
   }
 

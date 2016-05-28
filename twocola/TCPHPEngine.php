@@ -29,7 +29,6 @@ require(TCE_PATH."/Layer/ST.php"); //自检核心，不需要自检可屏蔽（�
 //UI模式
 if(APP_TYPE=="ui"){
   require(TCE_PATH."/Org/TemplateLoad.php"); //模板系统（系统）
-  require(APP_PATH."/Controller/Common/BehaviorCommon.class.php"); //公共函数类
   require(TCE_PATH."/Layer/Template.php"); //模板引擎驱动（系统）
 }
 if(APP_TYPE=="api"){

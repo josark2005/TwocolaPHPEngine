@@ -9,6 +9,8 @@ namespace TCE;
 class TemplateEngine {
   protected $TPL; //模板目录
   protected $TPL_PUBLIC;  //模板公共文件目录
+  protected $wTPL;  //WEB模板目录
+  protected $wTPL_PUBLIC; //WEB模板公共文件目录
   protected $_PATH; //全局变量PATH
   protected $TplSuffix = ""; //全局变量APP_TPL_FIX
   protected $Runtime; //模板存放路径(PATH)
@@ -17,33 +19,22 @@ class TemplateEngine {
   protected $_Method; //全局变量PI_METHOD
   public function __construct(){
     /* 基础路径 */
-    $this->TPL = APP_PATH."/View/";
-    $this->TPL_PUBLIC = APP_PATH."/View/public/";
+    $app_path = APP_PATH;
+    $pattern = "/\.(.*)$/U";
+    $preg = preg_match($pattern,$app_path,$match);
+    if($preg!=0){
+      $app_path = $match[1];
+    }
+    $this->wTPL = $app_path."/".PI_MODULE."/View/";
+    $this->wTPL_PUBLIC = $app_path."/".PI_MODULE."/View/public/";
+    $this->TPL = APP_PATH."/".PI_MODULE."/View/";
+    $this->TPL_PUBLIC = APP_PATH."/".PI_MODULE."/View/public/";
     $this->TplSuffix = APP_TPL_FIX;
-    $this->_Behavior = PI_BEHAVIOR ;
+    $this->_Behavior = PI_CONTROLLER ;
     $this->_Method = PI_METHOD ;
     $this->_PATH = PATH;
-    $this->Runtime = APP_PATH."/Runtime/";
+    $this->Runtime = APP_PATH."/".PI_MODULE."/Runtime/";
   }
-  /* 展示方法 */
-  /* 系统方法：show404 */
-  // public function show404(){
-  //   $tpl = $this->Runtime."404.runtime.php";
-  //   $this->content = $this->getTpl(file_get_contents($this->TPL_PUBLIC."html/404".$this->TplSuffix));
-  //   $this->show("页面找不到了",$tpl);
-  //   exit();
-  // }
-  /* 系统方法：showerror */
-  // public function showerror($url="",$title="发生错误了",$content="我什么都不知道，憋打我！",$errimg="error"){
-  //   $url = (empty($url)) ? U("index/index") : $url ;
-  //   $tpl = $this->Runtime."error.runtime.php";
-  //   $this->content = $this->getTpl(file_get_contents($this->TPL_PUBLIC."html/error".$this->TplSuffix));
-  //   $this->assign("url",$url);
-  //   $this->assign("errimg",$errimg);
-  //   $this->assign("error",$content);
-  //   $this->show($title,$tpl);
-  //   exit();
-  // }
 
   /* 处理Tpl */
   public function getTpl($content){
@@ -58,7 +49,7 @@ class TemplateEngine {
     return $content;
   }
   /* 系统函数：U */
-  protected function createURL($content){
+  public function createURL($content){
     /*U函数 {:U("index/index?get=1")}*/
     $pattern = "/{:U\(['|\"](.*)['|\"]\)}/";
     $preg = preg_match_all($pattern,$content,$matches);
@@ -68,21 +59,29 @@ class TemplateEngine {
       for($i=0;$i<count($matches[0]);$i++){
         $origin = $matches[0][$i];
         $paths = $matches[1][$i];
-        $pattern = "/(.+)\?(.+)$/U";
+        $pattern = "/(.+)\?(.*)$/U";  //获取get内容
         $preg = preg_match($pattern,$paths,$match);
         if($preg!=0){
-          //带有GET
-          $content = str_replace($origin,$this->_PATH.$match[1].$this->TplSuffix."?".$match[2],$content);
+          $path = $match[1];
+          $get = "?".$match[2];
+          // $content = str_replace($origin,$this->_PATH.$match[1].$this->TplSuffix."?".$match[2],$content);
         }else{
-          $content = str_replace($origin,$this->_PATH.$matches[1][$i].$this->TplSuffix,$content);
+          $path = $matches[1][$i];
+          $get = "";
+          // $content = str_replace($origin,$this->_PATH.$matches[1][$i].$this->TplSuffix,$content);
         }
-
+        //判断是否有module
+        $count = substr_count($path,"/");
+        if($count<=1){
+          $path = PI_MODULE."/".$path;
+        }
+        $content = str_replace($origin,$this->_PATH.$path.$this->TplSuffix.$get,$content);
       }
     }
     return $content;
   }
   /* 系统方法：clearComment，清除模板注释*/
-  protected function clearComment($content){
+  public function clearComment($content){
     $pattern = "/<!--([\s\S]*)-->/iU";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
@@ -97,7 +96,7 @@ class TemplateEngine {
     return $content;
   }
   /* 系统方法：methodsTag，支持模板判断方法 */
-  protected function methodsTag($content){
+  public function methodsTag($content){
     $content = str_replace("<else />","<?php else: ?>",$content); //通用else替换
     $content = $this->MT_Volist($content);
     $content = $this->MT_Notempty($content);
@@ -106,7 +105,7 @@ class TemplateEngine {
     return $content;
   }
   /* MagicTag Volist */
-  protected function MT_Volist($content){
+  public function MT_Volist($content){
     $content = str_replace("</volist>","<?php endforeach;endif; ?>",$content);
     $pattern = "/<volist[\s]*name=['|\"](.+)['|\"][\s]*value=['|\"](.+)['|\"][\s]*key=['|\"](.+)['|\"][\s]*>/Um";
     $preg = preg_match_all($pattern,$content,$matches);
@@ -119,7 +118,7 @@ class TemplateEngine {
     return $content;
   }
   /* MagicTag EmptyElse */
-  protected function MT_Empty($content){
+  public function MT_Empty($content){
     $content = str_replace("</empty>","<?php endif; ?>",$content);
     $content = str_replace("<else />","<?php else: ?>",$content);
     $pattern = "/<empty[\s]*name=['|\"](.+)['|\"][\s]*>/Um";
@@ -132,7 +131,7 @@ class TemplateEngine {
     return $content;
   }
   /* MagicTag Notempty */
-  protected function MT_Notempty($content){
+  public function MT_Notempty($content){
     $content = str_replace("</notempty>","<?php endif; ?>",$content);
     $pattern = "/<notempty[\s]*name=['|\"](.+)['|\"][\s]*>/Um";
     $preg = preg_match_all($pattern,$content,$matches);
@@ -144,7 +143,7 @@ class TemplateEngine {
     return $content;
   }
   /* MagicTag IF */
-  protected function MT_If($content){
+  public function MT_If($content){
     $content = str_replace("</if>","<?php endif; ?>",$content);
     $pattern = "/<if[\s]*condition=['|\"](.+)['|\"][\s]*>/Um";
     $preg = preg_match_all($pattern,$content,$matches_font);
@@ -162,7 +161,7 @@ class TemplateEngine {
     }
     return $content;
   }
-  protected function varTPL($content){
+  public function varTPL($content){
     /*变量代替*/
     $pattern = "/[\{|\`][\$](.*)[\}|\`]/U"; //兼容 `|{}两种定界符号
     $preg = preg_match_all($pattern,$content,$matches);
@@ -175,13 +174,13 @@ class TemplateEngine {
     return $content;
   }
   /* 系统方法：magicTag，支持模板符号__CSS:index__ */
-  protected function magicTag($content){
+  public function magicTag($content){
     /*配套CSS*/
     $pattern = "/__CSS:(.*)__/U";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$this->TPL.$this->_Behavior."/css/".$matches[1][$i].".css",$content);
+        $content = str_replace($matches[0][$i],$this->wTPL.$this->_Behavior."/css/".$matches[1][$i].".css",$content);
       }
     }
     /*配套JS*/
@@ -189,7 +188,7 @@ class TemplateEngine {
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$this->TPL.$this->_Behavior."/js/".$matches[1][$i].".js",$content);
+        $content = str_replace($matches[0][$i],$this->wTPL.$this->_Behavior."/js/".$matches[1][$i].".js",$content);
       }
     }
     /*配套IMG*/
@@ -197,7 +196,7 @@ class TemplateEngine {
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$this->TPL.$this->_Behavior."/img/".$matches[1][$i],$content);
+        $content = str_replace($matches[0][$i],$this->wTPL.$this->_Behavior."/img/".$matches[1][$i],$content);
       }
     }
     /*公共静态文件*/
@@ -205,13 +204,13 @@ class TemplateEngine {
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$this->TPL_PUBLIC."static/".$matches[1][$i],$content);
+        $content = str_replace($matches[0][$i],$this->wTPL_PUBLIC."static/".$matches[1][$i],$content);
       }
     }
     return $content;
   }
   /* 系统方法：constantTPL，支持模板符号{__常量名__} */
-  protected function constantTPL($content,$inside=false){
+  public function constantTPL($content,$inside=false){
     $pattern = "/{__(.+)__}/U";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
@@ -241,7 +240,7 @@ class TemplateEngine {
     return $content;
   }
   /* 系统方法：clientVar，支持模板标签：{!XXXXX:xxx}，Cookie等变量调用 */
-  protected function clientVar($content,$inside=false){
+  public function clientVar($content,$inside=false){
     $pattern = "/{!(.+):(.+)}/U";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
@@ -257,7 +256,7 @@ class TemplateEngine {
     return $content;
   }
   /* 系统方法：includeTpl，支持模板标签：<include file='PUBLIC-header' type='autoheader' /> */
-  protected function includeTpl($content){
+  public function includeTpl($content){
     $pattern = "/\<include file=['|\"](.+)-(.+)['|\"](?:[\s]+type=['|\"](.+)['|\"][\s]*|[\s]*)\/\>/U";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){

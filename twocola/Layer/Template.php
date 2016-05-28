@@ -3,12 +3,16 @@
 ** TCPHPEngine模板引擎驱动
 ** DevStudio:Twocola
 ** Authorize:Twocola.com
+** Version:1.1 beta
 */
-if(file_exists(APP_PATH."/Controller/Displayer/".PI_BEHAVIOR."Displayer.class.php")&&file_exists(APP_PATH."/Controller/Behavior/".PI_BEHAVIOR."Behavior.class.php")){
+if(file_exists(APP_PATH."/".PI_MODULE."/Controller/Displayer/".PI_CONTROLLER."Displayer.class.php")&&
+  file_exists(APP_PATH."/".PI_MODULE."/Controller/Behavior/".PI_CONTROLLER."Behavior.class.php")&&
+  file_exists(APP_PATH."/".PI_MODULE."/Controller/Common/BehaviorCommon.class.php")){
   //行为存在
-  require_once(APP_PATH."/Controller/Behavior/".PI_BEHAVIOR."Behavior.class.php");
-  require_once(APP_PATH."/Controller/Displayer/".PI_BEHAVIOR."Displayer.class.php");
-  $ClassName = "Controller\\".PI_BEHAVIOR."Displayer";
+  require_once(APP_PATH."/".PI_MODULE."/Controller/Common/BehaviorCommon.class.php"); //公共函数类
+  require_once(APP_PATH."/".PI_MODULE."/Controller/Behavior/".PI_CONTROLLER."Behavior.class.php");
+  require_once(APP_PATH."/".PI_MODULE."/Controller/Displayer/".PI_CONTROLLER."Displayer.class.php");
+  $ClassName = "Controller\\".PI_CONTROLLER."Displayer";
   $method = PI_METHOD;
   $template = new $ClassName();
   if(method_exists($template,$method)){

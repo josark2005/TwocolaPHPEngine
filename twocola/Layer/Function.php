@@ -10,11 +10,17 @@ function U($paths){
   $pattern = "/(.+)\?(.+)$/U";
   $preg = preg_match($pattern,$paths,$match);
   if($preg!=0){
-    //带有GET
-    return PATH.$match[1].SYSTEM_SUFFIX."?".$match[2];
+    $path = $match[1];
+    $get = "?".$match[2];
   }else{
-    return PATH.$paths.SYSTEM_SUFFIX;
+    $path = $paths;
+    $get = "";
   }
+  $count = substr_count($paths,"/");
+  if($count<=1){
+    $path = PI_MODULE."/".$path;
+  }
+  return PATH.$path.SYSTEM_SUFFIX.$get;
 }
 /*E函数（生成报错）*/
 function E($err){
