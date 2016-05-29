@@ -1,1 +1,0 @@
-E:\wamp\www\wwwroot\TwocolaPHPEngine\twocola/Tpl/error_noresponse.tpl
