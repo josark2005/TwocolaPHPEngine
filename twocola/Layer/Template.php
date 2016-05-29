@@ -5,6 +5,11 @@
 ** Authorize:Twocola.com
 ** Version:1.2 beta
 */
+if(APP_RESPONSE==false){
+  $template = new TCE\Template();
+  $template->showContent(getPresetTpl("error_noresponse"));
+  exit();
+}
 if(file_exists(APP_PATH."/".PI_MODULE."/Controller/Displayer/".PI_CONTROLLER."Displayer.class.php")&&
   file_exists(APP_PATH."/".PI_MODULE."/Controller/Behavior/".PI_CONTROLLER."Behavior.class.php")&&
   file_exists(APP_PATH."/".PI_MODULE."/Controller/Common/BehaviorCommon.class.php")){

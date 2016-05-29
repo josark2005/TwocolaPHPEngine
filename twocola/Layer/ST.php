@@ -22,6 +22,9 @@ if(!defined("APP_PATH")){
 if(!defined("APP_SUBDOMAIN")){
   E("常量 APP_SUBDOMAIN 未定义！[预估出错:Layer]");
 }
+if(!defined("SYSTEM_DEFAULT_MODULE")){
+  E("常量 SYSTEM_DEFAULT_MODULE 未定义！[预估出错:Layer]");
+}
 $storage = new StorageNormal(); //载入存储引擎
 /* 检测应用文件夹 */
 if(!$storage->FolderExist(APP_PATH)){
@@ -34,6 +37,13 @@ if(defined("APP_MODULE")){
   if(!$storage->FolderExist(APP_PATH."/".APP_MODULE)){
     if(!$storage->CreateFolder(APP_PATH."/".APP_MODULE)){
       E("模板文件夹创建失败，请确认目录： ".APP_PATH."/".APP_MODULE." 是否拥有读写权限！");
+      exit();
+    }
+  }
+  if(!$storage->FileExist(APP_PATH."/".APP_MODULE."/config.inc.php")){
+    $content = getPresetTpl("config.inc.php");
+    if(!$storage->CreateSave(APP_PATH."/".APP_MODULE."/config.inc.php",$content)){
+      E("应用单独配置文件创建失败，请确认目录： ".APP_PATH."/".APP_MODULE."/config.inc.php"." 是否拥有读写权限！");
       exit();
     }
   }
@@ -121,31 +131,41 @@ if(defined("APP_MODULE")){
       exit();
     }
   }
-}
-/* Api */
-if(!$storage->FolderExist(APP_PATH."/".APP_MODULE."/Api")){
-  if(!$storage->CreateFolder(APP_PATH."/".APP_MODULE."/Api")){
-    E("Api文件夹创建失败，请确认目录： ".APP_PATH."/".APP_MODULE."/Api"." 是否拥有读写权限！");
-    exit();
+  /* Api */
+  if(!$storage->FolderExist(APP_PATH."/".APP_MODULE."/Api")){
+    if(!$storage->CreateFolder(APP_PATH."/".APP_MODULE."/Api")){
+      E("Api文件夹创建失败，请确认目录： ".APP_PATH."/".APP_MODULE."/Api"." 是否拥有读写权限！");
+      exit();
+    }
   }
-}
-if(!$storage->FileExist(APP_PATH."/".APP_MODULE."/Api/index.class.php")){
-  $content = getPresetTpl("index.class.php");
-  if(!$storage->CreateSave(APP_PATH."/".APP_MODULE."/Api/index.class.php",$content)){
-    E("Api.class.php文件创建失败，请确认目录： ".APP_PATH."/".APP_MODULE."/Api/index.class.php"." 是否拥有读写权限！");
-    exit();
+  if(!$storage->FileExist(APP_PATH."/".APP_MODULE."/Api/index.class.php")){
+    $content = getPresetTpl("index.class.php");
+    if(!$storage->CreateSave(APP_PATH."/".APP_MODULE."/Api/index.class.php",$content)){
+      E("Api.class.php文件创建失败，请确认目录： ".APP_PATH."/".APP_MODULE."/Api/index.class.php"." 是否拥有读写权限！");
+      exit();
+    }
   }
-}
-if(!$storage->FileExist(APP_PATH."/".APP_MODULE."/Controller/Common/Api.class.php")){
-  $content = getPresetTpl("Api.class.php");
-  if(!$storage->CreateSave(APP_PATH."/".APP_MODULE."/Controller/Common/Api.class.php",$content)){
-    E("Api.class.php文件创建失败，请确认目录： ".APP_PATH."/".APP_MODULE."/Controller/Common/Api.class.php"." 是否拥有读写权限！");
-    exit();
+  if(!$storage->FileExist(APP_PATH."/".APP_MODULE."/Controller/Common/Api.class.php")){
+    $content = getPresetTpl("Api.class.php");
+    if(!$storage->CreateSave(APP_PATH."/".APP_MODULE."/Controller/Common/Api.class.php",$content)){
+      E("Api.class.php文件创建失败，请确认目录： ".APP_PATH."/".APP_MODULE."/Controller/Common/Api.class.php"." 是否拥有读写权限！");
+      exit();
+    }
   }
 }
 /* 检测默认MODULE是否存在 */
 if(!$storage->FolderExist(APP_PATH."/".SYSTEM_DEFAULT_MODULE)){
   E("配置项（常量）默认模块（应用）： ".SYSTEM_DEFAULT_MODULE." 不存在，请确认此模块正确性！");
   exit();
+}
+/* 检测默认应用是否拒绝访问 */
+if(!$storage->FolderExist(APP_PATH."/".SYSTEM_DEFAULT_MODULE."/config.inc.php")){
+  include_once(APP_PATH."/".SYSTEM_DEFAULT_MODULE."/config.inc.php");
+  if(in_array("RESPONSE",$config)){
+    if($config['RESPONSE']==false){
+      E("配置项（常量）默认模块（应用）： ".SYSTEM_DEFAULT_MODULE." 拒绝访问，默认模块不允许拒绝访问！");
+      exit();
+    }
+  }
 }
 ?>

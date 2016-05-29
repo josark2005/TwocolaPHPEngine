@@ -1,0 +1,27 @@
+@media only screen and (min-width: 641px) {
+  div.side-right {
+    border-left: 1px solid #CCC;
+  }
+}
+.a-btn {
+  margin-left: 5px;
+}
+article {
+  transition:0.1s ease-in-out;
+  -o-transition: 0.1s ease-in-out;
+  -moz-transition: 0.1s ease-in-out;
+  -webkit-transition: 0.1s ease-in-out;
+  border: 1px solid #FFFFFF;
+}
+p.am-article-lead {
+  transition:0.1s ease-in-out;
+  -o-transition: 0.1s ease-in-out;
+  -moz-transition: 0.1s ease-in-out;
+  -webkit-transition: 0.1s ease-in-out;
+  margin-bottom: 0px;
+}
+article:hover .am-article-lead {
+  color: #FFFFFF;
+  background-color: rgb(0, 143, 198);
+  border-color: rgb(0, 143, 198);
+}

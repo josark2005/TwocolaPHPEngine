@@ -26,6 +26,7 @@ require(TCE_PATH."/Org/Json.class.php"); //Json系统（系统）
 require(TCE_PATH."/Org/Mysqli.class.php");  //数据库核心（系统）
 /* SelfTest */
 require(TCE_PATH."/Layer/ST.php"); //自检核心，不需要自检可屏蔽（不推荐）
+require(TCE_PATH."/Layer/AppConfig.php"); //配置文件驱动（系统）
 //UI模式
 if(APP_TYPE=="ui"){
   require(TCE_PATH."/Org/TemplateLoad.php"); //模板系统（系统）

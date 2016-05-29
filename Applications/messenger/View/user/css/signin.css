@@ -1,0 +1,8 @@
+.curtain {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+}
+.curtain-panel-delay {
+  -webkit-animation-delay: 400ms;
+  animation-delay: 400ms;
+}

@@ -17,7 +17,7 @@ if(APP_CONFIG_MODE == "include"){
 /* 常规常量量检查（APP_开头的常量） */
 if(defined("SYSTEM_CONSTANT") && SYSTEM_CONSTANT===true){
   /* APP_前缀常量检查 */
-  $content = "DEBUG|TPL_FIX|DB_TYPE|DB_HOST|DB_PORT|DB_NAME|DB_USERNAME|DB_PASSWORD";
+  $content = "TPL_FIX";
   $array = explode("|",$content);
   foreach($array as $name){
     $name = "APP_".$name;
@@ -27,13 +27,13 @@ if(defined("SYSTEM_CONSTANT") && SYSTEM_CONSTANT===true){
     }
   }
   /* 无前缀常量检查 */
-  $content = "EMAIL_HOST|EMAIL_CHARSET|EMAIL_ADDRESS|EMAIL_PASSWORD";
-  $array = explode("|",$content);
-  foreach($array as $name){
-    if(!defined($name)){
-      //常量不存在
-      E("常量 {$name}不存在，请检查配置文件，或手动定义！");
-    }
-  }
+  // $content = "EMAIL_HOST|EMAIL_CHARSET|EMAIL_ADDRESS|EMAIL_PASSWORD";
+  // $array = explode("|",$content);
+  // foreach($array as $name){
+  //   if(!defined($name)){
+  //     //常量不存在
+  //     E("常量 {$name}不存在，请检查配置文件，或手动定义！");
+  //   }
+  // }
 }
 ?>

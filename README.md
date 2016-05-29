@@ -10,8 +10,6 @@
 
 官方网站：[TCE引擎公版](http://twocola.top) | [TCE引擎可乐版](http://www.twocola.com/messenger/tce/index)
 
-分站许可：[许可](http://www.twocola.com/messenger/index/siteauthorize)
-
 加入我们：[JoinUs](http://www.twocola.com/messenger/index/join)
 
 ---

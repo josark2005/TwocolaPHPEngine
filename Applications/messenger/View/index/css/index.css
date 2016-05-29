@@ -1,0 +1,37 @@
+/* Topbar */
+.am-topbar-nav>li.am-active>a:after {
+  border-bottom-color: rgb(0,143,198);
+}
+.m-topbar {
+  background-color: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.14);
+}
+@media only screen and (max-width: 640px) {
+  div.am-container>div>h2.curtain-title{
+    color: #f4f4f4;
+    font-size: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  .am-nav>li.am-active>a, .am-nav>li.am-active>a:focus, .am-nav>li.am-active>a:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+}
+@media only screen and (min-width:641px) {
+  div.am-container>div>h2.curtain-title{
+    color: #f4f4f4;
+    font-size: 50px;
+    margin-top: 60px;
+    margin-bottom: 5px;
+  }
+}
+div.am-container>div>p.curtain-p{
+  color: #f4f4f4;
+  font-size: 18px;
+  margin-top: 0px;
+}
+/* Dely */
+.dely-p{
+  -webkit-animation-delay: 300ms;
+  animation-delay: 300ms;
+}
