@@ -1,4 +1,5 @@
 <?php
+namespace TCE;
 class Json{
   public function json_c($system_status,$system_message,$app_status,$app_errno,$app_error="no error."){
     $array = array(
@@ -8,7 +9,9 @@ class Json{
       ),
       "App" => array(
         "status" => $app_status,
-        "behavior" => PI_BEHAVIOR,
+        "module" => PI_MODULE,
+        "controller" => PI_CONTROLLER,
+        "method" => PI_METHOD,
         "errno" => $app_errno,
         "error" => $app_error,
       ),

@@ -5,7 +5,7 @@
 */
 $TCEVersion = array(
   "Version" => array(
-    "VerNum"  =>  "1.1",
+    "VerNum"  =>  "1.2",
     "VerType" =>  "beta",
   ),
   "FolderSettings" => array(

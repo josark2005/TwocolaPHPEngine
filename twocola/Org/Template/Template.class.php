@@ -38,10 +38,10 @@ class Template extends TemplateEngine {
     }
   }
   /* 用户方法：showT显示页面 */
-  public function show_t($title=""){
+  public function show_t($title="",$tpl=""){
     $title = ($title=="") ? APP_NAME : $title;
     $this->assign("TITLE",$title);
-    $this->show();
+    $this->show($tpl);
   }
   /* 用户方法：assign，替换变量，格式{$变量名} */
   public function assign($name,$var,$inTag=false){

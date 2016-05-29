@@ -1,7 +1,7 @@
 <?php
 /*M函数（连接数据库）*/
 function M($table_name){
-  $db = new Database(APP_DB_HOST,APP_DB_PORT,APP_DB_NAME,APP_DB_USERNAME,APP_DB_PASSWORD);
+  $db = new \Database(APP_DB_HOST,APP_DB_PORT,APP_DB_NAME,APP_DB_USERNAME,APP_DB_PASSWORD);
   return $db->table(APP_DB_PREFIX.$table_name);
 }
 /*U函数(生成链接)*/
@@ -52,6 +52,14 @@ function org($file){
   if(file_exists(TCE_PATH."/Org/{$file}")){
     include TCE_PATH."/Org/{$file}";
     return true;
+  }else{
+    return false;
+  }
+}
+/* 获取预置模板 */
+function getPresetTpl($name){
+  if(file_exists(TCE_PATH."/Tpl/".$name.".tpl")){
+    return file_get_contents(TCE_PATH."/Tpl/".$name.".tpl");
   }else{
     return false;
   }

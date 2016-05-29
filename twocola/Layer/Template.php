@@ -3,7 +3,7 @@
 ** TCPHPEngine模板引擎驱动
 ** DevStudio:Twocola
 ** Authorize:Twocola.com
-** Version:1.1 beta
+** Version:1.2 beta
 */
 if(file_exists(APP_PATH."/".PI_MODULE."/Controller/Displayer/".PI_CONTROLLER."Displayer.class.php")&&
   file_exists(APP_PATH."/".PI_MODULE."/Controller/Behavior/".PI_CONTROLLER."Behavior.class.php")&&
@@ -18,11 +18,11 @@ if(file_exists(APP_PATH."/".PI_MODULE."/Controller/Displayer/".PI_CONTROLLER."Di
   if(method_exists($template,$method)){
     $template->$method();
   }else{
-    $template->show("public/html/404");
+    $template->show_t("页面找不到了","public/html/404");
   }
 }else{
   //行为非法
   $template = new TCE\Template();
-  $template->show("public/html/404");
+  $template->show_t("页面找不到了","public/html/404");
 }
 ?>

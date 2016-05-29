@@ -31,8 +31,11 @@ if(APP_TYPE=="ui"){
   require(TCE_PATH."/Org/TemplateLoad.php"); //模板系统（系统）
   require(TCE_PATH."/Layer/Template.php"); //模板引擎驱动（系统）
 }
+//API模式(不使用可关闭)
 if(APP_TYPE=="api"){
-  require(TCE_PATH."/Org/Api.class.php");  //系统状态驱动（系统）
+  if(file_exists(APP_PATH."/".PI_MODULE."/Controller/Common/Api.class.php")){
+    require(APP_PATH."/".PI_MODULE."/Controller/Common/Api.class.php");
+  }
   require(TCE_PATH."/Layer/Api.php");  //api驱动
 }
 ?>
