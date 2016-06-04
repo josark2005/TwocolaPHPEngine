@@ -16,6 +16,6 @@
 
 ###目录结构
 
-[TCE引擎目录结构](http://tcp.twocola.com/tce/manual/structure)
+[TCE引擎目录结构](http://tce.twocola.com/tce/manual/structure)
 
 ---
