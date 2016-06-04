@@ -89,10 +89,10 @@ class TemplateEngine {
         $content = str_replace($matches[0][$i],"",$content);
       }
     }
-    //清除换行
-    if(APP_DEBUG===false){
-      $content = str_replace("\r\n","",$content);
-    }
+    // //清除换行
+    // if(APP_DEBUG===false){
+    //   $content = str_replace("\r\n","",$content);
+    // }
     return $content;
   }
   /* 系统方法：methodsTag，支持模板判断方法 */
