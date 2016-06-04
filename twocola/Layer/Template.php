@@ -5,7 +5,7 @@
 ** Authorize:Twocola.com
 ** Version:1.2 beta
 */
-if(APP_RESPONSE==false){
+if(C("APP_RESPONSE")==false){
   $template = new TCE\Template();
   $template->showContent(getPresetTpl("error_noresponse"));
   exit();

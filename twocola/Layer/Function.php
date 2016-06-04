@@ -1,8 +1,17 @@
 <?php
+/*C函数 读取配置 */
+function C($var="none",$content=""){
+  $conf = new TCE\IncReader();
+  if(empty($content)){
+    return $conf->ReadPointedConfig($var);
+  }else{
+    $conf->EditConfig($var,$content);
+  }
+}
 /*M函数（连接数据库）*/
 function M($table_name){
-  $db = new \Database(APP_DB_HOST,APP_DB_PORT,APP_DB_NAME,APP_DB_USERNAME,APP_DB_PASSWORD);
-  return $db->table(APP_DB_PREFIX.$table_name);
+  $db = new \Database(C("APP_DB_HOST"),C("APP_DB_PORT"),C("APP_DB_NAME"),C("APP_DB_USERNAME"),C("APP_DB_PASSWORD"));
+  return $db->table(C("APP_DB_PREFIX").$table_name);
 }
 /*U函数(生成链接)*/
 function U($paths){
@@ -20,7 +29,7 @@ function U($paths){
   if($count<=1){
     $path = PI_MODULE."/".$path;
   }
-  return PATH.$path.SYSTEM_SUFFIX.$get;
+  return PATH.$path.C("SYSTEM_SUFFIX").$get;
 }
 /*E函数（生成报错）*/
 function E($err){
@@ -69,13 +78,13 @@ function sendEmail($email="simple@domain.com",$title="none",$subject="none",$con
   vender("PHPMailer/PHPMailerAutoload.php");
   $mail = new PHPMailer;
   $mail->isSMTP();
-  $mail->CharSet = EMAIL_CHARSET;
-  $mail->Host = EMAIL_HOST;
+  $mail->CharSet = C("EMAIL_CHARSET");
+  $mail->Host = C("EMAIL_HOST");
   $mail->SMTPAuth = true;
-  $mail->Username = EMAIL_ADDRESS;
-  $mail->Password = EMAIL_PASSWORD;
+  $mail->Username = C("EMAIL_ADDRESS");
+  $mail->Password = C("EMAIL_PASSWORD");
   $mail->SMTPSecure = 'tls';
-  $mail->Port = 25;
+  $mail->Port = C("EMAIL_PORT");
   $mail->setFrom('noreply@twocola.com', 'noreply');
   $mail->addAddress($email);
   $mail->isHTML(true);

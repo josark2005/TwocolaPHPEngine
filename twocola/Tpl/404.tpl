@@ -4,6 +4,11 @@
   <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
   <meta charset='utf-8'>
   <title>TCE框架引擎</title>
+  <style>
+    body {
+      background-color: rgb(245, 245, 245);
+    }
+  </style>
 </head>
 <body>
   <h1>系统未找到页面</h1>

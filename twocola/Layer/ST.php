@@ -3,28 +3,30 @@
 ** TCE框架引擎自检核心
 ** Version:1.2
 */
-/* 检查系统常量 */
-if(!defined("SYSTEM_SUFFIX")){
+/* 检查系统配置 */
+$conf = new TCE\IncReader;
+if(!$conf->ConfigExists("SYSTEM_SUFFIX")){
   define("SYSTEM_SUFFIX",""); //伪静态后缀
 }
+if(!$conf->ConfigExists("SYSTEM_DEFAULT_MODULE")){
+  E("配置 SYSTEM_DEFAULT_MODULE 未定义！[预估出错:Layer]");
+}
 if(!defined("PI_CONTROLLER")){
-  E("常量 PI_CONTROLLER 未定义！[预估出错:Layer]");
+  E("系统配置 PI_CONTROLLER 未定义！[预估出错:Layer]");
 }
 if(!defined("PI_METHOD")){
-  E("常量 PI_METHOD 未定义！[预估出错:Layer]");
+  E("系统配置 PI_METHOD 未定义！[预估出错:Layer]");
 }
 if(!defined("PATH")){
-  E("常量 PATH 未定义！[预估出错:Layer]");
+  E("系统配置 PATH 未定义！[预估出错:Layer]");
 }
 if(!defined("APP_PATH")){
-  E("常量 APP_PATH 未定义！[预估出错:Layer]");
+  E("系统配置 APP_PATH 未定义！[预估出错:Layer]");
 }
 if(!defined("APP_SUBDOMAIN")){
-  E("常量 APP_SUBDOMAIN 未定义！[预估出错:Layer]");
+  E("系统配置 APP_SUBDOMAIN 未定义！[预估出错:Layer]");
 }
-if(!defined("SYSTEM_DEFAULT_MODULE")){
-  E("常量 SYSTEM_DEFAULT_MODULE 未定义！[预估出错:Layer]");
-}
+
 $storage = new StorageNormal(); //载入存储引擎
 /* 检测应用文件夹 */
 if(!$storage->FolderExist(APP_PATH)){
@@ -154,18 +156,18 @@ if(defined("APP_MODULE")){
   }
 }
 /* 检测默认MODULE是否存在 */
-if(!$storage->FolderExist(APP_PATH."/".SYSTEM_DEFAULT_MODULE)){
-  E("配置项（常量）默认模块（应用）： ".SYSTEM_DEFAULT_MODULE." 不存在，请确认此模块正确性！");
+if(!$storage->FolderExist(APP_PATH."/".C("SYSTEM_DEFAULT_MODULE"))){
+  E("配置项（配置）默认模块（应用）： ".C("SYSTEM_DEFAULT_MODULE")." 不存在，请确认此模块正确性！");
   exit();
 }
 /* 检测默认应用是否拒绝访问 */
-if(!$storage->FolderExist(APP_PATH."/".SYSTEM_DEFAULT_MODULE."/config.inc.php")){
-  include_once(APP_PATH."/".SYSTEM_DEFAULT_MODULE."/config.inc.php");
-  if(in_array("RESPONSE",$config)){
-    if($config['RESPONSE']==false){
-      E("配置项（常量）默认模块（应用）： ".SYSTEM_DEFAULT_MODULE." 拒绝访问，默认模块不允许拒绝访问！");
-      exit();
-    }
+if(!$storage->FolderExist(APP_PATH."/".C("SYSTEM_DEFAULT_MODULE")."/config.inc.php")){
+  $conf->GetConfig(APP_PATH."/".C("SYSTEM_DEFAULT_MODULE")."/config.inc.php");
+  if($conf->ReadPointedConfig("APP_RESPONSE")==false){
+    E("配置项（配置）默认模块（应用）： ".C("SYSTEM_DEFAULT_MODULE")." 拒绝访问，默认模块不允许拒绝访问！");
+    exit();
   }
 }
+/* 释放资源 */
+unset($conf);
 ?>
