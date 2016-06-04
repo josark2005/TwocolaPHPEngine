@@ -51,7 +51,7 @@ class TemplateEngine {
   /* 系统函数：U */
   public function createURL($content){
     /*U函数 {:U("index/index?get=1")}*/
-    $pattern = "/{:U\(['|\"](.*)['|\"]\)}/";
+    $pattern = "/{:U\(['|\"](.*)['|\"]\)}/U";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       $matches[0] = array_reverse($matches[0]);
