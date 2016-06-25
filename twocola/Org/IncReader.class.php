@@ -3,10 +3,24 @@
 // $config = $config->ReadPointedConfig("DB_HOST"); //读取单个配置
 namespace TCE;
 class IncReader {
-  protected $cn = "tce_config"; //子数组名
+  /* 单态类 */
+  private static $status = null;
+  private function __construct(){
+    return false;
+  }
+  public static function IO(){
+    if(self::$status===null){
+      return self::$status = new self();
+    }else{
+      return self::$status;
+    }
+  }
+
+  private $config = null;
+
   /* 读取并返回配置 */
   public function ReadConfig($file="./config.inc.php"){
-    include($file);
+    include_once($file);
     return $config;
   }
   //定义配置常量
@@ -17,12 +31,13 @@ class IncReader {
       return false;
     }
     foreach($config as $k=>$c){
-      $GLOBALS[$this->cn][$k] = $c;  //写入全局变量
+      $this->config[strtoupper($k)] = $c;  //写入全局变量
     }
   }
   /* 读取指定配置 */
-  public function ReadPointedConfig($c="none"){
-    $config = $GLOBALS[$this->cn];
+  public function ReadPointedConfig($c="noneconfig"){
+    $c = strtoupper($c);
+    $config = $this->config;
     if(isset($config[$c])){
       return $config[$c];
     }else{
@@ -30,34 +45,47 @@ class IncReader {
     }
   }
   /* 修改单个变量 */
-  public function EditConfig($var="none",$content=""){
-    $config = $GLOBALS[$this->cn];
+  public function EditConfig($var="noneconfig",$content=""){
+    $var = strtoupper($var);
+    $config = $this->config;
     if(isset($config[$var])){
-      $GLOBALS[$this->cn] = $content;
+      $this->config = $content;
     }else{
       return false;
     }
   }
   /* 增加单个配置 */
-  public function AddConfig($var="none",$content=""){
-    if(isset($GLOBALS[$this->cn])){
+  public function AddConfig($var="noneconfig",$content=""){
+    $var = strtoupper($var);
+    if(isset($this->config)){
       return false; //配置存在
     }else{
-      $GLOBALS[$this->cn][$var] = $content;
+      $this->config[$var] = $content;
     }
   }
   /* 配置是否存在 */
-  public function ConfigExists($var="none"){
-    if(isset($GLOBALS[$this->cn][$var])){
+  public function ConfigExists($var="noneconfig"){
+    $var = strtoupper($var);
+    if(isset($this->config[$var])){
       return true;
     }else{
       return false;
     }
   }
-  /*
-  ** 优化空间：
-  ** 1、单个Config读取不区分大小写
-  ** 2、可自定义Globals子数组名
-  */
+  /* 清除配置 */
+  public function ClearConfig($var="noneconfig"){
+    $var = strtoupper($var);
+    if(empty($var)){
+      self::$config = null;
+    }else{
+      if(isset(self::$config[$var])){
+        unset(self::$config[$var]);
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
+
 }
 ?>

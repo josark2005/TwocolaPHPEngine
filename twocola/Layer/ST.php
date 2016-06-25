@@ -4,7 +4,7 @@
 ** Version:1.2
 */
 /* 检查系统配置 */
-$conf = new TCE\IncReader;
+$conf = TCE\IncReader::IO();
 if(!$conf->ConfigExists("SYSTEM_SUFFIX")){
   define("SYSTEM_SUFFIX",""); //伪静态后缀
 }

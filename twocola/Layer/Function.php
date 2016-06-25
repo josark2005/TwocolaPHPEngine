@@ -1,7 +1,7 @@
 <?php
 /*C函数 读取配置 */
 function C($var="none",$content=""){
-  $conf = new TCE\IncReader();
+  $conf = TCE\IncReader::IO();
   if(empty($content)){
     return $conf->ReadPointedConfig($var);
   }else{

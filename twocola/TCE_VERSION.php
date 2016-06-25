@@ -2,10 +2,12 @@
 /*
 ** TCE引擎Version文件
 ** TCE引擎自主升级参考
+** -TCE_VERSION_FILE_FOR_UPGRADE-
+** 请勿删除以上内容以保证正确升级框架
 */
 $TCEVersion = array(
   "Version" => array(
-    "VerNum"  =>  "1.5",
+    "VerNum"  =>  "1.6",
     "VerType" =>  "beta",
   ),
   "FolderSettings" => array(
