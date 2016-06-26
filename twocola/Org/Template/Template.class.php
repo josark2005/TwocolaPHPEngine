@@ -39,7 +39,7 @@ class Template extends TemplateEngine {
   }
   /* 用户方法：showT显示页面 */
   public function show_t($title="",$tpl=""){
-    $title = ($title=="") ? APP_NAME : $title;
+    $title = ($title=="") ? C("APP_NAME") : $title;
     $this->assign("TITLE",$title);
     $this->show($tpl);
   }

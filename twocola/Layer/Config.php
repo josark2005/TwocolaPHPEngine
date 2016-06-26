@@ -16,7 +16,7 @@ if(APP_CONFIG_MODE == "include"){
 }
 /* 常规常量量检查 */
 if($conf->ReadPointedConfig("SYSTEM_CONSTANT")==true){
-  $content = "TPL_FIX";
+  $content = "APP_TPL_FIX";
   $array = explode("|",$content);
   foreach($array as $name){
     if(!$conf->ConfigExists($name)){
