@@ -231,9 +231,9 @@ class TemplateEngine {
       $matches = $res;
       for($i=0;$i<count($matches[0]);$i++){
         if($inside===true){
-          $content = str_replace($matches[0][$i],"echo @{$matches[1][$i]};",$content);
+          $content = str_replace($matches[0][$i],"echo @C(\"{$matches[1][$i]}\");",$content);
         }else{
-          $content = str_replace($matches[0][$i],"<?php echo @{$matches[1][$i]}; ?>",$content);
+          $content = str_replace($matches[0][$i],"<?php echo @C(\"{$matches[1][$i]}\"); ?>",$content);
         }
       }
     }
