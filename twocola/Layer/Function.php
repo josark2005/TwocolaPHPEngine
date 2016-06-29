@@ -3,9 +3,14 @@
 function C($var="none",$content=""){
   $conf = TCE\IncReader::IO();
   if(empty($content)){
-    return $conf->ReadPointedConfig($var);
+    if(!$conf->ConfigExists($var)){
+      //读取常量
+      return (defined($var)) ? constant($var) : false;
+    }else{
+      return $conf->ReadPointedConfig($var);  //返回配置
+    }
   }else{
-    $conf->EditConfig($var,$content);
+    $conf->EditConfig($var,$content); //修改配置
   }
 }
 /*M函数（连接数据库）*/
