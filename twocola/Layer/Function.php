@@ -30,7 +30,7 @@ function U($paths){
     $path = $paths;
     $get = "";
   }
-  $count = substr_count($paths,"/");
+  $count = substr_count($path,"/");
   if($count<=1){
     $path = PI_MODULE."/".$path;
   }
