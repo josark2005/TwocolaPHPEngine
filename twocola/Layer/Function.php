@@ -20,7 +20,6 @@ function M($table_name){
 }
 /*U函数(生成链接)*/
 function U($paths){
-  // return $path.$paths;
   $pattern = "/(.+)\?(.+)$/U";
   $preg = preg_match($pattern,$paths,$match);
   if($preg!=0){
@@ -34,7 +33,11 @@ function U($paths){
   if($count<=1){
     $path = PI_MODULE."/".$path;
   }
-  return PATH.$path.C("SYSTEM_SUFFIX").$get;
+  if(PATH=="/"){
+    return PATH.$path.C("SYSTEM_SUFFIX").$get;
+  }else{
+    return PATH."/".$path.C("SYSTEM_SUFFIX").$get;
+  }
 }
 /*E函数（生成报错）*/
 function E($err){
@@ -90,15 +93,15 @@ function sendEmail($email="simple@domain.com",$title="none",$subject="none",$con
   $mail->Password = C("EMAIL_PASSWORD");
   $mail->SMTPSecure = 'tls';
   $mail->Port = C("EMAIL_PORT");
-  $mail->setFrom('noreply@twocola.com', 'noreply');
+  $mail->setFrom('noreply@twocola.com', '两杯可乐网');
   $mail->addAddress($email);
   $mail->isHTML(true);
   $mail->Subject = $subject;
   $mail->Body    = $content;
-  if(!$mail->send()) {
-      return false;
-  } else {
-      return true;
+  if(!$mail->send()){
+    return false;
+  }else{
+    return true;
   }
 }
 ?>
