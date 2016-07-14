@@ -29,7 +29,7 @@ class TemplateEngine {
     $this->wTPL_PUBLIC = $app_path."/".PI_MODULE."/View/public/";
     $this->TPL = APP_PATH."/".PI_MODULE."/View/";
     $this->TPL_PUBLIC = APP_PATH."/".PI_MODULE."/View/public/";
-    $this->TplSuffix = C("SYSTEM_SUFFIX");
+    $this->TplSuffix = C("APP_TPL_FIX");
     $this->_Behavior = PI_CONTROLLER ;
     $this->_Method = PI_METHOD ;
     $this->_PATH = PATH;
@@ -75,7 +75,7 @@ class TemplateEngine {
         if($count<=1){
           $path = PI_MODULE."/".$path;
         }
-        $content = str_replace($origin,$this->_PATH.$path.$this->TplSuffix.$get,$content);
+        $content = str_replace($origin,$this->_PATH.$path.C("SYSTEM_SUFFIX").$get,$content);
       }
     }
     return $content;
