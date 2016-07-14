@@ -29,7 +29,7 @@ class TemplateEngine {
     $this->wTPL_PUBLIC = $app_path."/".PI_MODULE."/View/public/";
     $this->TPL = APP_PATH."/".PI_MODULE."/View/";
     $this->TPL_PUBLIC = APP_PATH."/".PI_MODULE."/View/public/";
-    $this->TplSuffix = C("APP_TPL_FIX");
+    $this->TplSuffix = C("SYSTEM_SUFFIX");
     $this->_Behavior = PI_CONTROLLER ;
     $this->_Method = PI_METHOD ;
     $this->_PATH = PATH;
