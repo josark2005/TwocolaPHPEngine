@@ -20,19 +20,21 @@ class TemplateEngine {
   public function __construct(){
     /* 基础路径 */
     $app_path = APP_PATH;
-    $pattern = "/\.(.*)$/U";
+    // var_dump($app_path);
+    $pattern = "/\.\/(.*)$/U";
     $preg = preg_match($pattern,$app_path,$match);
     if($preg!=0){
       $app_path = $match[1];
     }
-    $this->wTPL = $app_path."/".PI_MODULE."/View/";
-    $this->wTPL_PUBLIC = $app_path."/".PI_MODULE."/View/public/";
+    // var_dump($app_path);
     $this->TPL = APP_PATH."/".PI_MODULE."/View/";
     $this->TPL_PUBLIC = APP_PATH."/".PI_MODULE."/View/public/";
     $this->TplSuffix = C("APP_TPL_FIX");
     $this->_Behavior = PI_CONTROLLER ;
     $this->_Method = PI_METHOD ;
-    $this->_PATH = PATH;
+    $this->_PATH = (PATH=="/") ? "/" : PATH."/";
+    $this->wTPL = $this->_PATH.$app_path."/".PI_MODULE."/View/";
+    $this->wTPL_PUBLIC = $this->_PATH.$app_path."/".PI_MODULE."/View/public/";
     $this->Runtime = APP_PATH."/".PI_MODULE."/Runtime/";
   }
 

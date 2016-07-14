@@ -49,7 +49,7 @@ class PathInfo {
     $pattern = "/\.(.)+/U";
     $preg = preg_match($pattern,$path,$match);
     $path = ($preg==0) ? $path : str_replace(".","",$path);
-    //取出Modual\Controller\Behavior等
+    //取出Modual\Controller\Method
     $pattern = "/".$path."(.*)$/U";
     preg_match($pattern,$_SERVER['REQUEST_URI'],$match);
     // var_dump($match);
@@ -68,7 +68,12 @@ class PathInfo {
       $path_info = substr($path_info,0,strlen($path_info)-$length);
     }
     unset($match);  //避免问题释放资源
+    if(mb_substr($path_info,0,1,"UTF-8")=="/"){
+      $path_info = mb_substr($path_info,1,mb_strlen($path_info,"UTF-8")-1,"UTF-8");
+    }
+    // print_r($path_info);
     $path_info = explode("/",$path_info);
+    // var_dump($path_info);
     //设置PI_MODULE
     if(!empty($path_info[0])){
       $this->Module = $path_info[0];
