@@ -48,7 +48,7 @@ function E($err){
   }
 }
 /* Cookie */
-function cookie($name,$value=null,$expire=0,$path="/"){
+function cookie($name='',$value='',$expire=0,$path="/"){
   if($value==null || empty($value)){
     setcookie($name,null,time()-1,$path); //删除
   }else{

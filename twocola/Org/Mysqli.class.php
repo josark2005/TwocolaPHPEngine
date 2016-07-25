@@ -166,6 +166,7 @@ class Database{
 	//安全
 	public function filter(){
 		$this->sql_filter = true;
+		return $this;
 	}
 	//组合句式
 	public function combination($debug=false){
