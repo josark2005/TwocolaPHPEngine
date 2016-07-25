@@ -12,5 +12,10 @@ $config = array (
   "EMAIL_PORT" => 25,
   "EMAIL_ADDRESS" => "noreply@yourdomain.com",
   "EMAIL_PASSWORD" => "password",
+  /* 子域名绑定应用（MODULE） */
+  "SUBDOMAIN_BINDING" => array(
+    //子域名 => MODULE
+    "subdomain" => "defaultapp"
+  ),
 );
 ?>

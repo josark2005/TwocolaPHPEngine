@@ -37,15 +37,18 @@ require_once(TCE_PATH."/Org/Mysqli.class.php");  //数据库核心（系统）
 /* SelfTest */
 require_once(TCE_PATH."/Layer/ST.php"); //自检核心，不需要自检可屏蔽（不推荐）
 require_once(TCE_PATH."/Layer/AppConfig.php"); //配置文件驱动（系统）
+//保护
+if(!defined("APP_TYPE")){
+  define("APP_TYPE","ui");
+}
 //UI模式
 if(APP_TYPE=="ui"){
   require_once(TCE_PATH."/Org/TemplateLoad.php"); //模板系统（系统）
   require_once(TCE_PATH."/Layer/Template.php"); //模板引擎驱动（系统）
-}
-//API模式(不使用可关闭/屏蔽以下代码)
-if(APP_TYPE=="api"){
+}else if(APP_TYPE=="api"){
+  //API模式(不使用可关闭/屏蔽以下代码)
   if(file_exists(APP_PATH."/".PI_MODULE."/Controller/Common/Api.class.php")){
-    require_once(APP_PATH."/".PI_MODULE."/Controller/Common/Api.class.php");
+    require_once(APP_PATH."/".PI_MODULE."/Controller/Common/Api.class.php");  //API引擎
   }
   require_once(TCE_PATH."/Layer/Api.php");  //api驱动
 }
