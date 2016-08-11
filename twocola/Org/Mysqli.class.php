@@ -35,6 +35,7 @@ class Database{
 	}
 	//选择表
 	public function table($table,$multi=false){
+		$this->$sql_table = "";	//清除table数据
 		if($multi===false){
 			$this->sql_table = " {$this->Prefix}"."{$table}";
 			return $this;
