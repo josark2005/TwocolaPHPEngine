@@ -23,11 +23,11 @@ if(file_exists(APP_PATH."/".PI_MODULE."/Controller/Displayer/".PI_CONTROLLER."Di
   if(method_exists($template,$method)){
     $template->$method();
   }else{
-    $template->show_t("页面找不到了","public/html/404");
+    $template->show404("页面找不到了");
   }
 }else{
   //行为非法
   $template = new TCE\Template();
-  $template->show_t("页面找不到了","public/html/404");
+  $template->show404("页面找不到了");
 }
 ?>

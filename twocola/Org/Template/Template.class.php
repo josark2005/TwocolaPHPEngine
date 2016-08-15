@@ -1,7 +1,7 @@
 <?php
 /*
 ** TCPHPEngine模板引擎驱动类
-** Version:V1.0.1.1
+** Version:V1.0.1.2
 ** DevStudio:Twocola
 ** Authorize:Twocola.com
 */
@@ -25,16 +25,23 @@ class Template extends TemplateEngine {
       $this->content .= $this->getTpl(file_get_contents($tpl));
       include($this->createTpl());
     }else{
-      /* 判断用户自定义404是否存在 */
-      $tpl = $this->_getTplPath("public/html/404");
-      if(file_exists($tpl)){
-        $this->content .= $this->getTpl(file_get_contents($tpl));
-        include($this->createTpl("404"));
-      }else{
-        /* 使用系统404 */
-        $this->content .= $this->getTpl(file_get_contents(TCE_PATH."/Tpl/404".$this->TplSuffix));
-        include($this->createTpl("404"));
-      }
+      $this->show404();
+    }
+  }
+  /* 用户方法 */
+  public function show404($title=""){
+    if(!empty($title)){
+      $this->assign("TITLE",$title);
+    }
+    /* 判断用户自定义404是否存在 */
+    $tpl = $this->_getTplPath("public/html/404");
+    if(file_exists($tpl)){
+      $this->content .= $this->getTpl(file_get_contents($tpl));
+      include($this->createTpl("404"));
+    }else{
+      /* 使用系统404 */
+      $this->content .= $this->getTpl(file_get_contents(TCE_PATH."/Tpl/404".$this->TplSuffix));
+      include($this->createTpl("404"));
     }
   }
   /* 用户方法：showT显示页面 */
@@ -57,7 +64,7 @@ class Template extends TemplateEngine {
   }
   /* 用户方法：showContent，直接输出content */
   public function showContent($content){
-    $name = md5($content);
+    $name = "showtpl";
     $this->content = $this->getTpl($content);
     include($this->createTpl($name));
   }
@@ -68,7 +75,8 @@ class Template extends TemplateEngine {
   }
   /* 系统方法：_getRuntimePath */
   public function _getRuntimePath($tpl=""){
-    return $tpl = (empty($tpl)) ? $this->Runtime.$this->_Behavior.$this->_Method.".runtime.php" : $this->Runtime.$tpl.".runtime.php";
+    $tpl = (empty($tpl)) ? $this->Runtime.$this->_Behavior.$this->_Method.".runtime.php" : $this->Runtime.$tpl.".runtime.php";
+    return $tpl;
   }
 }
 ?>

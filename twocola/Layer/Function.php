@@ -93,7 +93,7 @@ function sendEmail($email="simple@domain.com",$title="none",$subject="none",$con
   $mail->Password = C("EMAIL_PASSWORD");
   $mail->SMTPSecure = 'tls';
   $mail->Port = C("EMAIL_PORT");
-  $mail->setFrom('noreply@twocola.com', '两杯可乐网');
+  $mail->setFrom(C("EMAIL_ADDRESS"), C("APP_NAME") );
   $mail->addAddress($email);
   $mail->isHTML(true);
   $mail->Subject = $subject;
