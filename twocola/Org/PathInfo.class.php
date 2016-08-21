@@ -15,16 +15,22 @@ class PathInfo {
   Public $Module = "";
   Public $Controller = "index";
   Public $Method = "index";
+  Public $Domain = "";
   /* 初始构建 */
   public function __construct(){
     //获取运行地址
     $this->SetPath();
     //获取域名前缀
     $this->SetSubdomain();
+    $this->SetDomain();
     //Rewrite模式
     if($this->Type=="REWRITE"){
       $this->Rewrite();
     }
+  }
+
+  public function getDomain(){
+    return $this->Domain;
   }
   public function getModule(){
     return $this->Module;
@@ -118,5 +124,16 @@ class PathInfo {
     }
   }
 
+  /* 获取根域名：只支持单个后缀的域名 */
+  protected function SetDomain(){
+    $domain = $_SERVER['SERVER_NAME'];
+    $pattern = "/(?:.+?)\.(.+\..+)$/U";
+    if(preg_match($pattern,$domain,$match)!=0){
+      $this->Domain = $match[1];
+    }else{
+      //没有使用相对子域名
+      $this->Domain = false;
+    }
+  }
 }
 ?>

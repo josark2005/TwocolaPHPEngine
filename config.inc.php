@@ -15,7 +15,10 @@ $config = array (
   /* 子域名绑定应用（MODULE） */
   "SUBDOMAIN_BINDING" => array(
     //子域名 => MODULE
-    "subdomain" => "defaultapp"
+  ),
+  /* 域名绑定应用（MODULE） */
+  "DOMAIN_BINDING" => array(
+    //域名 => MODULE
   ),
 );
 ?>
