@@ -127,7 +127,7 @@ class PathInfo {
   /* 获取根域名：只支持单个后缀的域名 */
   protected function SetDomain(){
     $domain = $_SERVER['SERVER_NAME'];
-    $pattern = "/(?:.+?)\.(.+\..+)$/U";
+    $pattern = "/(?:.*[\.]*)(.+\..+)$/U";
     if(preg_match($pattern,$domain,$match)!=0){
       $this->Domain = $match[1];
     }else{

@@ -7,7 +7,7 @@
 */
 $TCEVersion = array(
   "Version" => array(
-    "VerNum"  =>  "2.8",
+    "VerNum"  =>  "2.9",
     "VerType" =>  "beta",
   ),
   "FolderSettings" => array(
@@ -22,5 +22,6 @@ $TCEVersion = array(
   "FileSettings" => array(
     "TCPHPEngine" => TCE_PATH."/TCPHPEnging.php",
   ),
+  "UpdatePassword" => "tceupdate";
 );
 ?>

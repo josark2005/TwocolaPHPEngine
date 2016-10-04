@@ -28,6 +28,7 @@ if( is_array($sdb) && !empty($sdb) ){
   foreach ($sdb as $key => $value) {
     if($key==APP_DOMAIN && file_exists(APP_PATH."/".$value) ){
       $module = $value;
+      break;
     }else if($_PathInfo->getModule()=="" || !file_exists(APP_PATH."/".$_PathInfo->getModule()) ){
       $module = C("SYSTEM_DEFAULT_MODULE"); //默认Module
     }else{

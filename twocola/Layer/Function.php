@@ -49,6 +49,9 @@ function E($err){
 }
 /* Cookie */
 function cookie($name='',$value='',$expire=0,$path="/"){
+  if(empty($name)){
+    return false;
+  }
   if($value==null || empty($value)){
     setcookie($name,null,time()-1,$path); //删除
   }else{
@@ -58,7 +61,7 @@ function cookie($name='',$value='',$expire=0,$path="/"){
 /* Vender */
 function vender($file){
   if(file_exists(TCE_PATH."/Vender/{$file}")){
-    include TCE_PATH."/Vender/{$file}";
+    include_once TCE_PATH."/Vender/{$file}";
     return true;
   }else{
     return false;

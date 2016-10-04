@@ -11,10 +11,10 @@
   </style>
 </head>
 <body>
-  <h1>TwocolaPHPEngine - Just for simple.</h1>
-  <p>Simple is the most important.<br />
-    <span style='color:#8e8e8e'>[TwocolaPHPEngine,Just for simple.]</span>
+  <h1>TwocolaPHPEngine</h1>
+  <p>团队即是一切。<br />
+    <span style='color:#8e8e8e'>[TwocolaPHPEngine,More teamwork.]</span>
   </p>
-  <small>TCE框架-Beta</small>
+  <small>TCE框架</small>
 </body>
 </html>

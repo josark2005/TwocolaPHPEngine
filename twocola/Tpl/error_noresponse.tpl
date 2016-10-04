@@ -12,9 +12,9 @@
 </head>
 <body>
   <h1>{__APP_NAME__} 拒绝访问</h1>
-  <p>Simple is the most important.<br />
-    <span style="color:#8e8e8e">[TwocolaPHPEngine,Just for simple.]</span>
+  <p>团队即是一切。<br />
+    <span style="color:#8e8e8e">[TwocolaPHPEngine,More teamwork.]</span>
   </p>
-  <small>TCE框架-Beta<br />Preset Page:error_noresponse</small>
+  <small>TCE框架<br />Preset Page:error_noresponse</small>
 </body>
 </html>
