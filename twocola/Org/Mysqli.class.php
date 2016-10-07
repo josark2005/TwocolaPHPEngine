@@ -171,7 +171,7 @@ class Database{
 	}
 	//组合句式
 	public function combination($debug=false){
-		$this->Sql = $this->sql_prefix.$this->sql_table.$this->sql_data.$this->sql_where.$this->sql_order.$this->sql_group.$this->sql_limit;
+		$this->Sql = $this->sql_prefix.$this->sql_table.$this->sql_data.$this->sql_where.$this->sql_group.$this->sql_order.$this->sql_limit;
 		if($this->sql_filter===true){
 			$this->Sql = strip_tags($this->Sql);
 		}

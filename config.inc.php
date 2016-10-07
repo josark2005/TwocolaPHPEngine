@@ -1,6 +1,6 @@
 <?php
 $config = array (
-  "APP_MODULE" => "default",  //用于创建MODULE
+  "APP_MODULE" => "hanfu",  //用于创建MODULE
   "APP_TPL_FIX" => ".tpl",
   "SYSTEM_CONSTANT" => true,  //系统常量自检
   "SYSTEM_SUFFIX" => ".html",
@@ -15,6 +15,7 @@ $config = array (
   /* 子域名绑定应用（MODULE） */
   "SUBDOMAIN_BINDING" => array(
     //子域名 => MODULE
+    "a" => "hanfu"
   ),
   /* 域名绑定应用（MODULE） */
   "DOMAIN_BINDING" => array(

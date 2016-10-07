@@ -1,7 +1,7 @@
 <?php
 /*
  * TCE框架引擎
- * Author: Jokin
+ * Author: Jokin惟易
  * Library: Twocola Studio
  * ISSUE: 目前仅支持REWRITE+PATHINFO模式
 */
