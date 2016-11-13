@@ -17,6 +17,9 @@ class StorageNormal{
 			return false;
 		}else{
 			$handle = fopen($filename,"r");
+			if(!$handle){
+				return false;
+			}
 			$content = fread($handle,filesize($filename));
 			fclose($handle);
 			return $content;
@@ -41,6 +44,9 @@ class StorageNormal{
 	public function CreateSave($filename,$content){
 		$filename = $this->Prefix.$filename;
 		$handle = fopen($filename,"w");
+		if(!$handle){
+			return false;
+		}
 		$result = fwrite($handle,$content);
 		fclose($handle);
 		return $result;
@@ -55,6 +61,9 @@ class StorageNormal{
 		}
 		if($this->FileExist($filename)){
 			$handle = fopen($filename,$position);
+			if(!$handle){
+				return false;
+			}
 			$result = fwrite($handle,$content);
 			fclose($handle);
 			return $result;

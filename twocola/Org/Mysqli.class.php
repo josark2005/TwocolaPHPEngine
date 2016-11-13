@@ -24,6 +24,8 @@ class Database{
 		if($this->Database->connect_errno){
 			$this->errno = $this->Database->connect_errno;
 			$this->error = $this->Database->connect_error;
+			$this->Database = false;
+			throw new TCE\TException("数据库连接失败");
 			return false;	//连接失败
 		}else{
 			$this->Database->set_charset($charset);
@@ -193,7 +195,9 @@ class Database{
 	}
 	//释放资源
 	public function __destruct(){
-		$this->Database->close();
+		if($this->Database!=false){
+			$this->Database->close();
+		}
 	}
 }
 ?>

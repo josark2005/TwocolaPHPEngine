@@ -15,8 +15,22 @@ function C($var="none",$content=""){
 }
 /*M函数（连接数据库）*/
 function M($table_name){
-  $db = new \Database(C("APP_DB_HOST"),C("APP_DB_PORT"),C("APP_DB_NAME"),C("APP_DB_USERNAME"),C("APP_DB_PASSWORD"));
-  return $db->table(C("APP_DB_PREFIX").$table_name);
+  try{
+    $db = new \Database(C("APP_DB_HOST"),C("APP_DB_PORT"),C("APP_DB_NAME"),C("APP_DB_USERNAME"),C("APP_DB_PASSWORD"));
+    return $db->table(C("APP_DB_PREFIX").$table_name);
+  }catch(TCE\TException $e){
+    echo $e->errorMessage(APP_DEBUG);
+  }
+}
+/*Mx函数（多表数据库）*/
+function Mx($table_name,$prefix=false){
+  try{
+    $db = new \Database(C("APP_DB_HOST"),C("APP_DB_PORT"),C("APP_DB_NAME"),C("APP_DB_USERNAME"),C("APP_DB_PASSWORD"));
+    $db->Prefix = ($prefix===false) ? C("APP_DB_PREFIX") : $prefix;
+    return $db->table($table_name,true);
+  }catch(TCE\TException $e){
+    echo $e->errorMessage(APP_DEBUG);
+  }
 }
 /*U函数(生成链接)*/
 function U($paths){

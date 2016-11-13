@@ -12,7 +12,7 @@ if(APP_CONFIG_MODE == "include"){
       E("配置文件不存在，请检查入口文件目录下的config.inc.php文件是否存在！");
     }
   }else{
-    //配置文件存在
+    //配置文件存在则读取配置
     $conf->GetConfig();
   }
 }

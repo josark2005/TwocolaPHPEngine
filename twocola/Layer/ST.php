@@ -1,7 +1,7 @@
 <?php
 /*
 ** TCE框架引擎自检核心
-** Version:1.2
+** Version:1.2.1
 */
 /* 检查系统配置 */
 $conf = TCE\IncReader::IO();
@@ -9,22 +9,22 @@ if(!$conf->ConfigExists("SYSTEM_SUFFIX")){
   define("SYSTEM_SUFFIX",""); //伪静态后缀
 }
 if(!$conf->ConfigExists("SYSTEM_DEFAULT_MODULE")){
-  E("配置 SYSTEM_DEFAULT_MODULE 未定义！[预估出错:Layer]");
+  E("配置 SYSTEM_DEFAULT_MODULE 未定义！[预估出错:Layer-ST]");
 }
 if(!defined("PI_CONTROLLER")){
-  E("系统配置 PI_CONTROLLER 未定义！[预估出错:Layer]");
+  E("系统配置 PI_CONTROLLER 未定义！[预估出错:Layer-ST]");
 }
 if(!defined("PI_METHOD")){
-  E("系统配置 PI_METHOD 未定义！[预估出错:Layer]");
+  E("系统配置 PI_METHOD 未定义！[预估出错:Layer-ST]");
 }
 if(!defined("PATH")){
-  E("系统配置 PATH 未定义！[预估出错:Layer]");
+  E("系统配置 PATH 未定义！[预估出错:Layer-ST]");
 }
 if(!defined("APP_PATH")){
-  E("系统配置 APP_PATH 未定义！[预估出错:Layer]");
+  E("系统配置 APP_PATH 未定义！[预估出错:Layer-ST]");
 }
 if(!defined("APP_SUBDOMAIN")){
-  E("系统配置 APP_SUBDOMAIN 未定义！[预估出错:Layer]");
+  E("系统配置 APP_SUBDOMAIN 未定义！[预估出错:Layer-ST]");
 }
 
 $storage = new StorageNormal(); //载入存储引擎
@@ -170,4 +170,5 @@ if(!$storage->FolderExist(APP_PATH."/".C("SYSTEM_DEFAULT_MODULE")."/config.inc.p
 }
 /* 释放资源 */
 unset($conf);
+unset($storage);
 ?>
