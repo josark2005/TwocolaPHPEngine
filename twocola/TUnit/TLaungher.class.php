@@ -26,6 +26,14 @@ class TLaungher {
     self::ConfigChecker();
     // 检查、修复、创建应用
     self::GeneralConsturct();
+    // 检查应用是否允许访问
+    if( C("APP_RESPONSE") == false ){
+      $tpl = getPresetTpl("App/Error/NoResponse");
+      Template\Template::ProcessTpl($tpl);
+      $path = Template\Template::GeneralCache(false,"_Error");
+      include ( $path );
+      exit();
+    }
     // 自动检测模式
     if( C("RMODE") == false ){
       // 运行应用
@@ -59,14 +67,6 @@ class TLaungher {
     OneAsMuiltiple::OAM();
     // 读取应用配置
     $conf->GetConfig(APP_PATH.$D.C("APP").$D."config".CONFIG_EXT);
-    // 检查应用是否允许访问
-    if( C("APP_RESPONSE") == false ){
-      $tpl = getPresetTpl("App/Error/NoResponse");
-      Template\Template::ProcessTpl($tpl);
-      $path = Template\Template::GeneralCache(false,"_Error");
-      include ( $path );
-      exit();
-    }
     // 检查其余配置
     if(URL_MODE != "0"){
       if( !C("APP_SUFFIX") ){  C("APP_SUFFIX","");   }
