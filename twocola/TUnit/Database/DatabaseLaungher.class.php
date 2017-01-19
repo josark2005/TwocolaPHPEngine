@@ -15,7 +15,8 @@
 namespace TUnit\Database;
 class DatabaseLaungher {
   static public function run($HOST,$USERNAME,$PASSWORD,$DBNAME,$PROT,$CHARSET="utf8"){
-    if( strtoupper(C("DB_TYPE")) == "MYSQL" ){
+    $DB_TYPE = strtoupper(C("DB_TYPE"));
+    if( $DB_TYPE == "MYSQL" || $DB_TYPE == "MYSQLI" ){
       return new Drivers\Mysql($HOST,$USERNAME,$PASSWORD,$DBNAME,$PROT,$CHARSET);
     }
   }
