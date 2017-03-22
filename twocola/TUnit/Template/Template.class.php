@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.1
+** Ver 1.0.3.2202
 */
 namespace TUnit\Template;
 class Template {
@@ -19,13 +19,13 @@ class Template {
   ** 模板临时存储
   ** @param  string $content
   */
-  static private $content =  "";
+  static public $Content =  "";
 
   /*
   ** 变量传递临时存储
   ** @param  string $content
   */
-  static private $assign  =  "";
+  static public $assign  =  "";
 
 
   /*
@@ -97,9 +97,10 @@ class Template {
   */
   static public function GeneralCache($content=false,$filename=false){
     $D = DIRECTORY_SEPARATOR;
+    // $filename = ($filename === false) ? C("APP")."_".C("CONTROLLER")."_".C("METHOD")."_".rand(0,9999999).C("CACHE_EXT") : $filename."_".rand(0,9999999).C("CACHE_EXT");
     $filename = ($filename === false) ? C("APP")."_".C("CONTROLLER")."_".C("METHOD").C("CACHE_EXT") : $filename.C("CACHE_EXT");
     $filename = APP_PATH.$D.C("APP").$D."Runtime".$D."Cache".$D.$filename;
-    $content  = ($content  === false) ? self::$content : $content;
+    $content  = ($content  === false) ? self::$Content : $content;
     \TUnit\Storage\StorageCore::Put($filename,$content);
     return $filename;
   }
@@ -112,7 +113,7 @@ class Template {
   * @return string
   **/
   static public function GetProcessedTpl(){
-    return self::$content;
+    return self::$Content;
   }
 
   /**
@@ -122,15 +123,17 @@ class Template {
   **/
   static public function ProcessTpl($content){
     $content = self::ClearComment($content);   // 清除注释
+    $content = self::IncludeTpl($content);     // 引用模板
+    $content = self::ClearComment($content);   // 清除模板注释
     $content = self::Variable($content);       // 模板标签集合处理
     $content = self::MagicTag($content);       // 魔术标签
     $content = self::VarReference($content);   // 变量引用
     $content = self::ConReference($content);   // 常量引用
     $content = self::SVarReference($content);  // 特殊变量引用
-    $content = self::IncludeTpl($content);     // 引用模板
     $content = self::CreateURL($content);      // 生成链接
-    self::$content = self::$assign.$content;   // 传递变量并临时存储模板
+    $content = self::$assign.$content;   // 传递变量并临时存储模板
     self::$assign  = "";                       // 清空变量传递临时存储区
+    self::$Content = $content;
     return ;
   }
 
@@ -278,8 +281,8 @@ class Template {
   /* 支持模板符号__CSS:index__ */
   static public function MagicTag($content){
     $D = DIRECTORY_SEPARATOR;
-    $tpath = WEB_PATH.APP_PATH.$D.C("APP")."{$D}View$D";
-    $tpath_p = WEB_PATH.APP_PATH.$D.C("APP")."{$D}View$D"."PUBLIC".$D;
+    $tpath = APP_PATH.$D.C("APP")."{$D}View$D";
+    $tpath_p = APP_PATH.$D.C("APP")."{$D}View$D"."PUBLIC".$D;
     /*配套CSS*/
     $pattern = "/__CSS:(.*)__/U";
     $preg = preg_match_all($pattern,$content,$matches);
@@ -343,6 +346,7 @@ class Template {
   * @return string  $content
   **/
   static public function VarReference($content){
+    self::GeneralCache($content ,C("APP")."_".C("CONTROLLER")."_".C("METHOD")."_GC1".C("CACHE_EXT") );
     $pattern = "/[\{|\`][\$](.*)[\}|\`]/U"; //兼容 `|{}两种定界符号
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
@@ -429,11 +433,11 @@ class Template {
           if($matches[3][$i]=="autoheader"){
             // 自动载入配套js/css
             $extra = "";
-            if(file_exists($P_APP_TPL.$CONTROLLER."{$D}css{$D}".$MEHTOD.$CSS)){
+            if(file_exists($P_APP_TPL.$CONTROLLER."{$D}css{$D}".$METHOD.$CSS)){
               $extra .= "<link rel='stylesheet' href='__CSS:{$METHOD}__'>";
             }
-            if(file_exists($P_APP_TPL.$CONTROLLER."{$D}js{$D}".$MEHTOD.$JS)){
-              $extra .= "<script src='__JS:{$MEHTOD}__'></script>";
+            if(file_exists($P_APP_TPL.$CONTROLLER."{$D}js{$D}".$METHOD.$JS)){
+              $extra .= "<script src='__JS:{$METHOD}__'></script>";
             }
             $text = \TUnit\Storage\StorageCore::Read($P_APP_PUBLIC_TPL."html{$D}{$matches[2][$i]}{$TPL}");
             $content = (!$text) ? $content : str_replace($origin,"{$text}\n{$extra}",$content);

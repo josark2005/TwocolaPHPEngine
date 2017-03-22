@@ -14,7 +14,7 @@
 //----------------------------------
 
 define( 'FRAMENAME'   ,"TCE引擎3"         );
-define( 'VERSION'     ,"3.1"              );
+define( 'VERSION'     ,"3.2.3.2201"       );
 
 // error_reporting(0);
 
@@ -44,7 +44,7 @@ if( !defined("APP_DEFAULT")       ){ define("APP_DEFAULT"          ,"APP"      )
 $pattern = "/\/index.php.*$/U";
 $preg = preg_match($pattern,$_SERVER['PHP_SELF'],$match);
 if( $preg != 0 ){ $WP = str_replace($match[0],"",$_SERVER['PHP_SELF']); }
-$WP = ($WP == "") ? "./" : ".".$WP."/" ;
+$WP = ($WP == "") ? "/" : "".$WP."/" ;
 define( "WEB_PATH"    ,$WP                                                            );
 require_once(TCE_PATH.DIRECTORY_SEPARATOR."TUnit".DIRECTORY_SEPARATOR."TCoreUnit.class.php");
 TUnit\TCoreUnit::start();

@@ -65,10 +65,10 @@ function U($paths){
     $ctrl    = (isset($p['CONTROLLER'])&&!empty($p['CONTROLLER'])) ? $p['CONTROLLER'] : "index";
     $method  = (isset($p['METHOD'])&&!empty($p['METHOD']))         ? $p['METHOD']     : "index";
     $get     = (empty($get))                                       ? ""               : "&".$get;
-    if(WEB_PATH=="./"){
-      return WEB_PATH."?a={$app}&c={$ctrl}&m={$method}&".$get;
+    if(WEB_PATH=="/"){
+      return WEB_PATH."?a={$app}&c={$ctrl}&m={$method}".$get;
     }else{
-      return WEB_PATH."?a={$app}&c={$ctrl}&m={$method}&".$get;
+      return WEB_PATH."?a={$app}&c={$ctrl}&m={$method}".$get;
     }
   }
 
