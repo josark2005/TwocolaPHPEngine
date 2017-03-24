@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.0.3.2202
+** Ver 1.0.3.2401
 */
 namespace TUnit\Template;
 class Template {
@@ -346,7 +346,6 @@ class Template {
   * @return string  $content
   **/
   static public function VarReference($content){
-    self::GeneralCache($content ,C("APP")."_".C("CONTROLLER")."_".C("METHOD")."_GC1".C("CACHE_EXT") );
     $pattern = "/[\{|\`][\$](.*)[\}|\`]/U"; //兼容 `|{}两种定界符号
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){

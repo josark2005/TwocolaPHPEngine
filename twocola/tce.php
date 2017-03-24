@@ -14,7 +14,7 @@
 //----------------------------------
 
 define( 'FRAMENAME'   ,"TCE引擎3"         );
-define( 'VERSION'     ,"3.2.3.2201"       );
+define( 'VERSION'     ,"3.2.3.2401"       );
 
 // error_reporting(0);
 
