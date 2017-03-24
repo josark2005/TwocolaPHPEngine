@@ -10,20 +10,21 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎Pathinfo模式核心类
-** Ver 1.2
+** Ver 1.2.3.2401
 */
 namespace TUnit\UrlMode;
 class UrlResolution {
   /*
   ** TCE引擎URL解析
-  ** @param  int   $URL_MODE  URL模式
-  ** @return array $p
+  ** @param  int   URL_MODE  URL模式
+  ** @return array p
   */
   static public function TCE($URL_MODE){
     $p = self::Resolution($URL_MODE);
     define( "APP"           ,$p["APP"]         );
     define( "CONTROLLER"    ,$p["CONTROLLER"]  );
     define( "METHOD"        ,$p["METHOD"]      );
+    return ;
   }
   static public function Resolution($URL_MODE){
     //判断是否需要PATHINFO
@@ -35,14 +36,14 @@ class UrlResolution {
       return $p;
     }else{
       //对PATHINFO进行解析
-      $pathinfo = substr( $_SERVER['PATH_INFO'] ,1 , strlen($_SERVER['PATH_INFO'])-1 );
-      if( $pathinfo == false){
-        //无效的pathinfo
-        $p["APP"]        = C("APP_DEFAULT");
-        $p["CONTROLLER"] = "index";
-        $p["METHOD"]     = "index";
-        return $p;
+      $pattern = "/(.+)\?(.+)$/U";
+      $preg = preg_match($pattern,$_SERVER['REQUEST_URI'],$match);
+      if($preg != 0){
+        $pathinfo = $match[1];
+      }else{
+        $pathinfo = $_SERVER['REQUEST_URI'];
       }
+      $pathinfo = substr( $pathinfo ,strlen(WEB_PATH) ,strlen($pathinfo)-strlen(WEB_PATH)-strlen(C("APP_SUFFIX")) );
       $pathinfo = explode("/",$pathinfo);
       $count = count($pathinfo);
       /*

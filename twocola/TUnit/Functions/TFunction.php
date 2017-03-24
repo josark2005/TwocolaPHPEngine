@@ -8,6 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
+/*
+** TCE引擎核心Funciotn
+** Ver 1.2.3.2401
+*/
 /* C函数 读取配置 */
 function C($var="none",$content=""){
   $conf = TUnit\TConfigCore::IO();
@@ -52,11 +56,12 @@ function U($paths){
   }
   // 判断URL模式
   if(URL_MODE == 1){
+    $pget = empty($get) ? "" : "?".$get;
     // PATHINFO模式
-    if(WEB_PATH=="./"){
-      return WEB_PATH.$path.C("APP_SUFFIX")."?".$get;
+    if(WEB_PATH=="/"){
+      return WEB_PATH.$path.C("APP_SUFFIX").$pget;
     }else{
-      return WEB_PATH."/".$path.C("APP_SUFFIX")."?".$get;
+      return WEB_PATH.$path.C("APP_SUFFIX").$pget;
     }
   }else{
     // 兼容模式

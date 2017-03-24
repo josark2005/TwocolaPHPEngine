@@ -1,6 +1,6 @@
 #TCE框架引擎
 
-`Author: Jokin`
+`作者: Jokin`
 
 `联系方式：QQ 327928971 | EMAIL 327928971@qq.com`
 
@@ -33,7 +33,7 @@
 
 ---
 
-#####Ver 3.2.3.2401 [性能优化]
+#####Ver 3.2.3.2401 [性能优化漏洞修复]
 
 > Notice:原计划3.2版本推迟到3.3版本
 
@@ -41,16 +41,19 @@
 
 [优化] `模板引擎`不再生成GC后缀缓存文件，减少服务器压力。（更新位置:TUnit/Template/Template.class.php Line~341）
 
+[优化] `系统模板`默认使用`.html`为后缀。（更新位置:Tpl/TUnit/TCEngine_Default_Config.inc.php.tpl Line~9）
+
+[修复] `模板引擎`无法使用`模板引用`方法。（更新位置:TUnit/Template/Template.class.php Line~424）
+
+[修复] `URL解析引擎`在Pathinfo模式下解析错误的Bug。（更新位置:TUnit/UrlMode/UrlResolution.class.php Line~39）
+
+[修复] `核心Function`U函数生成错误的Bug。（更新位置:TUnit/Functions/TFunction.php Line~59）
 
 ---
 
 #####Ver 3.2.3.2201 [重要漏洞修复]
 
-> Notice:原计划3.2版本推迟到3.3版本
-
 > Notice:3.1+版本可进行平滑升级（直接替换库文件夹即可）。
-
-> **3.0或以下版本请勿直接升级，具体信息请查看3.1版本用户手册。**
 
 [项目 | 修改] `框架版本号`框架版本号组成：主版本.次版本.修改月份.修改日期修改批次
 
@@ -64,7 +67,7 @@
 
 #####Ver 3.1 [大规模升级]
 
-> Notice:框架使用全新架构，3.0及以下版本不可直接进行升级。
+> **Notice:框架使用全新架构，3.0及以下版本不可直接进行升级。**
 
 [优化] 优化框架运行流程，框架所需类库全面实行懒加载。
 

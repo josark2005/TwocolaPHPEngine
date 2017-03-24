@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.0
+** Ver 1.0.3.2401
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -134,6 +134,7 @@ class TLaungher {
     self::SaveFile($Controller."Common".$D."BehaviorCommon".$CL    ,"App/Controller/App_Default_BehaviorCommon{$CL}" ,1 ,$AppName);
     self::SaveFile($Controller."Behavior".$D."indexBehavior".$CL   ,"App/Controller/App_Default_Behavior{$CL}"       ,1 ,$AppName);
     self::SaveFile($Controller."Displayer".$D."indexDisplayer".$CL ,"App/Controller/App_Default_Displayer{$CL}"      ,1 ,$AppName);
+    return ;
   }
 
   /**

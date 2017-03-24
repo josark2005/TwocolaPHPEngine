@@ -421,7 +421,7 @@ class Template {
     $JS = C("JS_EXT");
     $CSS = C("CSS_EXT");
     $TPL = C("TPL_EXT");
-    $pattern = "/\<include file=['|\"](.+)-(.+)['|\"](?:[\s]+type=['|\"](.+)['|\"][\s]*|[\s]*)\/\>/iU";
+    $pattern = "/<include file=['|\"](.+)-(.+)['|\"](?:[\s]+type=['|\"](.+)['|\"][\s]*|[\s]*)\/\>/iU";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for($i=0;$i<count($matches[0]);$i++){
