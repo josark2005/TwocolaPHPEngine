@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.0.3.2401
+** Ver 1.0.3.2402
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -54,6 +54,10 @@ class TLaungher {
     $D = DIRECTORY_SEPARATOR;
     $conf = TConfigCore::IO();
     $conf->GetConfig(".{$D}config".CONFIG_EXT);
+    $preg = preg_match("/^\.(.+$)/U" ,C("APP_PATH") ,$match);
+    if($preg != 0){
+      C("APP_PATH" ,$match[1]);
+    }
     // 设置当前模块、控制器、行为
     if(URL_MODE == "0"){
       define("APP"        ,isset($_GET['a'])&&!empty($_GET['a']) ? $_GET['a'] : C("APP_DEFAULT") );

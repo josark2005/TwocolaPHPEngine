@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎Pathinfo模式核心类
-** Ver 1.2.3.2401
+** Ver 1.2.3.2402
 */
 namespace TUnit\UrlMode;
 class UrlResolution {
@@ -43,7 +43,7 @@ class UrlResolution {
       }else{
         $pathinfo = $_SERVER['REQUEST_URI'];
       }
-      $pathinfo = substr( $pathinfo ,strlen(WEB_PATH) ,strlen($pathinfo)-strlen(WEB_PATH)-strlen(C("APP_SUFFIX")) );
+      $pathinfo = mb_substr( $pathinfo ,strlen(WEB_PATH) ,strlen($pathinfo)-strlen(WEB_PATH)-strlen(C("APP_SUFFIX")) ,"utf-8" );
       $pathinfo = explode("/",$pathinfo);
       $count = count($pathinfo);
       /*

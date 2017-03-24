@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.0.3.2401
+** Ver 1.0.3.2402
 */
 namespace TUnit\Template;
 class Template {
@@ -281,8 +281,13 @@ class Template {
   /* 支持模板符号__CSS:index__ */
   static public function MagicTag($content){
     $D = DIRECTORY_SEPARATOR;
-    $tpath = APP_PATH.$D.C("APP")."{$D}View$D";
-    $tpath_p = APP_PATH.$D.C("APP")."{$D}View$D"."PUBLIC".$D;
+    if( WEB_PATH == "/" ){
+      $wp = "";
+    }else{
+      $wp = substr(WEB_PATH ,0 ,mb_strlen(WEB_PATH)-1);
+    }
+    $tpath = $wp.C("APP_PATH").$D.C("APP")."{$D}View$D";
+    $tpath_p = $wp.C("APP_PATH").$D.C("APP")."{$D}View$D"."PUBLIC".$D;
     /*配套CSS*/
     $pattern = "/__CSS:(.*)__/U";
     $preg = preg_match_all($pattern,$content,$matches);
