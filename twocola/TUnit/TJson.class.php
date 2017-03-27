@@ -39,7 +39,7 @@ class TJson{
     echo self::json_c($system_status,$system_message,$app_status,$app_errno,$app_error);
   }
   static public function json_h(){
-    if(APP_DEBUG===false){
+    if(APP_DEBUG == false){
       header('Content-Type:text/json;charset=utf-8');
     }
   }

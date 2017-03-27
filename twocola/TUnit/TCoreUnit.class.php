@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心引导类
-** Ver 1.0.3.2201
+** Ver 1.0.3.2701
 */
 namespace TUnit;
 class TCoreUnit {
@@ -21,9 +21,11 @@ class TCoreUnit {
     // 注册autoload方法
     spl_autoload_register("TUnit\TCoreUnit::autoload");
     // 设定错误和异常处理
-    register_shutdown_function("TUnit\TCoreUnit::fatalError");
-    set_error_handler("TUnit\TCoreUnit::appError");
-    set_exception_handler("TUnit\TCoreUnit::appException");
+    if(APP_DEBUG != 2) {
+      register_shutdown_function("TUnit\TCoreUnit::fatalError");
+      set_error_handler("TUnit\TCoreUnit::appError");
+      set_exception_handler("TUnit\TCoreUnit::appException");
+    }
     //设置时区
     date_default_timezone_set(C("DEFAULT_TIMEZONE"));
     // 运行

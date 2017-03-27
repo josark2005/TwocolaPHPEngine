@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.0.3.2402
+** Ver 1.0.3.2701
 */
 namespace TUnit\Template;
 class Template {
@@ -65,7 +65,7 @@ class Template {
   }
 
   static public function showError($errCode,$reason){
-    if(APP_DEBUG===true){
+    if(APP_DEBUG == true){
       self::assign("errCode",$errCode);                  // 传递变量
       self::assign("error",$reason);
       $content = getPresetTpl("TUnit/Error/Default");    // 获取模板

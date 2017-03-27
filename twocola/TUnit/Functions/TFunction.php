@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心Funciotn
-** Ver 1.2.3.2401
+** Ver 1.2.3.2701
 */
 /* C函数 读取配置 */
 function C($var="none",$content=""){
@@ -80,7 +80,7 @@ function U($paths){
 }
 // E函数（生成报错）
 function E($err){
-  if(APP_DEBUG === true){
+  if(APP_DEBUG == true){
     ob_end_clean();
     $tpl = getPresetTpl("TUnit/ErrorException");
     //--处理模板

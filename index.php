@@ -3,7 +3,6 @@
  * TCE框架引擎 V3
  * Author : Jokin惟易
  * Library: Twocola Studio
- * ISSUE  : 目前仅支持REWRITE+PATHINFO模式
 */
 define("APP_DEBUG" ,true);                 // 调试模式
 define("APP_PATH"  ,"./Applications");    // 定义App目录
