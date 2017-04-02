@@ -11,7 +11,7 @@
 
 //----------------------------------
 // Twocola PHP Engine(TCE)   OAM系统
-// Version:                  v1.0
+// Version:                  v1.0.4.0201
 //----------------------------------
 namespace TUnit;
 class OneAsMuiltiple {
@@ -32,7 +32,6 @@ class OneAsMuiltiple {
   private function __construct(){
     return false;
   }
-
 
   /*
   ** OAM驱动
@@ -91,6 +90,7 @@ class OneAsMuiltiple {
       if( isset(self::$OAM['BDA'][$Domain]) && !empty(self::$OAM['BDA'][$Domain]) ){
         C("APP",self::$OAM['BDA'][$Domain]);
       }
+      return ;
     }
   }
 

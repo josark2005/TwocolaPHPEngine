@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.0.3.2701
+** Ver 1.0.4.0201
 */
 namespace TUnit\Template;
 class Template {
@@ -71,12 +71,19 @@ class Template {
       $content = getPresetTpl("TUnit/Error/Default");    // 获取模板
       $content = self::ProcessTpl($content);             // 处理模板
       $content = self::GeneralCache(false,"_".$errCode); // 生成缓存并获取路径
+      include($content);                                   // 展示页面
+      return ;
     }else{
-      $content = getPresetTpl("TUnit/Error/ErrorException_Secure"); // 获取模板
-      $content = self::ProcessTpl($content);                        // 处理模板
-      $content = self::GeneralCache(false,"_".$errCode);            // 生成缓存并获取路径
+      self::show404();                                   // 展示错误页面
     }
-    include($content);                                   // 展示页面
+  }
+
+  static public function show404(){
+    $content = getPresetTpl("APP/Error/PageNotFound");    // 获取模板
+    $content = self::ProcessTpl($content);                // 处理模板
+    $content = self::GeneralCache(false,"_404");          // 生成缓存并获取路径
+    include($content);                                    // 展示页面
+    return ;
   }
 
   /*
@@ -97,10 +104,15 @@ class Template {
   */
   static public function GeneralCache($content=false,$filename=false){
     $D = DIRECTORY_SEPARATOR;
-    // $filename = ($filename === false) ? C("APP")."_".C("CONTROLLER")."_".C("METHOD")."_".rand(0,9999999).C("CACHE_EXT") : $filename."_".rand(0,9999999).C("CACHE_EXT");
     $filename = ($filename === false) ? C("APP")."_".C("CONTROLLER")."_".C("METHOD").C("CACHE_EXT") : $filename.C("CACHE_EXT");
     $filename = APP_PATH.$D.C("APP").$D."Runtime".$D."Cache".$D.$filename;
     $content  = ($content  === false) ? self::$Content : $content;
+    // 错误阻止机制
+    if( !is_dir(dirname($filename)) ){
+      $filename = false;
+      $filename = ($filename === false) ? C("APP")."_".C("CONTROLLER")."_".C("METHOD").C("CACHE_EXT") : $filename.C("CACHE_EXT");
+      $filename = APP_PATH.$D.C("APP_DEFAULT").$D."Runtime".$D."Cache".$D.$filename;
+    }
     \TUnit\Storage\StorageCore::Put($filename,$content);
     return $filename;
   }

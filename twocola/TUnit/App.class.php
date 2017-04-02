@@ -8,6 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
+/*
+** APP核心类
+** Version: 1.0.4.0201
+*/
 namespace TUnit;
 class App {
   /*
@@ -21,7 +25,7 @@ class App {
     $METHOD     =  C("METHOD");
     // 判断配置是否正确
     $D  = DIRECTORY_SEPARATOR;
-    $CP = APP_PATH.$D.$APP."{$D}Controller{$D}";
+    $CP = ".".C("APP_PATH").$D.$APP."{$D}Controller{$D}";
     if(file_exists($CP."Displayer{$D}".C("CONTROLLER")."Displayer" .C("CLASS_EXT") )&&
       file_exists( $CP."Behavior{$D}" .C("CONTROLLER")."Behavior"  .C("CLASS_EXT") )&&
       file_exists( $CP."Common{$D}BehaviorCommon"                  .C("CLASS_EXT") )){

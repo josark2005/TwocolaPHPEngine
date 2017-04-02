@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎Pathinfo模式核心类
-** Ver 1.2.3.2402
+** Ver 1.2.4.0201
 */
 namespace TUnit\UrlMode;
 class UrlResolution {
@@ -21,9 +21,9 @@ class UrlResolution {
   */
   static public function TCE($URL_MODE){
     $p = self::Resolution($URL_MODE);
-    define( "APP"           ,$p["APP"]         );
-    define( "CONTROLLER"    ,$p["CONTROLLER"]  );
-    define( "METHOD"        ,$p["METHOD"]      );
+    define( "APP"           ,self::safer($p["APP"])         );
+    define( "CONTROLLER"    ,self::safer($p["CONTROLLER"])  );
+    define( "METHOD"        ,self::safer($p["METHOD"])      );
     return ;
   }
   static public function Resolution($URL_MODE){
@@ -36,14 +36,20 @@ class UrlResolution {
       return $p;
     }else{
       //对PATHINFO进行解析
-      $pattern = "/(.+)\?(.+)$/U";
+      $suffix = str_replace(".","\.",C("APP_SUFFIX"));
+      if(C("APP_SUFFIX_SAFE") == true){
+        // 自动适配所有后缀
+        $pattern = "/(.+)(?:\..*)*(?:[\?].+)*$/U";
+      }else{
+        $pattern = "/(.+)(?:".$suffix.")*(?:[\?].+)*$/U";
+      }
       $preg = preg_match($pattern,$_SERVER['REQUEST_URI'],$match);
       if($preg != 0){
         $pathinfo = $match[1];
       }else{
         $pathinfo = $_SERVER['REQUEST_URI'];
       }
-      $pathinfo = mb_substr( $pathinfo ,strlen(WEB_PATH) ,strlen($pathinfo)-strlen(WEB_PATH)-strlen(C("APP_SUFFIX")) ,"utf-8" );
+      $pathinfo = mb_substr( $pathinfo ,strlen(WEB_PATH) ,strlen($pathinfo)-strlen(WEB_PATH) ,"utf-8" );
       $pathinfo = explode("/",$pathinfo);
       $count = count($pathinfo);
       /*
@@ -72,9 +78,9 @@ class UrlResolution {
       }else{
         $Method = "index";
       }
-      $p["APP"]        = $Module;
-      $p["CONTROLLER"] = $Controller;
-      $p["METHOD"]     = $Method;
+      $p["APP"]        = self::safer($Module);
+      $p["CONTROLLER"] = self::safer($Controller);
+      $p["METHOD"]     = self::safer($Method);
       return $p;
     }
   }
@@ -116,10 +122,18 @@ class UrlResolution {
     }else{
       $Method = "index";
     }
-    $p["APP"]        = $Module;
-    $p["CONTROLLER"] = $Controller;
-    $p["METHOD"]     = $Method;
+    $p["APP"]        = self::safer($Module);
+    $p["CONTROLLER"] = self::safer($Controller);
+    $p["METHOD"]     = self::safer($Method);
     return $p;
+  }
+
+  static public function safer($var){
+    $var = str_replace("." ,"" ,$var);
+    $var = str_replace("?" ,"" ,$var);
+    $var = str_replace("/" ,"" ,$var);
+    $var = str_replace("\\" ,"" ,$var);
+    return $var;
   }
 
 }

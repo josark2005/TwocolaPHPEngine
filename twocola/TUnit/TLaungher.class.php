@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.0.3.2402
+** Ver 1.0.4.0202
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -24,8 +24,6 @@ class TLaungher {
   static public function Run(){
     // 检查并进行配置
     self::ConfigChecker();
-    // 检查、修复、创建应用
-    self::GeneralConsturct();
     // 检查应用是否允许访问
     if( C("APP_RESPONSE") == false ){
       $tpl = getPresetTpl("App/Error/NoResponse");
@@ -50,22 +48,30 @@ class TLaungher {
   * @return void
   **/
   static public function ConfigChecker(){
-    // 读取全局配置
     $D = DIRECTORY_SEPARATOR;
     $conf = TConfigCore::IO();
+    // 读取全局配置
     $conf->GetConfig(".{$D}config".CONFIG_EXT);
-    $preg = preg_match("/^\.(.+$)/U" ,C("APP_PATH") ,$match);
+    // 获取真实APP路径
+    $preg = preg_match("/^\.(.+)(?:[\/|\\\])*$/U" ,C("APP_PATH") ,$match);
     if($preg != 0){
       C("APP_PATH" ,$match[1]);
     }
+    // 检查、修复、创建应用
+    self::GeneralConsturct();
     // 设置当前模块、控制器、行为
     if(URL_MODE == "0"){
-      define("APP"        ,isset($_GET['a'])&&!empty($_GET['a']) ? $_GET['a'] : C("APP_DEFAULT") );
-      define("CONTROLLER" ,isset($_GET['c'])&&!empty($_GET['c']) ? $_GET['c'] : "index" );
-      define("METHOD"     ,isset($_GET['m'])&&!empty($_GET['m']) ? $_GET['m'] : "index" );
+      define("APP"        ,UrlMode\UrlResolution::safer(isset($_GET['a'])&&!empty($_GET['a']) ? $_GET['a'] : C("APP_DEFAULT")) );
+      define("CONTROLLER" ,UrlMode\UrlResolution::safer(isset($_GET['c'])&&!empty($_GET['c']) ? $_GET['c'] : "index") );
+      define("METHOD"     ,UrlMode\UrlResolution::safer(isset($_GET['m'])&&!empty($_GET['m']) ? $_GET['m'] : "index") );
     }
     if(URL_MODE == "1"){
       UrlMode\UrlResolution::TCE(URL_MODE); //直接定义 App/Controller/Method
+    }
+    // 判断应用是否存在
+    if( !is_dir(".".C("APP_PATH").$D.C("APP")) ){
+      Template\Template::show404();
+      exit();
     }
     // OAM系统支持
     OneAsMuiltiple::OAM();
@@ -96,17 +102,17 @@ class TLaungher {
   * @return void
   **/
   static public function GeneralConsturct(){
-    // 检测默认APP是否存在不存在则创建
+    // 检测生成APP命令是否存在不存在则创建
     if(C("APP_GENERATE")){
       self::CreateApp(C("APP_GENERATE"));
     }
     // 检测默认APP是否存在
-    if(!Storage\StorageCore::FolderExist(APP_PATH."/".C("APP_DEFAULT"))){
+    if(!Storage\StorageCore::FolderExist(".".C("APP_PATH")."/".C("APP_DEFAULT"))){
       self::CreateApp(C("APP_DEFAULT"));
-      exit();
     }
     return ;
   }
+
   static private function CreateApp($AppName){
     $D = DIRECTORY_SEPARATOR;
     $CL = CLASS_EXT;
