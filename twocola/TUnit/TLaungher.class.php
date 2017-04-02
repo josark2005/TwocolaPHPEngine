@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.0.4.0202
+** Ver 1.0.4.0203
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -33,7 +33,7 @@ class TLaungher {
       exit();
     }
     // 自动检测模式
-    if( C("RMODE") == false ){
+    if( C("RMODE") == 1 ){
       // 运行应用
       App::run();
     }else{
@@ -86,11 +86,7 @@ class TLaungher {
     }
     // 模式配置检查
     if(URL_MODE==1 && !Storage\StorageCore::FileExist(PATH.DIRECTORY_SEPARATOR.".htaccess")){
-      $content = getPresetTpl("TUnit/Default_Htaccess".TPL_EXT);
-      if(!Storage\StorageCore::CreateSave(PATH.DIRECTORY_SEPARATOR.".htaccess")){
-        E("自动配置htaccess文件失败，请确认目录： ".PATH.DIRECTORY_SEPARATOR." 是否拥有读写权限！");
-        exit();
-      }
+      self::SaveFile(PATH.DIRECTORY_SEPARATOR.".htaccess" ,"TUnit/Default_Htaccess" ,1);
     }
     // 创建全局配置文件
     self::SaveFile(PATH.DIRECTORY_SEPARATOR."config".CONFIG_EXT ,"TUnit/TCEngine_Default_Config".CONFIG_EXT ,1);

@@ -11,7 +11,7 @@
 
 //----------------------------------
 // Twocola PHP Engine(TCE)   OAM系统
-// Version:                  v1.0.4.0201
+// Version:                  1.0.4.0203
 //----------------------------------
 namespace TUnit;
 class OneAsMuiltiple {
@@ -41,9 +41,9 @@ class OneAsMuiltiple {
   static public function OAM(){
     if( is_array(C("OAM"))&&!empty("OAM") ){
       self::$OAM = C("OAM");
-      self::RMODE();  // RunMode运行模式
-      // 如果RMODE正常，则不载入DBA模块
-      if( C("RMODE") == false ){
+      self::BDAPI();  // 检查是否进入API模式
+      // 如果未配置BDAPI，则不载入DBA模块
+      if( C("RMODE") == 1 ){
         self::BDA();
       }
       return true;    // 窝群启动成功
@@ -53,28 +53,23 @@ class OneAsMuiltiple {
   }
 
   /*
-  ** 支持域名绑定指定Api
+  ** 支持域名绑定指定应用Api
   ** Binding Domain and Api of App
   ** @param  void
   ** @return boolean
   */
-  static public function RMODE(){
-    // 判断是否正确配置OAM中的DAOA系统
-    if( isset(self::$OAM['RMODE'])&&!empty(self::$OAM['RMODE'])&&is_array(self::$OAM['RMODE']) ){
+  static public function BDAPI(){
+    if( isset(self::$OAM['BDAPI'])&&!empty(self::$OAM['BDAPI'])&&is_array(self::$OAM['BDAPI']) ){
       $Domain = $_SERVER['SERVER_NAME'];
-      if(  isset(self::$OAM['RMODE'][$Domain]) && !empty(self::$OAM['RMODE'][$Domain])){
-        C("APP"  ,self::$OAM['RMODE'][$Domain]);
-        C("RMODE",true);
-        return ;
+      // 判断是否配置当前域名到指定APP的Api
+      if( isset(self::$OAM['BDAPI'][$Domain]) && !empty(self::$OAM['BDAPI'][$Domain]) ){
+        C("APP"  ,self::$OAM['BDAPI'][$Domain]);
+        C("RMODE",2);
       }else{
-        C("RMODE",false);
-        return ;
+        C("RMODE",1);
       }
-    }else{
-      C("RMODE",false);
-      return ;
-
     }
+    return ;
   }
 
   /*

@@ -15,15 +15,9 @@ $config = array (
   "EMAIL_PORT"      => 25,
   "EMAIL_ADDRESS"   => "noreply@yourdomain.com",
   "EMAIL_PASSWORD"  => "password",
-  /* OAM系统设置 */
-  "OAM"             => array(
-    // 域名绑定应用
-    "BDA"           => array(
-      // domain=>app
-    ),
-    // 域名绑定应用API
-    "DBAPI"         => array(
-      // domain=>api
+  "OAM" =>  array(
+    "BDAPI" => array(
+      "tce2.off"  =>  "APP"
     ),
   ),
 );
