@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.0.4.0203
+** Ver 1.0.4.0401
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -70,7 +70,10 @@ class TLaungher {
     }
     // 判断应用是否存在
     if( !is_dir(".".C("APP_PATH").$D.C("APP")) ){
-      Template\Template::show404();
+      $tpl = getPresetTpl("App/Error/AppNotFound");
+      Template\Template::ProcessTpl($tpl);
+      $path = Template\Template::GeneralCache(false,"_Error");
+      include ( $path );
       exit();
     }
     // OAM系统支持

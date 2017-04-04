@@ -14,7 +14,7 @@
 //----------------------------------
 
 define( 'FRAMENAME'   ,"TCE引擎3"         );
-define( 'VERSION'     ,"3.2.4.0203"       );
+define( 'VERSION'     ,"3.2.4.0401"       );
 
 // error_reporting(0);
 
@@ -31,7 +31,9 @@ if( !defined("CONFIG_EXT")        ){ define("CONFIG_EXT"        ,".inc.php"    )
 if( !defined("DEFAULT_TIMEZONE")  ){ define("DEFAULT_TIMEZONE"  ,"PRC"         );     }
 if( !defined("DB_TYPE")           ){ define("DB_TYPE"           ,"mysql"       );     }
 // 支持窝群系统
-if( !defined("RMODE")             ){ define("RMODE"             ,0             );     }
+// 运行模式： 1 APP 2 API
+if( !defined("RMODE")             ){ define("RMODE"             ,1             );     }
+// 地址模式： 0兼容 2 Pathinfo
 if( !defined("URL_MODE")          ){ define("URL_MODE"          ,0             );     }
 // 基础常量
 define( 'PATH'        ,str_replace("\\",DIRECTORY_SEPARATOR,getcwd())                 );

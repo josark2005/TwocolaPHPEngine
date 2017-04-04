@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎Pathinfo模式核心类
-** Ver 1.2.4.0201
+** Ver 1.2.4.0401
 */
 namespace TUnit\UrlMode;
 class UrlResolution {
@@ -39,7 +39,19 @@ class UrlResolution {
       $suffix = str_replace(".","\.",C("APP_SUFFIX"));
       if(C("APP_SUFFIX_SAFE") == true){
         // 自动适配所有后缀
-        $pattern = "/(.+)(?:\..*)*(?:[\?].+)*$/U";
+        // 查询最后一项是否存在后缀
+        $suffix_array = explode("/",$_SERVER['REQUEST_URI']);
+        $suffix_array = end($suffix_array);
+        $suffix_array = explode("?",$suffix_array);
+        $suffix_array = $suffix_array[0];
+        $suffix_array = explode(".",$suffix_array);
+        // 判断是否存在后缀
+        if( count($suffix_array) == 1 ){
+          $real_suffix = "";
+        }else{
+          $real_suffix = end($suffix_array);
+        }
+        $pattern = "/(.+)(?:\.".$real_suffix.")*(?:[\?].+)*$/U";
       }else{
         $pattern = "/(.+)(?:".$suffix.")*(?:[\?].+)*$/U";
       }

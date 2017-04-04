@@ -11,9 +11,9 @@
   </style>
 </head>
 <body>
-  <h1>页面可能丢失了</h1>
-  <p>别忘了还有诗和远方<br />
-    <span style="color:#8e8e8e">[TwocolaPHPEngine,Donot forget life.]</span>
+  <h1>该应用不存在</h1>
+  <p>做自己。<br />
+    <span style="color:#8e8e8e">[TwocolaPHPEngine,Do what we like.]</span>
   </p>
   <small>TCE V3</small>
 </body>
