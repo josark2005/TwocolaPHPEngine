@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.0.4.0401
+** Ver 1.1.5.0101
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -26,7 +26,17 @@ class TLaungher {
     self::ConfigChecker();
     // 检查应用是否允许访问
     if( C("APP_RESPONSE") == false ){
-      $tpl = getPresetTpl("App/Error/NoResponse");
+      $path = C("TPL");
+      if( isset($path['NoResponse']) && $path['NoResponse'] != false ){
+        if( !is_file($path['NoResponse']) ){
+          Template\Template::showError("E_S01_T0","自定义模板文件不存在。");
+          return ;
+        }else{
+          $tpl = file_get_contents($path['NoResponse']);
+        }
+      }else{
+        $tpl = getPresetTpl("App/Error/NoResponse");
+      }
       Template\Template::ProcessTpl($tpl);
       $path = Template\Template::GeneralCache(false,"_Error");
       include ( $path );
@@ -70,7 +80,16 @@ class TLaungher {
     }
     // 判断应用是否存在
     if( !is_dir(".".C("APP_PATH").$D.C("APP")) ){
-      $tpl = getPresetTpl("App/Error/AppNotFound");
+      $path = C("TPL");
+      if( isset($path['AppNotFound']) && $path['AppNotFound'] != false ){
+        if( !is_file($path['AppNotFound']) ){
+          self::showError("E_S01_T2","自定义模板文件不存在。");
+        }else{
+          $tpl = file_get_contents($path['AppNotFound']);
+        }
+      }else{
+        $tpl = getPresetTpl("App/Error/AppNotFound");
+      }
       Template\Template::ProcessTpl($tpl);
       $path = Template\Template::GeneralCache(false,"_Error");
       include ( $path );

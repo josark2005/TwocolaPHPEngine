@@ -11,7 +11,7 @@
 
 //----------------------------------
 // Twocola PHP Engine(TCE)   OAM系统
-// Version:                  1.0.4.0401
+// Version:                  1.0.5.0101
 //----------------------------------
 namespace TUnit;
 class OneAsMuiltiple {
@@ -61,13 +61,12 @@ class OneAsMuiltiple {
   static public function BDAPI(){
     if( isset(self::$OAM['BDAPI'])&&!empty(self::$OAM['BDAPI'])&&is_array(self::$OAM['BDAPI']) ){
       $Domain = $_SERVER['SERVER_NAME'];
-      var_dump($Doamin);
       // 判断是否配置当前域名到指定APP的Api
       if( isset(self::$OAM['BDAPI'][$Domain]) && !empty(self::$OAM['BDAPI'][$Domain]) ){
         C("APP"  ,self::$OAM['BDAPI'][$Domain]);
         C("RMODE",2);
       }else{
-        C("RMODE",1);
+        C("RMODE",1); // 尝试切换到DBA模式
       }
     }
     return ;

@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.0.4.0201
+** Ver 1.1.5.0101
 */
 namespace TUnit\Template;
 class Template {
@@ -35,22 +35,33 @@ class Template {
   */
   static public function show($title = false){
     $D = DIRECTORY_SEPARATOR;
-    // 判断是否设置禁止访问
-    // ==更新== ==支持自定义错误模板==
-    if( C("APP_RESPONSE") == false ){
-      $content = getPresetTpl("App/Error/NoResponse");
-    }else if( !is_file(APP_PATH.$D.C("APP").$D."View".$D.C("CONTROLLER").$D.C("METHOD").C("TPL_EXT")) ){
-      self::showError("E_S01_P0","模板文件不存在。");
+    // 用户访问模板地址
+    $tpl = APP_PATH.$D.C("APP").$D."View".$D.C("CONTROLLER").$D.C("METHOD").C("TPL_EXT");
+    // 检查是否存对应模板文件
+    if( !is_file($tpl) ){
+      $path = C("TPL");
+      if( isset($path['PageNotFound']) && $path['PageNotFound'] != false ){
+        if( !is_file($path['PageNotFound']) ){
+          self::showError("E_S01_T1","自定义模板文件不存在。");
+        }else{
+          $tpl = file_get_contents($path['PageNotFound']);
+          self::ProcessTpl($tpl);
+          include ( self::GeneralCache(false,"_Error") );
+        }
+      }else{
+        self::showError("E_S01_P0","模板文件不存在。");
+      }
       return ;
     }else{
-      $content = file_get_contents(APP_PATH.$D.C("APP").$D."View".$D.C("CONTROLLER").$D.C("METHOD").C("TPL_EXT"));
+      // 载入用户访问模板文件
+      $content = file_get_contents($tpl);
+      if( $title!= false ){
+        self::assign("TITLE",$title);   // 传递标题
+      }
+      self::ProcessTpl($content);       // 处理并临时存储模板文件
+      include( self::GeneralCache() );  // 生成缓存并显示页面
+      return ;
     }
-    if( $title!= false ){
-      self::assign("TITLE",$title);   // 传递标题
-    }
-    self::ProcessTpl($content);       // 处理并临时存储模板文件
-    include( self::GeneralCache() );  // 生成缓存并显示页面
-    return ;
   }
 
   /*
@@ -69,13 +80,23 @@ class Template {
       self::assign("errCode",$errCode);                  // 传递变量
       self::assign("error",$reason);
       $content = getPresetTpl("TUnit/Error/Default");    // 获取模板
-      $content = self::ProcessTpl($content);             // 处理模板
-      $content = self::GeneralCache(false,"_".$errCode); // 生成缓存并获取路径
-      include($content);                                   // 展示页面
-      return ;
     }else{
-      self::show404();                                   // 展示错误页面
+      // 默认应用错误
+      $path = C("TPL");
+      if( isset($path['Error']) && $path['Error'] != false ){
+        if( !is_file($path['Error']) ){
+          self::showError("E_S01_T3","自定义模板文件不存在。");
+        }else{
+          $tpl = file_get_contents($path['Error']);
+        }
+      }else{
+        $tpl = getPresetTpl("TUnit/Error/ErrorException_Secure");
+      }
     }
+    $content = self::ProcessTpl($content);             // 处理模板
+    $content = self::GeneralCache(false,"_".$errCode); // 生成缓存并获取路径
+    include($content);                                 // 展示页面
+    return ;
   }
 
   static public function show404(){
@@ -134,8 +155,10 @@ class Template {
   * @return void
   **/
   static public function ProcessTpl($content){
+    $content = self::ProtectContent($content); // 非解析区块
     $content = self::ClearComment($content);   // 清除注释
     $content = self::IncludeTpl($content);     // 引用模板
+    $content = self::ProtectContent($content); // 非解析区块
     $content = self::ClearComment($content);   // 清除模板注释
     $content = self::Variable($content);       // 模板标签集合处理
     $content = self::MagicTag($content);       // 魔术标签
@@ -143,7 +166,7 @@ class Template {
     $content = self::ConReference($content);   // 常量引用
     $content = self::SVarReference($content);  // 特殊变量引用
     $content = self::CreateURL($content);      // 生成链接
-    $content = self::$assign.$content;   // 传递变量并临时存储模板
+    $content = self::$assign.$content;         // 传递变量并临时存储模板
     self::$assign  = "";                       // 清空变量传递临时存储区
     self::$Content = $content;
     return ;
@@ -226,9 +249,6 @@ class Template {
    * @return string  $content
   **/
   static public function Tag_Empty($content){
-    // 出错修复区
-    /* $content = str_replace("</empty>","<?php endif; ?>",$content);
-    $content = str_replace("<else />","<?php else: ?>",$content); */
     $content = str_ireplace("</empty>","<?php endif; ?>",$content);
     $content = str_ireplace("<else />","<?php else: ?>",$content);
     $pattern = "/<empty[\s]*name=['|\"](.+)['|\"][\s]*>/iUm";
@@ -247,8 +267,6 @@ class Template {
    * @return string  $content
   **/
   static public function Tag_NotEmpty($content){
-    // 出错修复区
-    /* $content = str_replace("</notempty>","<?php endif; ?>",$content); */
     $content = str_ireplace("</notempty>","<?php endif; ?>",$content);
     $pattern = "/<notempty[\s]*name=['|\"](.+)['|\"][\s]*>/iUm";
     $preg = preg_match_all($pattern,$content,$matches);
@@ -266,8 +284,6 @@ class Template {
    * @return string  $content
   **/
   static public function Tag_If($content){
-    // 出错修复区
-    /* $content = str_replace("</if>","<?php endif; ?>",$content); */
     $content = str_ireplace("</if>","<?php endif; ?>",$content);
     $pattern = "/<if[\s]*condition=['|\"](.+)['|\"][\s]*>/iUm";
     $preg = preg_match_all($pattern,$content,$matches_font);
@@ -490,6 +506,36 @@ class Template {
         $content = str_replace($origin,U($paths),$content);
       }
     }
+    return $content;
+  }
+
+  /**
+  * 非解析区块
+  * @param  string $content 内容
+  * @return string $content 内容
+  **/
+  static public function ProtectContent($content){
+    $pattern = "/<Protected>([\s\S]*)<\/Protected>/iU";
+    $preg = preg_match_all($pattern,$content,$matches);
+    if($preg!=0){
+      for($i=0;$i<count($matches[0]);$i++){
+        $origin = $matches[0][$i];
+        $text = $matches[1][$i];
+        $text = self::Escaped($text); //转义
+        $content = str_replace($origin,$text,$content);
+      }
+    }
+    return $content;
+  }
+
+  /**
+  * 特殊字符转义
+  * @param  string $content 内容
+  * @return string $content 内容
+  **/
+  static public function Escaped($content){
+    $content = str_replace("<","&lt;",$content);
+    $content = str_replace(">","&gt;",$content);
     return $content;
   }
 
