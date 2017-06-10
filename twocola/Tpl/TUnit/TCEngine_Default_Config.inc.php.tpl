@@ -1,7 +1,7 @@
 <?php
 /**
  * TCE引擎全局设置
- * Version: 1.4.6.1001
+ * Version: 1.4.6.1002
  * Notice: APP_GENERATE可使用 APP_DEFAULT 代替 (默认APP不存在时会自动创建)
 **/
 $config = array (
@@ -35,6 +35,7 @@ $config = array (
   /* Panel设置 */
   "PANEL"              => false,
   "PANEL_PATH"         => "./twocola/Panel",  // 官方Panel位置
+  "PANEL_NAME"         => "CatBoy",           // 官方适配Panel
   "PANEL_PORTAL"       => 1,
   "PANEL_PORTAL_KEY"   => "panel",
   "PANEL_PORTAL_VALUE" => "tce",
