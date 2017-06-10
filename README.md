@@ -14,6 +14,20 @@
 
 ###更新日志
 
+#####Ver 3.4.6.1001 [优化Debug升级]
+
+> Notice:3.3版本可进行平滑升级（直接替换库文件夹即可）。
+
+[修复] `全局设置项`将域名与Api模式绑定后不生效的问题。
+
+- > 详细请见 [Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/350310)
+
+[修复] `数据库连接`配置数据库相关设置后使用M()等函数无法连接。
+
+- > 详情请见 [Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/347620)
+
+---
+
 #####Ver 3.3.5.0101 [优化Debug升级]
 
 > Notice:3.2版本可进行平滑升级（直接替换库文件夹即可）。

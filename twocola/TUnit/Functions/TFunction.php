@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心Funciotn
-** Ver 1.2.3.2701
+** Ver 1.2.5.2801
 */
 /* C函数 读取配置 */
 function C($var="none",$content=""){
@@ -28,12 +28,12 @@ function C($var="none",$content=""){
 }
 /*M函数（连接数据库）*/
 function M($table_name){
-  $db = TUnit\Database\DatabaseLaungher::run(C("APP_DB_HOST"),C("APP_DB_PORT"),C("APP_DB_NAME"),C("APP_DB_USERNAME"),C("APP_DB_PASSWORD"));
+  $db = TUnit\Database\DatabaseLaungher::run(C("DB_HOST"),C("DB_PORT"),C("DB_NAME"),C("DB_USERNAME"),C("DB_PASSWORD"));
   return $db->table(C("DB_PREFIX").$table_name);
 }
 /*Mx函数（多表数据库）*/
 function Mx($table_name,$prefix=false){
-  $db = TUnit\Database\DatabaseLaungher::run(C("APP_DB_HOST"),C("APP_DB_PORT"),C("APP_DB_NAME"),C("APP_DB_USERNAME"),C("APP_DB_PASSWORD"));
+  $db = TUnit\Database\DatabaseLaungher::run(C("DB_HOST"),C("DB_PORT"),C("DB_NAME"),C("DB_USERNAME"),C("DB_PASSWORD"));
   $db->Prefix = ($prefix===false) ? C("DB_PREFIX") : $prefix;
   return $db->table($table_name,true);
 }

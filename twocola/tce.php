@@ -14,9 +14,9 @@
 //----------------------------------
 
 define( 'FRAMENAME'   ,"TCE引擎3"         );
-define( 'VERSION'     ,"3.3.5.0101"       );
+define( 'VERSION'     ,"3.4.6.1001"       );
 
-// error_reporting(0);
+error_reporting(0);
 
 // 检查配置
 if( !defined("EXT")               ){ define("EXT"               ,".php"        );     }
