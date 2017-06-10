@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心引导类
-** Ver 1.1.5.0101
+** Ver 1.1.5.2201
 */
 namespace TUnit;
 class TCoreUnit {
@@ -26,15 +26,17 @@ class TCoreUnit {
       set_error_handler("TUnit\TCoreUnit::appError");
       set_exception_handler("TUnit\TCoreUnit::appException");
     }
-    //设置时区
-    date_default_timezone_set(C("DEFAULT_TIMEZONE"));
     // 运行
-    session_start();
-    ob_start();
-    TLaungher::Run();
+    session_start();      // 启用session
+    ob_start();           // 开启缓存
+    TLaungher::Run();     // 运行框架驱动
   }
 
-  /* autoload */
+  /**
+   * Autoload
+   * @param  class string
+   * @return void
+  */
   static public function autoload($class){
     $class = DIRECTORY_SEPARATOR.$class;
     $class = str_replace("\\",DIRECTORY_SEPARATOR,$class);
@@ -56,8 +58,7 @@ class TCoreUnit {
    * 异常处理
    * @access public
    * @param mixed $e 异常对象
-   */
-  //==================================
+  **/
   static public function appException($e) {
       $error = array();
       $error['message']   =   $e->getMessage();

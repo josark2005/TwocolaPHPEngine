@@ -12,9 +12,9 @@
 </head>
 <body>
   <h1>该应用不存在</h1>
-  <p>做自己。<br />
-    <span style="color:#8e8e8e">[TwocolaPHPEngine,Do what we like.]</span>
+  <p>简且易用。<br />
+    <span style='color:#8e8e8e'>[Simple and Easy to use.]</span>
   </p>
-  <small>TCE V3</small>
+  <small>Designed by Jokin.</small>
 </body>
 </html>

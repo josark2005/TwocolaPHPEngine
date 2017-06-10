@@ -1,4 +1,6 @@
-#TCE框架引擎
+# TCE框架引擎
+
+TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PHP MVC开发模式的框架，独有的“窝群”系统解决了服务器的一些限制。
 
 `作者: Jokin`
 
@@ -6,162 +8,88 @@
 
 ---
 
+[![GitHub Tag](https://img.shields.io/github/tag/jokin1999/TwocolaPHPEngine.svg?style=flat-square)](https://raw.githubusercontent.com/jokin1999/TwocolaPHPEngine/master)
+
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat-square)](https://raw.githubusercontent.com/jokin1999/TwocolaPHPEngine/master/LICENSE)
+
 [Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/git)
 
 [Github](https://github.com/jokin1999/TwocolaPHPEngine)
 
 ---
 
-###更新日志
+> Notice:自带入口文件（`index.php`）仅供参考，`版本间可能存在不一致的配置`，请自行参考手册进行调整。升级时请勿直接解压替换，一般情况只需替换库文件夹（默认为`twocola`）即可完成升级，少数情况下需要使用`Panel`完善结构（为了减少框架判断次数优化运行效率）。
 
-#####Ver 3.3.5.0101 [优化Debug升级]
-
-> Notice:3.2版本可进行平滑升级（直接替换库文件夹即可）。
-
-[新增 | 设置] `自定义`应用拒绝访问页面。
-
-[新增] `自定义`页面不存在错误页面。
-
-[新增] `自定义`应用不存在错误页面。
-
-[新增] `自定义`系统错误页面。
-
-[新增] 模板标签`Protected`，可以提示框架不需要解析该区块，该标签不区分大小写。
-
-[删除] `Tpl`目录下废弃的模板文件，减少框架占用空间。
-
-[删除] 设置项`邮件系统设置`。
-
-[删除] `Vender`目录下的`PHPMailer`扩展。
-
-[更新] `Vender`目录下的`Qiniu`扩展。
-
-[优化] 删除在使用`模板方法`show()时判断其是否允许访问的流程。
-
-[修复] `窝群`系统中，特殊情况下会出现`var_dump`结果。
+> `3.0`及以下版本不提供更新支持，请勿直接进行升级。
 
 ---
 
-#####Ver 3.2.4.0401 [Bug修复]
+### 更新日志
 
-> Notice:3.1+版本可进行平滑升级（直接替换库文件夹即可）。
+#####  TCE `4.0.6.1001` | Panel `1.0.5.1901`
 
-[修复] 开启`自动适配后缀`模式后，文件夹中出现`.`时后缀名判断错误的Bug。
+> `大规模升级` | `v3.2及以上版本`可进行`半平滑升级`（直接替换库文件夹即可）。
 
-[修改] 访问不存在的应用时，默认提示改为“该应用不存在”。
+> 本次升级新增多个函数与相关数据存放点，需要配合新功能`Panel`完善结构。
 
----
+[新增 | 流程] --提供升级模块放置目录并自动进行载入。
 
-#####Ver 3.2.4.0203 [OAM升级]
+[新增 | 设置] --`自动升级`。
 
-> Notice:3.1+版本可进行平滑升级（直接替换库文件夹即可）。
+[优化] `Api`模式下，访问失败提示404相关信息。
 
-[升级] OAM系统升级为1.0.4.0203，详情参考`readme`文件夹中OAM的说明文档。
+[优化 | 流程] 应用不存在的情况下，错误页缓存将写入默认应用的缓存目录中。
 
-[适配] OAM系统。
+[修复 | 设置] `默认时区`在设置文件中定义无效的Bug。(*结构逻辑优化*)
 
-> 本次适配修改内容：OAM系统在全局设置下的配置项RMODE修改为BDAPI，并且此版本框架默认生成的全局配置文件中包含了OAM系统的设置项。
+[优化 | 设置] `自定义`应用拒绝访问页面，支持类U函数定义与模板解析。(*结构逻辑优化*)
 
----
+[优化 | 设置] `自定义`页面不存在错误页面，支持类U函数定义与模板解析。(*结构逻辑优化*)
 
-#####Ver 3.2.4.0201 [漏洞修复]
+[优化 | 设置] `自定义`应用不存在错误页面，支持类U函数定义与模板解析。(*结构逻辑优化*)
 
-> Notice:3.1+版本可进行平滑升级（直接替换库文件夹即可）。
+- > （Pathinfo路径）`应用不存在`页面在全局定义时为`APP_PATH`路径下的相对应的应用内的页面。定义`Panel`模块需要在`Panel`应用设置中单独定义。
 
-[新增] `模板引擎`show404方法，用于显示404页面。
+[优化 | 设置] `自定义`系统错误页面，支持类U函数定义与模板解析。(*结构逻辑优化*)
 
-[新增] `系统设置`中`APP_SUFFIX_SAFE`设置为`true`时将适配所有后缀。
+[新增 | *Beta*] `SQLite3`数据库。
 
-[修复] `URL解析`引擎在开启后缀名后地址中不出现后缀报错的情况并在APP、CONTROLLER、METHOD中不允许出现`.`、`/`、"\\"符号，如果出现，自行删除。
+[修复] `全局设置项`将域名与Api模式绑定后不生效的问题。
 
-[修复] 框架中的应用首次运行（创建）时需要进行1次刷新才能使用的问题。
+- > 详细请见
+[Github](https://github.com/jokin1999/TwocolaPHPEngine/issues/2)
+|
+[Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/350310)
 
----
+[修复] `数据库连接`配置数据库相关设置后使用M()等函数无法连接。
 
-#####Ver 3.2.3.2701 [系统优化]
+- > 详情请见
+[Github](https://github.com/jokin1999/TwocolaPHPEngine/issues/1)
+|
+[Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/347620)
 
-> Notice:3.1+版本可进行平滑升级（直接替换库文件夹即可）。
+[修复] `启动器`启动时应用不存在情况下载入页面出错的Bug。
 
-[优化] `报错系统`细节优化。
+[修复] `模板引擎`assign生成双倍信息的Bug。
 
-[增加] 增加`开发模式`，将APP_DEBUG设置为2即开启。`开发模式`启用原生的报错机制，可以查看一些调试模式看不到的错误。
+[修复] `自定义后缀`设置后模板函数生成出现问题的Bug。
 
----
+[优化] `读取设置（函数C）`使用非大写字母且读取内容为常量时返回false的问题。
 
-#####Ver 3.2.3.2402 [漏洞修复]
+[新增] `View`目录下Controller对应文件夹中的`css`、`js`、`img`文件夹，可直接使用模板函数引入相应文件。
 
-> Notice:3.1+版本可进行平滑升级（直接替换库文件夹即可）。
+[支持 | `Panel`] `启动器`，支持`Panel`模式。
 
-[修复] `URL解析引擎`在Pathinfo模式下非utf-8编码可能解析错误的Bug。（更新位置:TUnit/UrlMode/UrlResolution.class.php Line~39）
+[支持 | `Panel`] `模板引擎`，支持`Panel`模式（多应用目录）运行。
 
-[修复] `模板引擎`魔术变量生成无效地址的Bug。
+[新增] `Panel`相关设置项。
 
----
+[新增] 应用相关文件夹`Database`用于存储数据库文件。
 
-#####Ver 3.2.3.2401 [性能优化漏洞修复]
+[新增] 应用相关文件夹`Upload`用于存储被上传的文件。（暂无相关函数，后续会完善）
 
-> Notice:3.1+版本可进行平滑升级（直接替换库文件夹即可）。
+[新增 | BETA] 面板开发模式。
 
-[优化] `模板引擎`不再生成GC后缀缓存文件，减少服务器压力。（更新位置:TUnit/Template/Template.class.php Line~341）
-
-[优化] `系统模板`默认使用`.html`为后缀。（更新位置:Tpl/TUnit/TCEngine_Default_Config.inc.php.tpl Line~9）
-
-[修复] `模板引擎`无法使用`模板引用`方法。（更新位置:TUnit/Template/Template.class.php Line~424）
-
-[修复] `URL解析引擎`在Pathinfo模式下解析错误的Bug。（更新位置:TUnit/UrlMode/UrlResolution.class.php Line~39）
-
-[修复] `核心Function`U函数生成错误的Bug。（更新位置:TUnit/Functions/TFunction.php Line~59）
-
----
-
-#####Ver 3.2.3.2201 [重要漏洞修复]
-
-> Notice:3.1+版本可进行平滑升级（直接替换库文件夹即可）。
-
-[项目 | 修改] `框架版本号`框架版本号组成：主版本.次版本.修改月份.修改日期修改批次
-
-[修复] `模板引擎`无法解析引入的模板文件。（更新位置:TUnit/Template/Template.class.php）
-
-[修复] `路径生成器`（U函数）生成错误的问题。（更新位置:TUnit/Functions/TFcuntion.php  Line~37）
-
-[修复] `系统默认全局设置模板`格式错误问题。（更新位置:Tpl/TUnit/TCEngine_Default_Config.inc.php.tpl Line~9）
-
----
-
-#####Ver 3.1 [大规模升级]
-
-> **Notice:框架使用全新架构，3.0及以下版本不可直接进行升级。**
-
-[优化] 优化框架运行流程，框架所需类库全面实行懒加载。
-
-[优化] 优化模板引擎，模板标签不再区分大小写。
-
-[优化] 优化`路径解析引擎`，简化解析流程，增加运行效率。
-
-[修改 | 重要] 设置项`SYSTEM_DEFAULT_MODULE`在全局范围内修改为`APP_DEFAULT`。
-
-[修改 | 重要] 设置项`APP_MODULE`在全局范围内修改为`APP_GENERATE`。
-
-[完善] `报错系统`功能。
-
-[增加] `模板引擎`新增模板自定义魔法变量方法。
-
-[优化] `模板引擎`不区分模板（魔法）标签大小写。
-
-[优化] 对部分代码进行规范化，未完成规范的部分将在后续版本进行修改及优化。
-
-[增加 | 优化] `OneAsMuiltiple`（OAM/窝群）功能。
-
----
-
-#####Ver 3.0 [优化升级]
-
-1、[修复] 设置项`APP_API_PARA`设置为空时，无法进入API模式的BUG。
-
-2、[屏蔽] `SUBDOMAIN_BINDING`功能，重新启用可以在twocola目录下Layer文件夹中的PathInfo.php解除代码屏蔽。
-
-3、[增加 | 概念] `框架自主升级系统`功能，可将升级文件置入服务器中，根据提示进行自动框架升级（本次仅提供升级接口，未内置升级文件）。
-
-4、[增加] `报错系统`功能，使框架拥有完整的报错机制。
+[删除] `Ver 3.3`以及之前的更新日志。
 
 ---

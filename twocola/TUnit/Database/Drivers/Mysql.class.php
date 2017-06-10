@@ -1,8 +1,8 @@
 <?php
 // +----------------------------------------------------------------------
-// | Twocola PHP Engine [ More Teamwork ]
+// | Twocola PHP Engine [ DO IT　EASY ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2016-2017 Twocola STudio All rights reserved.
+// | Copyright (c) 2016-2017 Twocola Studio All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -27,13 +27,12 @@ class Mysql{
 	protected $sql_filter = false;
 	public $errno = 0;
 	public $error = "";
-	public function __construct($host,$username,$password,$dbname,$port,$charset="utf8"){
+	public function __construct($host,$username,$password,$dbname,$port=3306,$charset="utf8"){
 		$this->Database = @new mysqli($host,$username,$password,$dbname,$port);
 		//判断是否连接成功
 		if($this->Database->connect_errno){
 			$this->errno = $this->Database->connect_errno;
 			$this->error = $this->Database->connect_error;
-			$this->Database = false;
 			return false;	//连接失败
 		}else{
 			$this->Database->set_charset($charset);

@@ -3,7 +3,7 @@ namespace Api;
 use TUnit\TJson;
 class index extends TJson{
   /*
-  ** 默认首个Api方法
+  ** 首个Api方法
   ** @param  void
   ** @return void
   */

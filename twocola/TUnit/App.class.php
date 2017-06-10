@@ -1,8 +1,8 @@
 <?php
 // +----------------------------------------------------------------------
-// | Twocola PHP Engine [ More Teamwork ]
+// | Twocola PHP Engine [ DO IT　EASY ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2016-2017 Twocola STudio All rights reserved.
+// | Copyright (c) 2016-2017 Twocola Studio All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -10,15 +10,15 @@
 // +----------------------------------------------------------------------
 /*
 ** APP核心类
-** Version: 1.0.4.0201
+** Version: 1.0.5.2801
 */
 namespace TUnit;
 class App {
-  /*
-  ** 运行应用
-  ** @param  void
-  ** @return void
-  */
+  /**
+   * 运行应用
+   * @param  void
+   * @return void
+  **/
   static public function run(){
     $APP        =  C("APP");
     $CONTROLLER =  C("CONTROLLER");
@@ -38,12 +38,11 @@ class App {
       if(method_exists($template,C("METHOD"))){
         $template->$METHOD();
       }else{
-        Template\Template::showError("E_S01_C2","相关类中的方法丢失。");
+        Template\Template::show404();
         exit();
       }
     }else{
-      // 提示错误页面
-      Template\Template::showError("E_S01_C1","相关类丢失。");
+      Template\Template::show404();
       exit();
     }
   }

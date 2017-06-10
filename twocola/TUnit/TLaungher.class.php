@@ -1,8 +1,8 @@
 <?php
 // +----------------------------------------------------------------------
-// | Twocola PHP Engine [ More Teamwork ]
+// | Twocola PHP Engine [ DO IT　EASY ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2016-2017 Twocola STudio All rights reserved.
+// | Copyright (c) 2016-2017 Twocola Studio All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.1.5.0101
+** Ver 1.1.6.0901
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -28,18 +28,19 @@ class TLaungher {
     if( C("APP_RESPONSE") == false ){
       $path = C("TPL");
       if( isset($path['NoResponse']) && $path['NoResponse'] != false ){
-        if( !is_file($path['NoResponse']) ){
+        $file = getUserTpl($path['NoResponse']);
+        if( $file == false ){
           Template\Template::showError("E_S01_T0","自定义模板文件不存在。");
           return ;
         }else{
-          $tpl = file_get_contents($path['NoResponse']);
+          include $file;
         }
       }else{
         $tpl = getPresetTpl("App/Error/NoResponse");
+        Template\Template::ProcessTpl($tpl);
+        $path = Template\Template::GeneralCache(false,"_Error");
+        include $path;
       }
-      Template\Template::ProcessTpl($tpl);
-      $path = Template\Template::GeneralCache(false,"_Error");
-      include ( $path );
       exit();
     }
     // 自动检测模式
@@ -61,7 +62,9 @@ class TLaungher {
     $D = DIRECTORY_SEPARATOR;
     $conf = TConfigCore::IO();
     // 读取全局配置
-    $conf->GetConfig(".{$D}config".CONFIG_EXT);
+    $conf->GetConfig( ".{$D}config".C("CONFIG_EXT") );
+    // Panel驱动
+    Drivers\Panel::driver();
     // 获取真实APP路径
     $preg = preg_match("/^\.(.+)(?:[\/|\\\])*$/U" ,C("APP_PATH") ,$match);
     if($preg != 0){
@@ -70,35 +73,58 @@ class TLaungher {
     // 检查、修复、创建应用
     self::GeneralConsturct();
     // 设置当前模块、控制器、行为
-    if(URL_MODE == "0"){
+    if(C("URL_MODE") == "0"){
       define("APP"        ,UrlMode\UrlResolution::safer(isset($_GET['a'])&&!empty($_GET['a']) ? $_GET['a'] : C("APP_DEFAULT")) );
       define("CONTROLLER" ,UrlMode\UrlResolution::safer(isset($_GET['c'])&&!empty($_GET['c']) ? $_GET['c'] : "index") );
       define("METHOD"     ,UrlMode\UrlResolution::safer(isset($_GET['m'])&&!empty($_GET['m']) ? $_GET['m'] : "index") );
     }
-    if(URL_MODE == "1"){
-      UrlMode\UrlResolution::TCE(URL_MODE); //直接定义 App/Controller/Method
+    if(C("URL_MODE") == "1"){
+      UrlMode\UrlResolution::TCE(); // 直接定义 App/Controller/Method
     }
     // 判断应用是否存在
     if( !is_dir(".".C("APP_PATH").$D.C("APP")) ){
-      $path = C("TPL");
-      if( isset($path['AppNotFound']) && $path['AppNotFound'] != false ){
-        if( !is_file($path['AppNotFound']) ){
-          self::showError("E_S01_T2","自定义模板文件不存在。");
+      // 判断是否为Panel模式
+      if( C("IS_PANEL") == true ){
+        // 读取Panel配置
+        $conf->GetConfig(".".C("APP_PATH").$D.C("APP").$D."config".CONFIG_EXT);
+        $path = C("TPL");
+        if( isset($path['AppNotFound']) && $path['AppNotFound'] != false ){
+          $file = getUserTpl($path['AppNotFound']);
+          if( $file == false ){
+            Template\Template::showError("E_S01_T2","自定义模板文件不存在。");
+          }else{
+            include $file;
+          }
         }else{
-          $tpl = file_get_contents($path['AppNotFound']);
+          $tpl = getPresetTpl("App/Error/AppNotFound");
+          Template\Template::ProcessTpl($tpl);
+          $path = Template\Template::GeneralCache(false,"_APP_NOT_FOUND");
+          include $path;
         }
       }else{
-        $tpl = getPresetTpl("App/Error/AppNotFound");
+        $path = C("TPL");
+        if( isset($path['AppNotFound']) && $path['AppNotFound'] != false ){
+          $file = getUserTpl($path['AppNotFound']);
+          if( $file == false ){
+            Template\Template::showError("E_S01_T2","自定义模板文件不存在。");
+          }else{
+            include $file;
+          }
+        }else{
+          $tpl = getPresetTpl("App/Error/AppNotFound");
+          Template\Template::ProcessTpl($tpl);
+          $path = Template\Template::GeneralCache(false,"_APP_NOT_FOUND");
+          include $path;
+        }
       }
-      Template\Template::ProcessTpl($tpl);
-      $path = Template\Template::GeneralCache(false,"_Error");
-      include ( $path );
       exit();
     }
     // OAM系统支持
     OneAsMuiltiple::OAM();
     // 读取应用配置
-    $conf->GetConfig(APP_PATH.$D.C("APP").$D."config".CONFIG_EXT);
+    $conf->GetConfig(".".C("APP_PATH").$D.C("APP").$D."config".CONFIG_EXT);
+    // 设置默认时区
+    date_default_timezone_set(C("DEFAULT_TIMEZONE"));
     // 检查其余配置
     if(URL_MODE != "0"){
       if( !C("APP_SUFFIX") ){  C("APP_SUFFIX","");   }
@@ -135,30 +161,38 @@ class TLaungher {
     $D = DIRECTORY_SEPARATOR;
     $CL = CLASS_EXT;
     $CO = CONFIG_EXT;
+    $APP_PATH = ".".C("APP_PATH");
     // Application
-    self::CreateFolder(APP_PATH);
-    self::CreateFolder(APP_PATH.$D.$AppName);
+    self::CreateFolder( $APP_PATH );
+    self::CreateFolder( $APP_PATH .$D.$AppName);
     // Api
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."Api");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Api");
+    // Database
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Database");
+    // Upload
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Upload");
     // Runtime
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."Runtime");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."Runtime".$D."Cache");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."Runtime".$D."Logs");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Runtime");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Runtime".$D."Cache");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Runtime".$D."Logs");
     // Controller
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."Controller");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."Controller".$D."Common");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."Controller".$D."Behavior");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."Controller".$D."Displayer");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Controller");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Controller".$D."Common");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Controller".$D."Behavior");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."Controller".$D."Displayer");
     // View
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."View");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."View".$D."PUBLIC");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."View".$D."index");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."View".$D."PUBLIC".$D."html");
-    self::CreateFolder(APP_PATH.$D.$AppName.$D."View".$D."PUBLIC".$D."static");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."css");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."js");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."img");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC".$D."html");
+    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC".$D."static");
     // Files
-    $Controller = APP_PATH.$D.$AppName.$D."Controller".$D;
-    self::SaveFile(APP_PATH.$D.$AppName.$D."config".$CO            ,"App/App_Default_Config{$CO}"                    ,1 ,$AppName);
-    self::SaveFile(APP_PATH.$D.$AppName.$D."Api".$D."index".$CL    ,"App/App_Default_Api{$CL}"                       ,1 ,$AppName);
+    $Controller =   $APP_PATH .$D.$AppName.$D."Controller".$D;
+    self::SaveFile( $APP_PATH .$D.$AppName.$D."config".$CO            ,"App/App_Default_Config{$CO}"                    ,1 ,$AppName);
+    self::SaveFile( $APP_PATH .$D.$AppName.$D."Api".$D."index".$CL    ,"App/App_Default_Api{$CL}"                       ,1 ,$AppName);
     self::SaveFile($Controller."Common".$D."BehaviorCommon".$CL    ,"App/Controller/App_Default_BehaviorCommon{$CL}" ,1 ,$AppName);
     self::SaveFile($Controller."Behavior".$D."indexBehavior".$CL   ,"App/Controller/App_Default_Behavior{$CL}"       ,1 ,$AppName);
     self::SaveFile($Controller."Displayer".$D."indexDisplayer".$CL ,"App/Controller/App_Default_Displayer{$CL}"      ,1 ,$AppName);

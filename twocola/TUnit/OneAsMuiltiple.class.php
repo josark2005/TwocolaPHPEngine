@@ -1,8 +1,8 @@
 <?php
 // +----------------------------------------------------------------------
-// | Twocola PHP Engine [ More Teamwork ]
+// | Twocola PHP Engine [ DO IT　EASY ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2016-2017 Twocola STudio All rights reserved.
+// | Copyright (c) 2016-2017 Twocola Studio All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -11,7 +11,7 @@
 
 //----------------------------------
 // Twocola PHP Engine(TCE)   OAM系统
-// Version:                  1.0.5.0101
+// Version:                  1.0.6.1001
 //----------------------------------
 namespace TUnit;
 class OneAsMuiltiple {
@@ -59,7 +59,7 @@ class OneAsMuiltiple {
   ** @return boolean
   */
   static public function BDAPI(){
-    if( isset(self::$OAM['BDAPI'])&&!empty(self::$OAM['BDAPI'])&&is_array(self::$OAM['BDAPI']) ){
+    if( isset(self::$OAM['BDAPI']) && !empty(self::$OAM['BDAPI']) && is_array(self::$OAM['BDAPI']) ){
       $Domain = $_SERVER['SERVER_NAME'];
       // 判断是否配置当前域名到指定APP的Api
       if( isset(self::$OAM['BDAPI'][$Domain]) && !empty(self::$OAM['BDAPI'][$Domain]) ){

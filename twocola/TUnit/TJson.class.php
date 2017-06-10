@@ -1,8 +1,8 @@
 <?php
 // +----------------------------------------------------------------------
-// | Twocola PHP Engine [ More Teamwork ]
+// | Twocola PHP Engine [ DO IT　EASY ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2016-2017 Twocola STudio All rights reserved.
+// | Copyright (c) 2016-2017 Twocola Studio All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------

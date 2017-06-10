@@ -1,16 +1,16 @@
 <?php
 // +----------------------------------------------------------------------
-// | Twocola PHP Engine [ More Teamwork ]
+// | Twocola PHP Engine [ DO IT　EASY ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2016-2017 Twocola STudio All rights reserved.
+// | Copyright (c) 2016-2017 Twocola Studio All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
 /*
-** TCE引擎Pathinfo模式核心类
-** Ver 1.2.4.0401
+** TCE引擎路径解析核心类
+** Ver 1.2.5.2901
 */
 namespace TUnit\UrlMode;
 class UrlResolution {
@@ -19,14 +19,19 @@ class UrlResolution {
   ** @param  int   URL_MODE  URL模式
   ** @return array p
   */
-  static public function TCE($URL_MODE){
-    $p = self::Resolution($URL_MODE);
+  static public function TCE(){
+    $p = self::Resolution();
     define( "APP"           ,self::safer($p["APP"])         );
     define( "CONTROLLER"    ,self::safer($p["CONTROLLER"])  );
     define( "METHOD"        ,self::safer($p["METHOD"])      );
     return ;
   }
-  static public function Resolution($URL_MODE){
+  /**
+   * 路径解析
+   * @param  void
+   * @return void
+  **/
+  static public function Resolution(){
     //判断是否需要PATHINFO
     if( !isset($_SERVER['PATH_INFO']) ){
       //全部使用默认配置
@@ -96,6 +101,11 @@ class UrlResolution {
       return $p;
     }
   }
+  /**
+   * 路径解析
+   * @param  void
+   * @return void
+  **/
   static public function pathResolution($path){
     //对PATHINFO进行解析
     $pathinfo = $path;

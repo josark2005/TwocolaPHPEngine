@@ -1,9 +1,9 @@
 <?php
-/*
-** TCE引擎全局设置
-** Version: 1.3.5.0103
-** Notice: APP_GENERATE可使用 APP_DEFAULT 代替 (默认APP不存在时会自动创建)
-*/
+/**
+ * TCE引擎全局设置
+ * Version: 1.4.6.1001
+ * Notice: APP_GENERATE可使用 APP_DEFAULT 代替 (默认APP不存在时会自动创建)
+**/
 $config = array (
   /* 系统设置 */
   // "APP_GENERATE"    => "APP",  // 用于创建APP
@@ -18,17 +18,25 @@ $config = array (
       // domain=>app
     ),
     // 域名绑定应用API
-    "DBAPI"         => array(
+    "BDAPI"         => array(
       // domain=>api
     ),
   ),
 
   /* 全局模板设置 */
+  // 此处设置请使用相对于入口文件的路径
   "TPL"             => array(
     "Error"         => false,     // 非调试状态错误提示页
     "NoResponse"    => false,
     "AppNotFound"   => false,
     "PageNotFound"  => false,
   ),
+
+  /* Panel设置 */
+  "PANEL"              => false,
+  "PANEL_PATH"         => "./twocola/Panel",  // 官方Panel位置
+  "PANEL_PORTAL"       => 1,
+  "PANEL_PORTAL_KEY"   => "panel",
+  "PANEL_PORTAL_VALUE" => "tce",
 
 );

@@ -1,8 +1,8 @@
 <?php
 // +----------------------------------------------------------------------
-// | Twocola PHP Engine [ More Teamwork ]
+// | Twocola PHP Engine [ DO IT　EASY ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2016-2017 Twocola STudio All rights reserved.
+// | Copyright (c) 2016-2017 Twocola Studio All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -10,11 +10,11 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.1.5.0101
+** Ver 1.1.6.0902
 */
 namespace TUnit\Template;
 class Template {
-  //-----存储区
+  // 存储区
   /*
   ** 模板临时存储
   ** @param  string $content
@@ -36,22 +36,23 @@ class Template {
   static public function show($title = false){
     $D = DIRECTORY_SEPARATOR;
     // 用户访问模板地址
-    $tpl = APP_PATH.$D.C("APP").$D."View".$D.C("CONTROLLER").$D.C("METHOD").C("TPL_EXT");
+    $tpl = ".".C("APP_PATH").$D.C("APP").$D."View".$D.C("CONTROLLER").$D.C("METHOD").C("TPL_EXT");
     // 检查是否存对应模板文件
     if( !is_file($tpl) ){
+      // 不存在对应模板文件
       $path = C("TPL");
       if( isset($path['PageNotFound']) && $path['PageNotFound'] != false ){
-        if( !is_file($path['PageNotFound']) ){
+        $file = getUserTpl($path['PageNotFound']);  // 获取用户自定义模板
+        if( $file == false ){
           self::showError("E_S01_T1","自定义模板文件不存在。");
         }else{
-          $tpl = file_get_contents($path['PageNotFound']);
-          self::ProcessTpl($tpl);
-          include ( self::GeneralCache(false,"_Error") );
+          include ( $file );
         }
       }else{
         self::showError("E_S01_P0","模板文件不存在。");
       }
       return ;
+
     }else{
       // 载入用户访问模板文件
       $content = file_get_contents($tpl);
@@ -84,10 +85,11 @@ class Template {
       // 默认应用错误
       $path = C("TPL");
       if( isset($path['Error']) && $path['Error'] != false ){
-        if( !is_file($path['Error']) ){
+        $file = getUserTpl($path['Error']); //获取用户自定义模板
+        if( $file == false ){
           self::showError("E_S01_T3","自定义模板文件不存在。");
         }else{
-          $tpl = file_get_contents($path['Error']);
+          include( $path['Error'] );
         }
       }else{
         $tpl = getPresetTpl("TUnit/Error/ErrorException_Secure");
@@ -95,15 +97,25 @@ class Template {
     }
     $content = self::ProcessTpl($content);             // 处理模板
     $content = self::GeneralCache(false,"_".$errCode); // 生成缓存并获取路径
-    include($content);                                 // 展示页面
+    include $content;                                 // 展示页面
     return ;
   }
 
   static public function show404(){
-    $content = getPresetTpl("APP/Error/PageNotFound");    // 获取模板
-    $content = self::ProcessTpl($content);                // 处理模板
-    $content = self::GeneralCache(false,"_404");          // 生成缓存并获取路径
-    include($content);                                    // 展示页面
+    $path = C("TPL");
+    if( isset($path['PageNotFound']) && $path['PageNotFound'] != false ){
+      $file = getUserTpl($path['PageNotFound']);
+      if( $file == false ){
+        self::showError("E_S01_T3","自定义模板文件不存在。");
+      }else{
+        include $file;
+      }
+    }else{
+      $content = getPresetTpl("APP/Error/PageNotFound");    // 获取模板
+      $content = self::ProcessTpl($content);                // 处理模板
+      $content = self::GeneralCache(false,"_404");          // 生成缓存并获取路径
+      include($content);                                    // 展示页面
+    }
     return ;
   }
 
@@ -115,7 +127,7 @@ class Template {
   */
   /* 替换变量，格式{$变量名} */
   static public function assign($name,$var){
-    self::$assign .= "<?php \${$name}=".var_export($var,true)." ?>".self::$assign;
+    self::$assign .= "<?php \${$name}=".var_export($var,true)." ?>";
   }
 
   /*
@@ -125,17 +137,15 @@ class Template {
   */
   static public function GeneralCache($content=false,$filename=false){
     $D = DIRECTORY_SEPARATOR;
-    $filename = ($filename === false) ? C("APP")."_".C("CONTROLLER")."_".C("METHOD").C("CACHE_EXT") : $filename.C("CACHE_EXT");
-    $filename = APP_PATH.$D.C("APP").$D."Runtime".$D."Cache".$D.$filename;
-    $content  = ($content  === false) ? self::$Content : $content;
-    // 错误阻止机制
-    if( !is_dir(dirname($filename)) ){
-      $filename = false;
-      $filename = ($filename === false) ? C("APP")."_".C("CONTROLLER")."_".C("METHOD").C("CACHE_EXT") : $filename.C("CACHE_EXT");
-      $filename = APP_PATH.$D.C("APP_DEFAULT").$D."Runtime".$D."Cache".$D.$filename;
+    $APP_PATH = ".".C("APP_PATH");
+    $_filename = ($filename === false) ? C("APP")."_".C("CONTROLLER")."_".C("METHOD").C("CACHE_EXT") : $filename.C("CACHE_EXT");
+    $_filename = $APP_PATH.$D.C("APP").$D."Runtime".$D."Cache".$D.$_filename;
+    if( !is_dir(dirname($_filename)) ){
+      $_filename = $APP_PATH.$D.C("APP_DEFAULT").$D."Runtime".$D."Cache".$D.$filename.C("CACHE_EXT");
     }
-    \TUnit\Storage\StorageCore::Put($filename,$content);
-    return $filename;
+    $content  = ($content  === false) ? self::$Content : $content;
+    \TUnit\Storage\StorageCore::Put($_filename,$content);
+    return $_filename;
   }
 
   //-----模板处理
@@ -214,7 +224,6 @@ class Template {
   **/
   static public function Tag_Volist($content){
     // 出错修复区
-    /* $content = str_replace("</volist>","<?php endforeach;endif; ?>",$content); */
     $content = str_ireplace("</volist>","<?php endforeach;endif; ?>",$content);
     // 处理标准Volist
     $pattern = "/<volist[\s]*name=['|\"](.+)['|\"][\s]*value=['|\"](.+)['|\"][\s]*key=['|\"](.+)['|\"][\s]*>/iUm";
@@ -321,7 +330,7 @@ class Template {
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$tpath.C("CONTROLLER")."/css/".$matches[1][$i].CSS_EXT,$content);
+        $content = str_replace($matches[0][$i],$tpath.C("CONTROLLER")."/css/".$matches[1][$i].C("CSS_EXT"),$content);
       }
     }
     /*配套JS*/
@@ -329,7 +338,7 @@ class Template {
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$tpath.C("CONTROLLER")."/js/".$matches[1][$i].JS_EXT,$content);
+        $content = str_replace($matches[0][$i],$tpath.C("CONTROLLER")."/js/".$matches[1][$i].C("JS_EXT"),$content);
       }
     }
     /*配套IMG*/
@@ -446,7 +455,7 @@ class Template {
   /* 支持模板标签：<include file='PUBLIC-header' type='autoheader' /> */
   static public function IncludeTpl($content){
     $D = DIRECTORY_SEPARATOR;
-    $P_APP_TPL = APP_PATH.$D.C("APP").$D."View".$D;
+    $P_APP_TPL = ".".C("APP_PATH").$D.C("APP").$D."View".$D;
     $P_APP_PUBLIC_TPL = $P_APP_TPL."PUBLIC".$D;
     $APP = C("APP");
     $METHOD = C("METHOD");

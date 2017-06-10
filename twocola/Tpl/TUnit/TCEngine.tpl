@@ -11,10 +11,10 @@
   </style>
 </head>
 <body>
-  <h1>TwocolaPHPEngine</h1>
-  <p>简而易用。<br />
-    <span style='color:#8e8e8e'>[TwocolaPHPEngine,Simple and Easy to use.]</span>
+  <h1>{__FRAMENAME__} <small style="color:grey">{__VERSION__}</small></h1>
+  <p>简且易用。<br />
+    <span style='color:#8e8e8e'>[Simple and Easy to use.]</span>
   </p>
-  <small>TCE V3</small>
+  <small>Designed by Jokin.</small>
 </body>
 </html>

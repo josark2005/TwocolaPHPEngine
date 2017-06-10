@@ -17,9 +17,9 @@
     <strong>名称：</strong>{__APP_NAME__}<br />
     <strong>原因：</strong>{$error}<br />
   </p>
-  <p>团队即是一切。<br />
-    <span style="color:#8e8e8e">[TwocolaPHPEngine,More teamwork.]</span>
+  <p>简且易用。<br />
+    <span style='color:#8e8e8e'>[Simple and Easy to use.]</span>
   </p>
-  <small>TCE V3</small>
+  <small>Designed by Jokin.</small>
 </body>
 </html>

@@ -12,9 +12,9 @@
 </head>
 <body>
   <h1>{__APP_NAME__} 拒绝访问</h1>
-  <p>保持乐观。<br />
-    <span style="color:#8e8e8e">[TwocolaPHPEngine,Stay optimistic.]</span>
+  <p>简且易用。<br />
+    <span style='color:#8e8e8e'>[Simple and Easy to use.]</span>
   </p>
-  <small>TCE V3</small>
+  <small>Designed by Jokin.</small>
 </body>
 </html>

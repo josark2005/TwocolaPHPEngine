@@ -1,8 +1,8 @@
 <?php
 // +----------------------------------------------------------------------
-// | Twocola PHP Engine [ More Teamwork ]
+// | Twocola PHP Engine [ DO IT　EASY ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2016-2017 Twocola STudio All rights reserved.
+// | Copyright (c) 2016-2017 Twocola Studio All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -30,11 +30,11 @@ class Api {
       if(method_exists($api,C("METHOD"))){
         $api->$METHOD();
       }else{
-        Template\Template::showError("E_S02_C2","指定Api通道不存在");
+        TJson::json_e("1","Api","0","404","Api Not Found.");
         exit();
       }
     }else{
-      Template\Template::showError("E_S02_C1","Api类库不存在");
+      TJson::json_e("1","Api","0","404","Api Not Found.");
       exit();
     }
   }

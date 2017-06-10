@@ -40,8 +40,8 @@
       </tbody>
     </table>
     <br />
-    <span style="color:#8e8e8e">[TwocolaPHPEngine,Simple and Easy to use.]</span>
+    <span style='color:#8e8e8e'>[Simple and Easy to use.]</span>
   </p>
-  <small>TCE V3</small>
+  <small>Designed by Jokin.</small>
 </body>
 </html>
