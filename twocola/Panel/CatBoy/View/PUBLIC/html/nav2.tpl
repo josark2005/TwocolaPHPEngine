@@ -11,8 +11,8 @@
           </div>
           <div id="tce-settings" class="am-panel-collapse am-collapse am-in">
             <div class="am-panel-bd">
-              <button id="index-tce_information" type="button" class="am-btn am-btn-primary am-round am-btn-block" onclick="location.href='{:U('index/tce_information?{__PANEL_PORTAL_KEY__}={__PANEL_PORTAL_VALUE__}')}'">基本状态信息</button>
-              <button type="button" class="am-btn am-btn-primary am-round am-btn-block">全局设置调整</button>
+              <button id="index-tce_information" type="button" class="am-btn am-btn-primary am-round am-btn-block" onclick="location.href='{:U('index/tce_information')}'">基本状态信息</button>
+              <button id="index-tce_settings" type="button" class="am-btn am-btn-primary am-round am-btn-block" onclick="location.href='{:U('index/tce_settings')}'">全局设置调整</button>
             </div>
           </div>
         </div>

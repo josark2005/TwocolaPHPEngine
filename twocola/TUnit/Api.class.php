@@ -21,7 +21,7 @@ class Api {
     $METHOD     =  C("METHOD");
     // 判断配置是否正确
     $D  = DIRECTORY_SEPARATOR;
-    $Apath =  APP_PATH.$D.$APP.$D."Api".$D.$CONTROLLER.C("CLASS_EXT");
+    $Apath =  ".".C("APP_PATH").$D.$APP.$D."Api".$D.$CONTROLLER.C("CLASS_EXT");
     if( file_exists($Apath) ){
       // 载入应用
       require_once($Apath);

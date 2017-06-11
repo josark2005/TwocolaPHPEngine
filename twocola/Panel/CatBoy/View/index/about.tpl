@@ -19,7 +19,7 @@
       <p class="am-text-center">
         本次Panel代号：<span class="am-badge am-badge-success am-round">CatBoy</span>
         <br />Panel Main Version：<span class="am-badge am-badge-primary am-round">v1.0</span>
-        <br />本Panel使用AmazeUI
+        <br />CatBoy Panel使用AmazeUI
         <br />Twocola Studio 荣誉出品
       </p>
     </div>

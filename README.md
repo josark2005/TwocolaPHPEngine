@@ -24,15 +24,24 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 
 ### 更新日志
 
-#####  TCE `4.0.6.1002` | Panel `1.0.5.1901`
+#####  TCE `4.0.6.1101` | Panel `1.0.5.1901`
 
 > `大规模升级` | `v3.2及以上版本`可进行`半平滑升级`（直接替换库文件夹即可）。
 
 > 本次升级新增多个函数与相关数据存放点，需要配合新功能`Panel`完善结构。
 
-[新增 | 流程] --提供升级模块放置目录并自动进行载入。
+[优化] `Api`模式下，读取`APP_PATH`为最新值。
 
-[新增 | 设置] --`自动升级`。
+[新增] GET方式进入Api模式。
+
+> ```php
+/* Api入口设置 */
+"API_PORTAL"         => 1,          // 入口模式
+"API_PORTAL_KEY"     => "apimode",  // GET方式
+"API_PORTAL_VALUE"   => "true",     // GET方式
+```
+
+[修复] 修改`配置文件后缀`后无法正确读取配置的问题。
 
 [优化] `Api`模式下，访问失败提示404相关信息。
 
@@ -46,7 +55,7 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 
 [优化 | 设置] `自定义`应用不存在错误页面，支持类U函数定义与模板解析。(*结构逻辑优化*)
 
-- > （Pathinfo路径）`应用不存在`页面在全局定义时为`APP_PATH`路径下的相对应的应用内的页面。定义`Panel`模块需要在`Panel`应用设置中单独定义。
+> （Pathinfo路径）`应用不存在`页面在全局定义时为`APP_PATH`路径下的相对应的应用内的页面。定义`Panel`模块需要在`Panel`应用设置中单独定义。
 
 [优化 | 设置] `自定义`系统错误页面，支持类U函数定义与模板解析。(*结构逻辑优化*)
 
@@ -54,14 +63,14 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 
 [修复] `全局设置项`将域名与Api模式绑定后不生效的问题。
 
-- > 详细请见
+> 详细请见
 [Github](https://github.com/jokin1999/TwocolaPHPEngine/issues/2)
 |
 [Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/350310)
 
 [修复] `数据库连接`配置数据库相关设置后使用M()等函数无法连接。
 
-- > 详情请见
+> 详情请见
 [Github](https://github.com/jokin1999/TwocolaPHPEngine/issues/1)
 |
 [Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/347620)

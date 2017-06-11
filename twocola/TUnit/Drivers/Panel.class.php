@@ -9,8 +9,8 @@
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
 /*
-** Panel驱动
-** Version 1.0.6.0901
+** Panel驱动类
+** Version 1.0.6.1101
 */
 namespace TUnit\Drivers;
 class Panel {
@@ -38,18 +38,27 @@ class Panel {
       if( C("PANEL_PORTAL") == 1 ){
         // GET进入
         if( isset($_GET[C("PANEL_PORTAL_KEY")]) && $_GET[C("PANEL_PORTAL_KEY")] == C("PANEL_PORTAL_VALUE") ){
-          C("APP_PATH" ,C("PANEL_PATH"));
-          C("IS_PANEL" ,true);  // 标记Panel模式
+          self::enter();
         }
       }else if( C("PANEL_PORTAL") == 2){
         // 默认进入
-        C("APP_PATH" ,C("PANEL_PATH"));
-        C("IS_PANEL" ,true);  // 标记Panel模式
+        self::enter();
       }
-      C("APP" ,C("PANEL_NAME"));
-      C("APP_DEFAULT" ,C("PANEL_NAME"));
       return ;
     }
   }
+
+  /**
+   * 跳转至Panel
+   * @param  void
+   * @return void
+  **/
+  static private function enter(){
+    C("APP_PATH" ,C("PANEL_PATH"));     // 修改为Panel路径
+    C("IS_PANEL" ,true);                // 标记Panel模式
+    C("APP" ,C("PANEL_NAME"));          // 修改为Panel名称
+    C("APP_DEFAULT" ,C("PANEL_NAME"));  // 错误阻止机制
+  }
+
 }
 ?>

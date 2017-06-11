@@ -11,7 +11,7 @@
 
 //----------------------------------
 // Twocola PHP Engine(TCE)   OAM系统
-// Version:                  1.0.6.1001
+// Version:                  1.0.6.1101
 //----------------------------------
 namespace TUnit;
 class OneAsMuiltiple {
@@ -67,6 +67,12 @@ class OneAsMuiltiple {
         C("RMODE",2);
       }else{
         C("RMODE",1); // 尝试切换到DBA模式
+      }
+    }
+    // 判断是否满足Api模式条件
+    if( C("API_PORTAL") == 1 && C("API_PORTAL_KEY") && C("API_PORTAL_VALUE") ){
+      if( isset($_GET[C("API_PORTAL_KEY")]) && $_GET[C("API_PORTAL_KEY")] == C("API_PORTAL_VALUE") ){
+        C("RMODE",2);
       }
     }
     return ;

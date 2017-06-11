@@ -1,7 +1,7 @@
 <?php
 /**
  * TCE引擎全局设置
- * Version: 1.4.6.1002
+ * Version: 1.4.6.1101
  * Notice: APP_GENERATE可使用 APP_DEFAULT 代替 (默认APP不存在时会自动创建)
 **/
 $config = array (
@@ -22,6 +22,11 @@ $config = array (
       // domain=>api
     ),
   ),
+
+  /* Api入口设置 */
+  "API_PORTAL"         => 1,        // 入口模式
+  "API_PORTAL_KEY"     => "apimode",  // GET方式
+  "API_PORTAL_VALUE"   => "true",    // GET方式
 
   /* 全局模板设置 */
   // 此处设置请使用相对于入口文件的路径

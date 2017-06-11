@@ -22,6 +22,19 @@ class indexDisplayer extends indexBehavior{
     $this->assign("db_support_future" ,$db_support_future);
     $this->show();
   }
+  public function tce_settings(){
+    $this->assign("APP_SUFFIX_SAFE" ,C("APP_SUFFIX_SAFE"));
+    $this->show();
+  }
+
+  // 参与开发
+  public function dev_tce(){
+    $this->show();
+  }
+  public function dev_panel(){
+    $this->show();
+  }
+
   // 404页面
   public function pnf(){
     $this->show();
