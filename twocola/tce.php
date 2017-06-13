@@ -15,7 +15,7 @@
 
 define( 'FRAMENAME'      ,"Twocola PHP 引擎4.0"     );
 define( 'FRAMENAME_EN'   ,"Twocola PHP Engine V4.0" );
-define( 'VERSION'        ,"4.0.6.1101"              );
+define( 'VERSION'        ,"4.0.6.1302"              );
 
 if( APP_DEBUG != 2 ){
   error_reporting(0);
@@ -34,22 +34,31 @@ if( !defined("CONFIG_EXT")          ){ define("CONFIG_EXT"        ,".inc.php"   
 if( !defined("DB_EXT")              ){ define("DB_EXT"            ,".db"           );     }
 if( !defined("DEFAULT_TIMEZONE")    ){ define("DEFAULT_TIMEZONE"  ,"PRC"           );     }
 if( !defined("DB_TYPE")             ){ define("DB_TYPE"           ,"MYSQL"         );     }
+
 // Panel Portal
 if( !defined("PANEL")               ){ define("PANEL"             ,false               );     }
 if( !defined("PANEL_PATH")          ){ define("PANEL_PATH"        ,"./twocola/Panel"   );     }
   // 入口方式： 1 GET 2 默认进入
-if( !defined("PANEL_PORTAL")        ){ define("PANEL_PORTAL"      ,1             );     }
+if( !defined("PANEL_PORTAL")        ){ define("PANEL_PORTAL"      ,1           );     }
   // 此设置仅对GET方式进入生效
-if( !defined("PANEL_PORTAL_KEY")    ){ define("PANEL_PORTAL_KEY"  ,"panel"       );     }
-if( !defined("PANEL_PORTAL_VALUE")  ){ define("PANEL_PORTAL_VALUE","tce"         );     }
+if( !defined("PANEL_PORTAL_KEY")    ){ define("PANEL_PORTAL_KEY"  ,"panel"     );     }
+if( !defined("PANEL_PORTAL_VALUE")  ){ define("PANEL_PORTAL_VALUE","tce"       );     }
+
+// Api Portal
+if( !defined("API_PORTAL")          ){ define("API_PORTAL"      ,1             );     }
+  // 此设置仅对GET方式进入生效
+if( !defined("API_PORTAL_KEY")      ){ define("API_PORTAL_KEY"  ,"apimode"     );     }
+if( !defined("API_PORTAL_VALUE")    ){ define("API_PORTAL_VALUE","true"        );     }
+
 // 窝群系统驱动
   // 运行模式： 1 APP 2 API
 if( !defined("RMODE")             ){ define("RMODE"             ,1             );     }
   // 地址模式： 0兼容 1 Pathinfo
 if( !defined("URL_MODE")          ){ define("URL_MODE"          ,0             );     }
+
 // 基础常量
 define( 'PATH'        ,str_replace("\\",DIRECTORY_SEPARATOR,getcwd())                 );
-define( 'TCE_PATH'    ,dirname(__FILE__)                                              );
+define( 'TCE_PATH'    ,str_replace("\\",DIRECTORY_SEPARATOR,str_replace(PATH,".",dirname(__FILE__))));
 define( 'TPL_PATH'    ,TCE_PATH.DIRECTORY_SEPARATOR."TPL"                             );
 define( 'IS_WIN'      ,strstr(PHP_OS, 'WIN') ? 1 : 0                                  );
 // 默认设置 常量

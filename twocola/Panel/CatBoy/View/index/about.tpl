@@ -17,9 +17,8 @@
         <img src="__STATIC:images/logo_banner.png__" class="am-center"></img>
       </p>
       <p class="am-text-center">
-        本次Panel代号：<span class="am-badge am-badge-success am-round">CatBoy</span>
-        <br />Panel Main Version：<span class="am-badge am-badge-primary am-round">v1.0</span>
-        <br />CatBoy Panel使用AmazeUI
+        Panel Name：<span class="am-badge am-badge-success am-round">{__APP_NAME__}</span>
+        <br />Panel Version：<span class="am-badge am-badge-primary am-round">{__APP_VERSION__}</span>
         <br />Twocola Studio 荣誉出品
       </p>
     </div>

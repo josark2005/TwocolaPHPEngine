@@ -12,6 +12,7 @@
           <h3 class="am-panel-title">框架基本信息</h3>
         </header>
 
+
         <div class="am-panel-bd">
           <!-- Infomation -->
           <div class="am-g list">

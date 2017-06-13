@@ -23,7 +23,8 @@ class indexDisplayer extends indexBehavior{
     $this->show();
   }
   public function tce_settings(){
-    $this->assign("APP_SUFFIX_SAFE" ,C("APP_SUFFIX_SAFE"));
+    include "./config".C("CONFIG_EXT");
+    $this->assign("config" ,$config);
     $this->show();
   }
 

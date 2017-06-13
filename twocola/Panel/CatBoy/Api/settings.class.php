@@ -20,7 +20,32 @@ class settings extends TJson{
     }
     // 载入源设置
     include $file;
-    $config[$_POST['name']] = $_POST['value'];
+    $options = explode("-",$_POST['name']);
+    $name = end($options);
+    $value = $_POST['value'];
+    $int_array = array("1","2","3","4","5","6","7","8","9","0");
+    if( in_array($value,$int_array) ){
+      $typechanger = "int";
+    }else if( $value == "true" || $value == "false" ){
+      $typechanger = "boolean";
+    }else{
+      $typechanger = "string";
+    }
+
+    if($typechanger == "int"){
+      $value = (int)$value;
+    }else if($typechanger == "boolean"){
+      $value = ($value == "true") ? true : false;
+    }else{
+      $value = (string)$value;
+    }
+
+    if( reset($options) == "TPL" ){
+      $config['TPL'][$name] = $value;
+    }else{
+      $config[$name] = $value;
+    }
+
     $linefeed = PHP_EOL;
     $content = "<?php{$linefeed}\$config=".var_export($config,true).";";
     if(!\TUnit\Storage\StorageCore::Put($file ,$content)){

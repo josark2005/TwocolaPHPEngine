@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心方法
-** Ver 1.3.6.1101
+** Ver 1.3.6.1301
 */
 /**
  * 读取存储配置
@@ -79,7 +79,8 @@ function U($paths){
   // 判断Panel模式
   if( C("IS_PANEL") == true ){
     // 生成进入Panel的条件
-    $panel = ( C("PANEL_PORTAL") == 1 ) ? "&".C("PANEL_PORTAL_KEY")."=".C("PANEL_PORTAL_VALUE") : "";
+    $link = ( empty($get) ) ? "" : "&";
+    $panel = ( C("PANEL_PORTAL") == 1 ) ? $link.C("PANEL_PORTAL_KEY")."=".C("PANEL_PORTAL_VALUE") : "";
     // 判断GET内容
     if( empty($get) ){
       $get = $panel;
