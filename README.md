@@ -34,7 +34,7 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 
 [新增] GET方式进入Api模式。
 
-> ```php
+> ```
 /* Api入口设置 */
 "API_PORTAL"         => 1,          // 入口模式
 "API_PORTAL_KEY"     => "apimode",  // GET方式
