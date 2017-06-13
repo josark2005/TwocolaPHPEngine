@@ -34,7 +34,7 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 
 [新增] GET方式进入Api模式。
 
-> ```
+```
 /* Api入口设置 */
 "API_PORTAL"         => 1,          // 入口模式
 "API_PORTAL_KEY"     => "apimode",  // GET方式
@@ -64,16 +64,12 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 [修复] `全局设置项`将域名与Api模式绑定后不生效的问题。
 
 > 详细请见
-[Github](https://github.com/jokin1999/TwocolaPHPEngine/issues/2)
-|
-[Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/350310)
+[Github](https://github.com/jokin1999/TwocolaPHPEngine/issues/2)|[Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/350310)
 
 [修复] `数据库连接`配置数据库相关设置后使用M()等函数无法连接。
 
 > 详情请见
-[Github](https://github.com/jokin1999/TwocolaPHPEngine/issues/1)
-|
-[Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/347620)
+[Github](https://github.com/jokin1999/TwocolaPHPEngine/issues/1)|[Coding](https://coding.net/u/Jokin/p/TwocolaPHPEngine/topic/347620)
 
 [修复] `启动器`启动时应用不存在情况下载入页面出错的Bug。
 
