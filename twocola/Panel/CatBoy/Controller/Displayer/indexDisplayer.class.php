@@ -27,6 +27,11 @@ class indexDisplayer extends indexBehavior{
     $this->assign("config" ,$config);
     $this->show();
   }
+  public function oam_settings(){
+    include "./config".C("CONFIG_EXT");
+    $this->assign("OAM" ,$config['OAM']);
+    $this->show();
+  }
 
   // 参与开发
   public function dev_tce(){

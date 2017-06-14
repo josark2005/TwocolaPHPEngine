@@ -1,0 +1,42 @@
+.am-g.list {
+  margin-left: 5px;
+  margin-right: 5px;
+  border-bottom: solid 1px #e4e4e4;
+}
+.am-g.list:last-child {
+  border-bottom: 0px;
+}
+.am-g.list:hover{
+  background-color: #f0f0f0;
+}
+.bottom-space {
+  margin-bottom: 5px;
+}
+.warning {
+  color: rgb(221, 81, 76);
+}
+.am-switch .am-switch-label {
+  background: rgb(238, 238, 238);
+}
+.no-padding-right {
+  padding-right: 0;
+}
+.no-padding-left {
+  padding-left: 0;
+}
+/*.am-form-field:focus {
+  color: rgb(255, 255, 255);
+  background-color: rgb(243, 123, 29);
+}*/
+.am-form-field:focus + .am-input-group-btn>.am-btn,.am-input-group-btn>.am-btn:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(221, 81, 76);
+}
+.check.am-form-field:focus + .am-input-group-btn>.am-btn,.am-input-group-btn>.am-btn:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(94, 185, 94);
+}
+.am-btn.check:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(94, 185, 94);
+}

@@ -17,6 +17,7 @@ function storger(name,value=null){
 }
 
 state = null;
+
 function change_tce_settings(name,value){
   var state = null;
   $.ajax({
@@ -24,6 +25,41 @@ function change_tce_settings(name,value){
     type : "post",
     dataType : "json",
     data : {"name":name,"value":value},
+    timeout : 20000,
+    async : false,
+    complete : function(XMLHTTPRequest,status){
+      if(status=="timeout"){
+        alert("连接超时,请稍候再试。");
+        state = false;
+      }
+    },
+    success : function(data){
+      var system_status = data.System.status;
+      var system_message = data.System.message;
+      var app_status = data.App.status;
+      var app_errno = data.App.errno;
+      var app_error = data.App.error;
+      if(system_status==0){
+        alert("系统暂停访问："+system_message);
+        state = false;
+      }else if(app_status==0){
+        alert("("+data.App.errno+")发生错误："+data.App.error);
+        state = false;
+      }else{
+        state = true;
+      }
+    }
+  });
+  return state;
+}
+
+function change_oam_settings(action,type,name,value){
+  var state = null;
+  $.ajax({
+    url : url_change_oam_settings,
+    type : "post",
+    dataType : "json",
+    data : {"action":action,"type":type,"name":name,"value":value},
     timeout : 20000,
     async : false,
     complete : function(XMLHTTPRequest,status){

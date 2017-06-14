@@ -15,7 +15,7 @@
 
 define( 'FRAMENAME'      ,"Twocola PHP 引擎4.0"     );
 define( 'FRAMENAME_EN'   ,"Twocola PHP Engine V4.0" );
-define( 'VERSION'        ,"4.0.6.1302"              );
+define( 'VERSION'        ,"4.0.6.1401"              );
 
 if( APP_DEBUG != 2 ){
   error_reporting(0);

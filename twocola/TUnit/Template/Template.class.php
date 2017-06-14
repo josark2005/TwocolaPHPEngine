@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.1.6.0902
+** Ver 1.1.6.1401
 */
 namespace TUnit\Template;
 class Template {
@@ -230,7 +230,7 @@ class Template {
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for ($i=0; $i < $preg; $i++) {
-        $content = str_replace($matches[0][$i],"<?php if(is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[3][$i]}=>\${$matches[2][$i]}): ?>",$content);
+        $content = str_replace($matches[0][$i],"<?php if(isset(\${$matches[1][$i]}) && is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[3][$i]}=>\${$matches[2][$i]}): ?>",$content);
       }
     }
     // 处理标准Volist 2
@@ -238,7 +238,7 @@ class Template {
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for ($i=0; $i < $preg; $i++) {
-        $content = str_replace($matches[0][$i],"<?php if(is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[2][$i]}=>\${$matches[3][$i]}): ?>",$content);
+        $content = str_replace($matches[0][$i],"<?php if(isset(\${$matches[1][$i]}) && is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[2][$i]}=>\${$matches[3][$i]}): ?>",$content);
       }
     }
     // 处理简化Volist
@@ -246,7 +246,7 @@ class Template {
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for ($i=0; $i < $preg; $i++) {
-        $content = str_replace($matches[0][$i],"<?php if(is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[2][$i]}): ?>",$content);
+        $content = str_replace($matches[0][$i],"<?php if(isset(\${$matches[1][$i]}) && is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[2][$i]}): ?>",$content);
       }
     }
     return $content;
