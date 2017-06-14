@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>TCE开发手册 - For v3.1</title>
+		<meta charset="utf-8" />
+		<meta name="Keywords" content="php引擎,php框架,可乐引擎,web应用,tce官方网站,简洁开发,快速开发,开源框架,开发框架,MVC">
+    <meta name="Description" content="TCE框架 - 由Jokin独立开发，遵循Apache2开源协议发布，致力于提高Web开发效率，解决部分服务器限制导致的问题。">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/manner.css" />
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">TCE框架</a>
+				<nav>
+					<ul>
+						<li><a href="./index.html">首页</a></li>
+						<li><a href="./manner.html">框架手册</a></li>
+						<li><a href="./OAM_index.html">OAM手册</a></li>
+						<li><a href="https://coding.net/u/Jokin/p/TwocolaPHPEngine/git" target="_blank">下载</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+			<!-- Main -->
+				<section id="main" class="wrapper">
+					<div class="inner">
+						<h1 class="major">Version 3.1 目录</h1>
+	          <div class="inner">
+	            <p>
+	              <ul>
+	                <li><a href="#Start">开始使用</a></li>
+	                <li><a href="#OneEntrance">单一入口</a></li>
+	                <li><a href="#Settings">个性化设置</a></li>
+	                <li><a href="#Dev-1">Controller编写</a></li>
+	                <li><a href="#FrameMechanism">框架机制</a></li>
+	                <li><a href="./manner_tpl_1_1.html">模板引擎</a></li>
+	                <li><a href="#Functions">框架函数</a></li>
+	                <li><a href="#Database">数据库操作类</a></li>
+	                <li><a href="#Logs">Debug日志</a></li>
+								</ul>
+	            </p>
+	          </div>
+					</div>
+				</section>
+
+			<!-- Start -->
+				<section id="Start" class="wrapper">
+					<div class="inner">
+						<h1 class="major">开始使用</h1>
+	          <div class="inner">
+	            <p>请先按照 <strong>单一入口</strong> 中的方法，创建一个 <strong>index.php</strong> 并正确引入<strong>tce.php</strong>。</p>
+							<p>运行一次 <strong>index.php</strong> 然后框架会自动创建 <strong>config.inc.php</strong>用于全局/应用设置。同时 <strong>.htaccess</strong> 也会被自动创建用于配置服务器REWRITE。</p>
+	          </div>
+					</div>
+				</section>
+
+
+			<!-- OneEntrance -->
+				<section id="OneEntrance" class="wrapper">
+					<div class="inner">
+						<h1 class="major">单一入口</h1>
+	          <div class="inner">
+	            <p>框架使用单一入口，放置于根目录，通常命名为<strong>index.php</strong>。通常会进行以下常量的定义以保证框架的正常运行。</p>
+
+							<pre>
+								<code>define("APP_DEBUG" ,true);                // 调试模式
+define("APP_PATH"  ,"./Applications");    // 定义App目录
+require("./twocola/tce.php");             // 引入框架引擎</code>
+							</pre>
+
+							<p><strong>UrlMode为1</strong>时，与单一入口同级的<strong>.htaccess</strong>文件不存在时，框架会自动创建。</p>
+
+						</div>
+					</div>
+				</section>
+
+			<!-- Settings -->
+				<section id="Settings" class="wrapper">
+					<div class="inner">
+						<h1 class="major">个性化设置</h1>
+	          <div class="inner">
+							<p>全局设置文件通常放置于入口文件所在的文件夹（与入口文件同级）；应用设置文件唱放置于应用目录下对应应用名称的文件夹下。</p>
+							<p>提供2种设置方法：<strong>全局设置</strong>和<strong>应用设置</strong>，应用设置拥有更高的优先级。</p>
+							<pre>
+								<code>$config = array (
+  "设置项" => "设置值",
+);</code>
+							</pre>
+
+							<p>在框架使用过程中，也可以使用<strong>C函数</strong>进行设置。若<strong>设置值</strong>不填写，则返回该设置项的设置值。若设置项不存在（没有进行设置），则返回false。</p>
+							<pre>
+								<code>C( 设置项 [,设置值] );</code>
+							</pre>
+
+							<p>*请注意：C函数会优先读取使用C函数设置的设置项或全局/应用设置的设置项，若读取的设置项无法从以上方法中找到，则从常量中查找，若仍然无法找到则返回false。</p>
+
+							<a href="./manner_3_1_settings.html" target="_blank">&raquo; 设置项一览</a>
+
+	          </div>
+					</div>
+				</section>
+
+			<!-- Dev-1 -->
+				<section id="Dev-1" class="wrapper">
+					<div class="inner">
+						<h1 class="major">Controller编写</h1>
+	          <div class="inner">
+
+							<p>框架中，Controller区块为了便于编写、减少代码数量，将Controller分为3部分。</p>
+							<ul>
+								<li>Displayer 显示块 （仅内部调用）</li>
+								<li>Behavior 功能块 （仅内部与Displayer可调用）</li>
+								<li>Common 公共块（Behavior与Displayer均可调用）</li>
+							</ul>
+							<p>一般情况下，我们推荐将算法写入Behavior或Common中，在Displayer中直接调用以保证代码的规范、清晰。</p>
+							<p>框架要求Displayer中的方法要与页面请求的 <strong>Method</strong> 相同。（Method默认为index，详情请查找 <strong><a href="#FrameMechanism">框架机制</a></strong> ）</p>
+							<hr />
+							<h3>Common命名与创建</h3>
+							<p>文件位于App目录下Controller/Common/BehaviorCommon.class.php。命名存在唯一性。</p>
+							<pre>
+								<code>namespace Controller\Common;
+use TUnit\Template\Template;
+class BehaviorCommon extends Template{}</code>
+							</pre>
+							<hr />
+							<h3>Behavior命名与创建</h3>
+							<p>文件位于App目录下Controller/Behavior/<strong>{Controller}</strong>Behavior.class.php。命名存在唯一性。<strong>{Controller}</strong>为自定义的控制器名称，默认的index控制器必须存在。</p>
+							<pre>
+								<code>namespace Controller\Behavior;
+use Controller\Common\BehaviorCommon;
+class <strong>{Controller}</strong>Behavior extends BehaviorCommon{}
+</code>
+							</pre>
+							<hr />
+							<h3>Displayer命名与创建</h3>
+							<p>文件位于App目录下Controller/Behavior/<strong>{Controller}</strong>Displayer.class.php。命名存在唯一性。<strong>{Controller}</strong>为自定义的控制器名称，默认的index控制器必须存在。</p>
+							<pre>
+								<code>namespace Controller\Displayer;
+use Controller\Behavior\<strong>{Controller}</strong>Behavior;
+class <strong>{Controller}</strong>Displayer extends <strong>{Controller}</strong>Behavior{}
+</code>
+							</pre>
+
+
+
+
+	          </div>
+					</div>
+				</section>
+
+			<!-- FrameMechanism -->
+				<section id="FrameMechanism" class="wrapper">
+					<div class="inner">
+						<h1 class="major">框架机制</h1>
+	          <div class="inner">
+
+							<h3>访问机制</h3>
+							<p>在框架中，存在3个访问参数，分别为 <strong>App</strong>、 <strong>Controller</strong>、 <strong>Method</strong>。且默认值分别为{自定义}、index、index。App的默认值为APP_DEFAULT的配置值，该配置值不存在时，取默认值App。</p>
+							<p>当 <strong>URL_MODE</strong>为0时（默认状态），GET参数中的a参数表示App、c表示Controller、m表示Method。</p>
+							<p>当 <strong>URL_MODE</strong>为1时，若地址<strong>只有域名</strong>则访问参数取默认值，其他情况如下所示：</p>
+							<p>
+								<ul>
+									<li><strong>yourdoamin.com/App</strong></li>
+									<li><strong>yourdoamin.com/Controller/Method</strong></li>
+									<li><strong>yourdoamin.com/App/Controller/Method</strong></li>
+								</ul>
+							</p>
+
+							<hr />
+
+							<h3>页面与类库载入机制</h3>
+							<p>页面被访问时，框架会依次载入Common、Behavior、Dispalyer模块，然后调用Dispalyer中对应的Method方法（此处调用的Method为访问机制中的Method）。指定Method不存在时，框架会显示出错页面。</p>
+							<p>当在控制模块中调用系统类库（除第三方类库）时，框架会自动加载，直接实例化即可。</p>
+
+	          </div>
+					</div>
+				</section>
+
+			<!-- Functions -->
+				<section id="Functions" class="wrapper">
+					<div class="inner">
+						<h1 class="major">框架函数</h1>
+	          <div class="inner">
+
+							<table>
+                <tr>
+                  <th>方法</th>
+                  <th>方法用途</th>
+                  <th>备注</th>
+                </tr>
+
+                <tr>
+                  <td>U(PATHINFO)</td>
+                  <td>生成链接</td>
+                  <td>同模板引擎的生成链接方法</td>
+                </tr>
+
+                <tr>
+                  <td>C(设置项[,设置值]);</td>
+                  <td>设置</td>
+                  <td>参考个性化设置</td>
+                </tr>
+
+                <tr>
+                  <td>M(数据库名称)</td>
+                  <td>连接数据库</td>
+                  <td>详细操作方法参考数据库操作类</td>
+                </tr>
+
+                <tr>
+                  <td>Mx(数据库名称表[,前缀])</td>
+                  <td>连接数据库</td>
+                  <td>详细操作方法参考数据库操作类，前缀不填写则取全局值或默认值。</td>
+                </tr>
+
+                <tr>
+                  <td>E(错误内容)</td>
+                  <td>生成报错页面</td>
+                  <td>生成后程序停止运行，若不需要停止运行，参看模板引擎showError方法</td>
+                </tr>
+
+                <tr>
+                  <td>cookie(name,value,expire,path)</td>
+                  <td>注册cookie</td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>vender(PATH)</td>
+                  <td>载入第三方类库</td>
+                  <td>如vender("PHPMailer/PHPMailerAutoload.php")</td>
+                </tr>
+
+                <tr>
+                  <td>org(PATH)</td>
+                  <td>载入ORG类库</td>
+                  <td>类似vender，3.1不推荐使用</td>
+                </tr>
+
+                <tr>
+                  <td>getPresetTpl(PATH)</td>
+                  <td>载入预置模板文件</td>
+                  <td>类似vender，不推荐用户使用</td>
+                </tr>
+
+              </table>
+
+
+	          </div>
+					</div>
+				</section>
+
+			<!-- Database -->
+				<section id="Database" class="wrapper">
+					<div class="inner">
+						<h1 class="major">数据库操作</h1>
+	          <div class="inner">
+							<p>数据库操作类可由M或Mx函数加载。M函数为加载单个数据表，Mx函数可进行多表查询。</p>
+							<p>M与Mx函数会返回一个object，用户可对该object进行调用。</p>
+							<p>具体调用方法<a href="https://coding.net/u/Jokin/p/Class-Mysqli/git/blob/master/README.md" target="_blank"><strong>[详见这里]</strong></a>
+								<br />
+								<small>*使用M或Mx实例化请忽略[实例化]章节，Mx方法请参考多表实例化章节（不用填写true）。</small>
+							</p>
+	          </div>
+					</div>
+				</section>
+
+			<!-- Logs -->
+				<section id="Logs" class="wrapper">
+					<div class="inner">
+						<h1 class="major">Debug日志</h1>
+	          <div class="inner">
+
+							<ul>
+								<li>2017-01-19 修复默认配置下，默认数据库类型错误的情况。[App->config.inc.php->DB_TYPE]</li>
+							</ul>
+
+	          </div>
+					</div>
+				</section>
+
+			</div>
+
+	  <!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Twocola Studio All rights reserved.</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+  	</body>
+  </html>

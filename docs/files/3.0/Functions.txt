@@ -1,0 +1,19 @@
+﻿框架函数（Layer/Function.php）
+
+读取、写入、修改配置 C($var[,$content]); $var变量名;$content变量内容;变量内容为空时读取，不为空则添加或修改配置。读取失败返回false，写入或修改不返回内容。
+
+数据库 M($table_name);详情请见数据库操作类。
+
+路径生成 U($paths); $paths[模块/]控制器/方法（页面）。生成的路径不带域名。
+
+（框架级）报错 E($err); $err报错内容。报错后直接结束程序，此函数不推荐使用。
+
+Cookie操作 cookie($name[,$value[,$expire[,$path]]]); 删除时请将$value设为空即可，高级操作请使用php函数。
+
+引用vender（第三方）函数库 vender($file); $file文件名; $file是以框架vender目录（官方默认twocola/Vender/）为根目录进行include_once。
+
+引用org（第三方）函数库 org($file); $file文件名; $file是以框架org目录（官方默认twocola/Org/）为根目录进行include_once。
+
+（框架级）获取预置模板 getPresetTpl($name); $name文件名; 失败返回false，成功返回模板。此函数不推荐使用、只支持.tpl格式的预置模板。默认预置模板目录：twocola/Tpl。
+
+发送邮件 sendEmail($email[,$title[,$subject[,$content]]]); $email收件地址;$title邮件标题;$subject邮件subject;$content邮件内容。 使用vender库中的phpmailer进行邮件发送。高级操作请手动vender引用PHPMailer/PHPMailerAutoload.php。（5.0以上的版本Vender库随框架同步更新至新版本，5.0以下的版本需要手动进行框架更新）

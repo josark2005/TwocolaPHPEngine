@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>TCE开发手册 - For v3.1</title>
+		<meta charset="utf-8" />
+		<meta name="Keywords" content="php引擎,php框架,可乐引擎,web应用,tce官方网站,简洁开发,快速开发,开源框架,开发框架,MVC">
+    <meta name="Description" content="TCE框架 - 由Jokin独立开发，遵循Apache2开源协议发布，致力于提高Web开发效率，解决部分服务器限制导致的问题。">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/manner.css" />
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">TCE框架</a>
+				<nav>
+					<ul>
+						<li><a href="./index.html">首页</a></li>
+						<li><a href="./manner.html">框架手册</a></li>
+						<li><a href="./OAM_index.html">OAM手册</a></li>
+						<li><a href="https://coding.net/u/Jokin/p/TwocolaPHPEngine/git" target="_blank">下载</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+			<!-- Main -->
+				<section id="main" class="wrapper">
+					<div class="inner">
+						<h1 class="major">Version 3.1 设置项一览</h1>
+	          <div class="inner">
+	            <p>
+                *花括号表示可自定义的值。高亮表示必须定义常量，不可放置于配置文件。
+                <table>
+                  <tr>
+                    <th>配置项</th>
+                    <th>配置值</th>
+                    <th>作用</th>
+                  </tr>
+
+                  <tr>
+                    <td>APP_GENERATE</td>
+                    <td>{APP名称}</td>
+                    <td>创建APP</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>APP_DEFAULT</td>
+                    <td>{APP名称}</td>
+                    <td>默认APP（不存在时自动创建）</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>APP_SUFFIX</td>
+                    <td>{后缀名}</td>
+                    <td>以.xxx的格式，伪静态后缀</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>APP_NAME</td>
+                    <td>{应用名称}</td>
+                    <td>应用中文名（以显示为主）</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>APP_RESPONSE</td>
+                    <td>True/False</td>
+                    <td>是否允许应用被访问</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>DB_TYPE</td>
+                    <td>Mysql</td>
+                    <td>数据库类型</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>DB_HOST</td>
+                    <td>{数据库地址/网址/ip}</td>
+                    <td>数据库服务器</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>DB_PORT</td>
+                    <td>{数据库端口号}</td>
+                    <td>默认3306</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>DB_NAME</td>
+                    <td>{数据库库名称}</td>
+                    <td>数据库库名</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>DB_USERNAME</td>
+                    <td>{数据库用户名}</td>
+                    <td>数据库用户名</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>DB_PASSWORD</td>
+                    <td>{数据库密码}</td>
+                    <td>数据库密码</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>DB_PREFIX</td>
+                    <td>{数据库表名前缀}</td>
+                    <td>读取时自动加载此前缀</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>EMAIL_CHARSET</td>
+                    <td>{电子邮件编码}</td>
+                    <td>默认UTF-8</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>EMAIL_HOST</td>
+                    <td>{网址/ip}</td>
+                    <td>电子邮箱服务器</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>EMAIL_PORT</td>
+                    <td>{端口号}</td>
+                    <td>电子邮箱服务器端口号</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>EMAIL_ADDRESS</td>
+                    <td>{发件人地址}</td>
+                    <td>邮件发送者地址/账户</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>EMAIL_PASSWORD</td>
+                    <td>{发件人密码}</td>
+                    <td>邮件发送者密码</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>URL_MODE</td>
+                    <td>0/1</td>
+                    <td>链接模式，默认0兼容模式，1为REWRITE模式</td>
+                  </tr>
+
+
+                  <tr>
+                    <td><strong>APP_DEBUG</strong></td>
+                    <td>True/False</td>
+                    <td>是否开启调试模式</td>
+                  </tr>
+
+
+                  <tr>
+                    <td><strong>APP_PATH</strong></td>
+                    <td>{相对/绝对路径}</td>
+                    <td>APP文件夹存放路径地址</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>EXT</strong></td>
+                    <td>程序后缀名</td>
+                    <td>默认：.php</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>TPL_EXT</strong></td>
+                    <td>模板后缀名</td>
+                    <td>默认：.tpl</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>JS_EXT</strong></td>
+                    <td>JS文件后缀名</td>
+                    <td>默认：.js</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>CSS_EXT</strong></td>
+                    <td>JS文件后缀名</td>
+                    <td>默认：.css</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>CACHE_EXT</strong></td>
+                    <td>缓存后缀名</td>
+                    <td>默认：.php <strong>不推荐修改此项</strong> </td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>CLASS_EXT</strong></td>
+                    <td>类库后缀名</td>
+                    <td>默认：.class.php</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>CONFIG_EXT</strong></td>
+                    <td>配置文件后缀名</td>
+                    <td>默认：.inc.php</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>DEFAULT_TIMEZONE</strong></td>
+                    <td>时区配置</td>
+                    <td>默认：PRC</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>RMODE</strong></td>
+                    <td>窝群系统：App运行模式</td>
+                    <td>默认：0（App模式）</td>
+                  </tr>
+
+                </table>
+	            </p>
+	          </div>
+					</div>
+				</section>
+
+	  <!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Twocola Studio All rights reserved.</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+  	</body>
+  </html>

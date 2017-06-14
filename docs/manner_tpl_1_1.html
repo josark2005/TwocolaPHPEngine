@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>TCE开发手册 - For TemplateEngine v1.1</title>
+		<meta charset="utf-8" />
+		<meta name="Keywords" content="php引擎,php框架,可乐引擎,web应用,tce官方网站,简洁开发,快速开发,开源框架,开发框架,MVC">
+    <meta name="Description" content="TCE框架 - 由Jokin独立开发，遵循Apache2开源协议发布，致力于提高Web开发效率，解决部分服务器限制导致的问题。">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/manner.css" />
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">TCE框架</a>
+				<nav>
+					<ul>
+						<li><a href="./index.html">首页</a></li>
+						<li><a href="./manner.html">框架手册</a></li>
+						<li><a href="./OAM_index.html">OAM手册</a></li>
+						<li><a href="https://coding.net/u/Jokin/p/TwocolaPHPEngine/git" target="_blank">下载</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+			<!-- Main -->
+				<section id="main" class="wrapper">
+					<div class="inner">
+						<h1 class="major">TemplateEngine v1.1 开发手册</h1>
+	          <div class="inner">
+	            <p>
+	              <ul>
+	                <li><a href="#Start">模板引擎基础</a></li>
+	                <li><a href="#Tag">模板标签</a></li>
+                  <ol>
+                    <li><a href="#Volist">Volist循环标签</a></li>
+                    <li><a href="#Empty">Empty空判断</a></li>
+                    <li><a href="#NotEmpty">NotEmpty非空判断</a></li>
+                    <li><a href="#IF">IF条件</a></li>
+                    <li><a href="#MagicTag">魔术标签</a></li>
+                    <li><a href="#Var">变量引用</a></li>
+                    <li><a href="#SVar">特殊变量引用</a></li>
+                    <li><a href="#Con">常量引用</a></li>
+                    <li><a href="#Include">模板引用</a></li>
+                    <li><a href="#Url">路径生成</a></li>
+                  </ol>
+	                <li><a href="#Methods">模板方法</a></li>
+	                <li><a href="#Logs">Debug日志</a></li>
+								</ul>
+	            </p>
+	          </div>
+					</div>
+				</section>
+
+
+			<!-- Start -->
+				<section id="Start" class="wrapper">
+					<div class="inner">
+						<h1 class="major">模板引擎基础</h1>
+	          <div class="inner">
+              <p>TCE中的模板引擎较为简易，但满足一般情况下的使用需求。</p>
+              <p>TCE中预存了内置模板（非H5模板）：类库文件夹下 <strong>Tpl</strong>文件夹。一般情况下不建议修改模板以避免程序出现错误。</p>
+              <p>应用中的模板文件请存放于应用文件夹 <strong>/View/{Controller}</strong> 路径下，该路径下的css文件夹、js文件夹、static文件夹、img文件夹需要手动创建，模板中的方法可以进行自动调用（详细请查看 <strong>模板标签</strong> ）。</p>
+              <p>引擎获取所需模板失败时，框架会报错。</p>
+              <p>引擎中大部分方法可在Controller中使用。</p>
+	          </div>
+					</div>
+				</section>
+
+			<!-- Tag -->
+				<section id="Tag" class="wrapper">
+					<div class="inner">
+						<h1 class="major">模板标签</h1>
+	          <div class="inner">
+
+              <h3 id="Volist">Volist循环标签</h3>
+              <p>该标签可参考PHP中的For函数。Key参数可以省略。该函数不区分大小写。</p>
+              <pre>
+                <code>&lt;Volist name="" Value="" Key="键值"&gt;&lt;/volist&gt;</code>
+              </pre>
+
+              <hr />
+
+              <h3 id="Empty">Empty空判断</h3>
+              <p>该标签可参考PHP中的empty函数。else可以省略。该函数不区分大小写。</p>
+              <pre>
+                <code>&lt;Empty Name=""&gt;
+  &lt;else /&gt;
+&lt;/Empty&gt;</code>
+              </pre>
+
+              <hr />
+
+              <h3 id="NotEmpty">NotEmpty非空判断</h3>
+              <p>该标签与Empty标签相反。else可以省略。该函数不区分大小写。</p>
+              <pre>
+                <code>&lt;NotEmpty Name=""&gt;
+  &lt;else /&gt;
+&lt;/NotEmpty&gt;</code>
+              </pre>
+
+              <hr />
+
+              <h3 id="IF">IF条件</h3>
+              <p>该标签可参考PHP中的if函数。else可以省略。该函数不区分大小写。</p>
+              <pre>
+                <code>&lt;If Condition=""&gt;
+  &lt;else /&gt;
+  &lt;else condition="" /&gt;
+&lt;/If&gt;</code>
+              </pre>
+
+              <hr />
+
+              <h3 id="MagicTag">魔术标签</h3>
+              <p><strong>此版本中该标签区分大小写</strong>，该标签包含以下几种格式：</p>
+              <p>
+                <ul>
+                  <li>__CSS:xxx__</li>
+                  <li>__JS:xxx__</li>
+                  <li>__IMG:xxx__</li>
+                  <li>__STATIC:xxx__</li>
+                </ul>
+              </p>
+              <p>以上标签分别替换该模板目录下的css文件夹、js文件夹、img文件夹、static文件夹中对应文件的路径。</p>
+              <p>*注意双下划线</p>
+
+              <hr />
+
+              <h3 id="Var">变量引用</h3>
+              <p>该标签包含以下几种格式 <strong>推荐使用第一种</strong> ：</p>
+              <p>
+                <ol>
+                  <li>{$var}</li>
+                  <li>`$var`</li>
+                </ol>
+              </p>
+              <p>该标签会读取通过assign传递的变量并显示。</p>
+
+              <hr />
+
+              <h3 id="SVar">特殊变量引用</h3>
+              <p> <strong>此版本中该标签区分大小写</strong>，包含以下几种格式：</p>
+              <p>
+                <ul>
+                  <li>{__COOKIE:xxx__}</li>
+                  <li>{__SESSION:xxx__}</li>
+                  <li>{__SERVER:xxx__}</li>
+                </ul>
+              </p>
+              <p>该标签会读取$_XXX[xxx]中的值。</p>
+
+              <hr />
+
+              <h3 id="Con">常量引用</h3>
+              <p> <strong>此版本中该标签区分大小写</strong>，包含以下几种格式：</p>
+              <p>
+                <ul>
+                  <li>{__xxx__}</li>
+                </ul>
+              </p>
+              <p>该标签会读取对应常量中的值，不存在则不显示。</p>
+
+              <hr />
+
+              <h3 id="Include">模板引用</h3>
+              <p>该函数用于加载模板，Type参数可以省略，该函数不区分大小写。</p>
+              <p><strong>对应文件名需要与模板文件名一致</strong></p>
+              <p>
+              <pre>
+                <code>&lt;Include File="" Type=""&gt;</code>
+              </pre>
+
+              </p>
+              <p>该标签会加载并显示对应文件夹下对应的模板（加载位置为被读取文件的尾部）。</p>
+              <pre>
+                <code>&lt;!-- 自动加载模板与其对应的css/js文件 --&gt;
+&lt;Include File="a" Type="autoheader"&gt;</code>
+              </pre>
+              <p>以下代码会加载公共模板中header.tpl对应的css/js文件</p>
+              <pre>
+                <code>&lt;!-- 自动加载公共模板中header.tpl并加载对应css/js文件 --&gt;
+&lt;Include File="PUBLIC-header" Type="autoheader"&gt;</code>
+              </pre>
+
+              <hr />
+
+              <h3 id="Url">路径生成</h3>
+              <p>该函数用于生成路径，使用该函数可避免开发时的配置与运营时的配置不一致导致的错误。</p>
+              <pre>
+                <code>{:U("[PATHINFO]")}</code>
+              </pre>
+              <p>*[PATHINFO]需要替换成你需要的路径表达式，详情参见<a href="./manner_3_1.html#FrameMechanism"><strong>访问机制</strong></a></p>
+
+	          </div>
+					</div>
+				</section>
+
+			<!-- Methods -->
+				<section id="Methods" class="wrapper">
+					<div class="inner">
+						<h1 class="major">模板方法</h1>
+	          <div class="inner">
+
+              <table>
+                <tr>
+                  <th>方法</th>
+                  <th>方法用途</th>
+                  <th>备注</th>
+                </tr>
+
+                <tr>
+                  <td>assign(变量名,变量)</td>
+                  <td>传递变量到模板</td>
+                  <td>常在Controller中使用</td>
+                </tr>
+
+                <tr>
+                  <td>show([title])</td>
+                  <td>展示模板</td>
+                  <td>参数title填写将传递$TITLE变量到模板</td>
+                </tr>
+
+                <tr>
+                  <td>showError(errCode,error)</td>
+                  <td>显示错误</td>
+                  <td>errCode填写错误代码，error填写错误原因</td>
+                </tr>
+
+                <tr>
+                  <td>showContent(content)</td>
+                  <td>展示处理过的内容</td>
+                  <td>此方法先按处理模板的流程处理content并显示</td>
+                </tr>
+
+              </table>
+
+              <p>*更多高级函数请查看Template/Template.class.php</p>
+
+	          </div>
+					</div>
+				</section>
+
+			<!-- Logs -->
+				<section id="Logs" class="wrapper">
+					<div class="inner">
+						<h1 class="major">Debug日志</h1>
+	          <div class="inner">
+
+							<ul>
+								<li>暂无Debug日志</li>
+							</ul>
+
+	          </div>
+					</div>
+				</section>
+
+			</div>
+
+	  <!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Twocola Studio All rights reserved.</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+  	</body>
+  </html>

@@ -1,0 +1,47 @@
+﻿框架设置与使用
+
+1、TCE框架只有唯一入口，默认是index.php（更多入口请手动在入口目录设置.htaccess）
+
+2、入口设置
+	常量配置
+		1）APP_DEBUG:TRUE/FALSE 调试模式，FALSE状态下将关闭报错。
+		2）APP_PATH:[./Applications] 应用文件夹位置，默认为./Applications。
+		3）APP_CONFIG_MODE:include/default 获取用户配置方式，默认为include方式，default状态下不会读取config.inc.php。
+		4）ENG_OUTSIDE_CONFIG:TRUE/FALSE; 是否允许不设置外部全局配置。文件存在仍然会读取配置，默认不允许。
+	引入框架
+		require($file); $file框架文件位置，推荐./twocola/TCPHPEngine.php
+
+3、外部配置
+	全局配置
+		1）配置文件名：config.inc.php
+		2）配置格式：$config = array([配置名称]=>[配置内容]);
+		3）常见配置：
+			APP_MODULE 用于创建MODULE（应用）
+			APP_TPL_FIX 自定义模板格式，默认.tpl
+			SYSTEM_CONSTANT:TRUE/FALSE 常规设置检查，默认为FALSE
+			SYSTEM_SUFFIX 伪静态后缀，必须是.xxx的形式，否则可能会出错。
+			SYSTEM_DEFAULT_MODULE 默认MODULE（应用）
+			APP_API_PARA 模式切换get名称，若设置为app_type,则在地址中加入GET"app_type=xxx"就可以进行模式切换，一般情况切换为api模式。详情请见API模式。
+		4）发件系统配置：
+			EMAIL_CHARSET 推荐设置为UTF-8或GB2312
+			EMAIL_HOST 发件服务器地址
+			EMAIL_PORT 端口
+			EMAIL_ADDRESS 你的邮箱地址
+			EMAIL_PASSWORD 你的邮箱密码
+			以上配置具体方法请见phpmailer的设置
+		5）应用设置：
+			APP_NAME 应用名称
+			APP_RESPONSE:TURE/FALSE 当为FALSE时，应用将不能被访问。（并非为了安全推出这个功能）。
+			APP_DB_TYPE:mysqli 数据库类型，其他类型的数据库请自行安装模块。
+			APP_DB_HOST 数据库地址
+			APP_DB_PORT 数据库端口
+			APP_DB_NAME 数据库名称
+			APP_DB_USERNAME 数据库用户名
+			APP_DB_PASSWORD 数据库密码
+			APP_DB_PREFIX 数据库前缀
+			也可以重新写入全局配置
+		6）高级设置：
+			SUBDOMAIN_BINDING 子域名绑定应用，使用设置的子域名访问会载入指定的应用。该配置会被#域名绑定应用#配置项覆盖。该配置使用数组array(子域名=>MODULE)的方法配置。所有符合条件的子域名都会使用该设置进行载入。如设置a子域名访问default模块，则a.xxx.com、a.xxx.cn等都会访问a子域名指定的应用。只获取第一个.前的单词，如a.b.xxx.com也会访问子域名a设置的应用。
+			DOMAIN_BINDING 域名绑定应用，使用设置的域名访问会载入指定的应用，该配置不会被覆盖。
+
+#Notice:官方入口文件注释中的WARNING部分为测试或开发中的功能，小白请勿随意进行调试，删除即可。
