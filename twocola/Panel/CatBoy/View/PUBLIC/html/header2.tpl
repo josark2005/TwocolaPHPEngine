@@ -8,6 +8,8 @@
   url_change_tce_settings = "{:U('settings/tce_change?{__API_PORTAL_KEY__}={__API_PORTAL_VALUE__}')}";
   // OAM设置修改Api
   url_change_oam_settings = "{:U('settings/oam_change?{__API_PORTAL_KEY__}={__API_PORTAL_VALUE__}')}";
+  // 创建应用
+  url_generate_app = "{:U('app/generate?{__API_PORTAL_KEY__}={__API_PORTAL_VALUE__}')}";
 </script>
 </head>
 <body>

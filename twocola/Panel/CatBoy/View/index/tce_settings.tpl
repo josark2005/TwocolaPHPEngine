@@ -50,6 +50,11 @@
             <input id="APP_DEFAULT" type="text" class="am-form-field" value="{$config['APP_DEFAULT']}">
           </div>
 
+          <span class="warning">
+            *如果您需要将Panel设置为默认应用，请将"Panel入口方式"设置为“自动”
+            （在设置文件中将"PANEL_PORTAL"设置为2）。
+          </span>
+
           <h4>Api设置</h4>
 
           <div id="tce_settings_warning" class="am-alert am-alert-danger am-animation-shake am-hide" data-am-alert>

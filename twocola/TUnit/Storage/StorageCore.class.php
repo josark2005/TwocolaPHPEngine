@@ -10,21 +10,34 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎基本存储核心
-** Ver 1.1
+** Ver 1.2
 */
 namespace TUnit\Storage;
 class StorageCore{
-	//文件是否存在，存在true，否则false
+	/**
+	 * 判断文件是否存在
+	 * @param  string $filename
+	 * @return boolean
+	**/
 	static public function FileExist($filename){
 		return is_file($filename);
 	}
-	//读入文件，成功返回文件内容，否则false
+	/**
+	 * 读入文件
+	 * @param  string $filename
+	 * @return boolean
+	**/
 	static public function Read($filename){
 		if( !self::FileExist($filename) ) return false ;
 		$content = file_get_contents($filename) ;
 		return $content;
 	}
-	//创建并存储文件（内容写入空文件或不存在的文件）
+	/**
+	 * 创建并写入文件
+	 * @param  string $filename
+	 * @param  string $content
+	 * @return boolean
+	**/
 	static public function CreateSave($filename,$content){
 		if( is_file($filename) ) return false ;	//文件已存在
 		$dir = dirname($filename);
@@ -34,11 +47,21 @@ class StorageCore{
 		if(false === file_put_contents($filename,$content)) return false ;
 		return true;
 	}
-	//覆盖存储文件
+	/**
+	 * 覆盖存储文件
+	 * @param  string $filename
+	 * @param  string $content
+	 * @return boolean
+	**/
 	static public function Put($filename,$content){
 		return file_put_contents($filename,$content);
 	}
-	//存储文件（头）
+	/**
+	 * 在文件头部存储
+	 * @param  string $filename
+	 * @param  string $content
+	 * @return boolean
+	**/
 	static private function SaveEnd($filename,$content){
 		$position="a";
 		if(self::FileExist($filename)){
@@ -53,7 +76,12 @@ class StorageCore{
 			return false;
 		}
 	}
-	//存储文件（尾）
+	/**
+	 * 在文件尾部存储
+	 * @param  string $filename
+	 * @param  string $content
+	 * @return boolean
+	**/
 	static private function SaveHead($filename,$content){
 		$position="h";
 		if(self::FileExist($filename)){
@@ -68,17 +96,29 @@ class StorageCore{
 			return false;
 		}
 	}
-	//删除文件，文件不存在则返回false
+	/**
+	 * 删除文件
+	 * @param  string $filename
+	 * @return boolean
+	**/
 	static public function DelFile($filename){
 		return is_file($filename) ? unlink($filename) : false ;
 	}
 
-	//文件夹是否存在
+	/**
+	 * 判断文件夹是否存在
+	 * @param  string $name
+	 * @return boolean
+	**/
 	static public function FolderExist($name){
 		return is_dir($name);
 	}
 
-	//文件夹是否为空，文件夹不存在则返回false
+	/**
+	 * 判断文件夹是否为空
+	 * @param  string $name
+	 * @return boolean
+	**/
 	static public function FolderEmpty($name){
 		$name = $name;
 		if(self::FolderExist($name)){
@@ -97,13 +137,46 @@ class StorageCore{
 			return false;
 		}
 	}
-	//创建文件夹
+	/**
+	 * 创建文件夹
+	 * @param  string $name
+	 * @return boolean
+	**/
 	static public function CreateFolder($name){
 		return mkdir($name,0777,true);
 	}
-	//创建空文件，文件已存在则返回false
+	/**
+	 * 创建空文件
+	 * @param  string $filename
+	 * @return bool
+	**/
 	static public function CreateEmptyFile($filename){
 		self::CreateSave($filename,"");
 	}
+	/**
+	* 删除目录及目录下所有文件或删除指定文件
+	* @param string $path   待删除目录路径
+	* @param int $delDir 是否删除目录，1或true删除目录，0或false则只删除文件保留目录（包含子目录）
+	* @return bool 返回删除状态
+	**/
+	function DelDir($path, $delDir = true) {
+    $handle = opendir($path);
+    if ($handle) {
+      while (false !== ( $item = readdir($handle) )) {
+        if ($item != "." && $item != "..")
+        is_dir("$path/$item") ? delDirAndFile("$path/$item", $delDir) : unlink("$path/$item");
+      }
+      closedir($handle);
+      if ($delDir)
+        return rmdir($path);
+    }else {
+      if (file_exists($path)) {
+        return unlink($path);
+      } else {
+        return FALSE;
+      }
+    }
+	}
+
 }
 ?>

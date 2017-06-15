@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** Panel驱动类
-** Version 1.0.6.1301
+** Version 1.0.6.1601
 */
 namespace TUnit\Drivers;
 class Panel {
@@ -35,11 +35,8 @@ class Panel {
     }
     // 判断是否正确连接Panel
     if( !is_dir(self::$PATH.$D.C("PANEL_NAME"))  ){
-      // 获取真实APP路径
-      $preg = preg_match("/^\.(.+)(?:[\/|\\\])*$/U" ,C("APP_PATH") ,$match);
-      if($preg != 0){
-        C("APP_PATH" ,$match[1]);
-      }
+      // 修正应用目录进行报错
+      C("APP_PATH" ,\TUnit\TLaungher::getRealPath(C("APP_PATH")) );
       \TUnit\Template\Template::showError("E_P01_NFP","无法找到Panel");
       exit();
     }
@@ -66,7 +63,8 @@ class Panel {
    * @return void
   **/
   static private function enter(){
-    C("APP_PATH" ,self::$PATH);     // 修改为Panel路径
+    // 进入Panel
+    C("APP_PATH" ,\TUnit\TLaungher::getRealPath(self::$PATH) );
     C("IS_PANEL" ,true);                // 标记Panel模式
     C("APP" ,C("PANEL_NAME"));          // 修改为Panel名称
     C("APP_DEFAULT" ,C("PANEL_NAME"));  // 错误阻止机制

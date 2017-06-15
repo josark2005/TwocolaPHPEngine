@@ -87,3 +87,39 @@ function change_oam_settings(action,type,name,value){
   });
   return state;
 }
+
+function generate_app(app){
+  var state = null;
+  $.ajax({
+    url : url_generate_app,
+    type : "post",
+    dataType : "json",
+    data : {"app":app},
+    timeout : 20000,
+    async : false,
+    complete : function(XMLHTTPRequest,status){
+      if(status=="timeout"){
+        alert("连接超时,请稍候再试。");
+        state = false;
+      }
+    },
+    success : function(data){
+      var system_status = data.System.status;
+      var system_message = data.System.message;
+      var app_status = data.App.status;
+      var app_errno = data.App.errno;
+      var app_error = data.App.error;
+      if(system_status==0){
+        alert("系统暂停访问："+system_message);
+        state = false;
+      }else if(app_status==0){
+        alert("("+data.App.errno+")发生错误："+data.App.error);
+        state = false;
+      }else{
+        alert(data.App.error);
+        state = true;
+      }
+    }
+  });
+  return state;
+}

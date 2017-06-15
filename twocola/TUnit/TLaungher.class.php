@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.1.6.0901
+** Ver 1.1.6.1501
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -66,10 +66,7 @@ class TLaungher {
     // Panel驱动
     Drivers\Panel::driver();
     // 获取真实APP路径
-    $preg = preg_match("/^\.(.+)(?:[\/|\\\])*$/U" ,C("APP_PATH") ,$match);
-    if($preg != 0){
-      C("APP_PATH" ,$match[1]);
-    }
+    C("APP_PATH" ,self::getRealPath(C("APP_PATH")) );
     // 检查、修复、创建应用
     self::GeneralConsturct();
     // 设置当前模块、控制器、行为
@@ -157,11 +154,15 @@ class TLaungher {
     return ;
   }
 
-  static private function CreateApp($AppName){
+  static public function CreateApp($AppName,$AppPath=false){
     $D = DIRECTORY_SEPARATOR;
     $CL = CLASS_EXT;
     $CO = CONFIG_EXT;
-    $APP_PATH = ".".C("APP_PATH");
+    if( $AppPath == false ){
+      $APP_PATH = ".".C("APP_PATH");
+    }else{
+      $APP_PATH = ".".self::getRealPath($AppPath);
+    }
     // Application
     self::CreateFolder( $APP_PATH );
     self::CreateFolder( $APP_PATH .$D.$AppName);
@@ -191,8 +192,8 @@ class TLaungher {
     self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC".$D."static");
     // Files
     $Controller =   $APP_PATH .$D.$AppName.$D."Controller".$D;
-    self::SaveFile( $APP_PATH .$D.$AppName.$D."config".$CO            ,"App/App_Default_Config{$CO}"                    ,1 ,$AppName);
-    self::SaveFile( $APP_PATH .$D.$AppName.$D."Api".$D."index".$CL    ,"App/App_Default_Api{$CL}"                       ,1 ,$AppName);
+    self::SaveFile( $APP_PATH .$D.$AppName.$D."config".$CO         ,"App/App_Default_Config{$CO}"                    ,1 ,$AppName);
+    self::SaveFile( $APP_PATH .$D.$AppName.$D."Api".$D."index".$CL ,"App/App_Default_Api{$CL}"                       ,1 ,$AppName);
     self::SaveFile($Controller."Common".$D."BehaviorCommon".$CL    ,"App/Controller/App_Default_BehaviorCommon{$CL}" ,1 ,$AppName);
     self::SaveFile($Controller."Behavior".$D."indexBehavior".$CL   ,"App/Controller/App_Default_Behavior{$CL}"       ,1 ,$AppName);
     self::SaveFile($Controller."Displayer".$D."indexDisplayer".$CL ,"App/Controller/App_Default_Displayer{$CL}"      ,1 ,$AppName);
@@ -247,6 +248,19 @@ class TLaungher {
     return $content;
   }
 
-//--
+  /**
+   * 获取真实地址
+   * @param  void
+   * @return void
+  **/
+  static public function getRealPath($path){
+    // 获取真实APP路径
+    $preg = preg_match("/^\.(.+)(?:[\/|\\\])*$/U" ,$path ,$match);
+    if($preg != 0){
+      $path = $match[1];
+    }
+    return $path;
+  }
+
 }
 ?>

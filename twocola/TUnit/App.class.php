@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** APP核心类
-** Version: 1.0.5.2801
+** Version: 1.0.6.1501
 */
 namespace TUnit;
 class App {
@@ -44,6 +44,15 @@ class App {
     }else{
       Template\Template::show404();
       exit();
+    }
+  }
+
+  static public function AppExist($app){
+    $path = ".".TLaungher::getRealPath(APP_PATH);
+    if(Storage\StorageCore::FolderExist($path.DIRECTORY_SEPARATOR.$app)){
+      return true;
+    }else{
+      return false;
     }
   }
 
