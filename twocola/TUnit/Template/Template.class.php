@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.1.6.1401
+** Ver 1.1.6.2101
 */
 namespace TUnit\Template;
 class Template {
@@ -475,10 +475,10 @@ class Template {
             // 自动载入配套js/css
             $extra = "";
             if(file_exists($P_APP_TPL.$CONTROLLER."{$D}css{$D}".$METHOD.$CSS)){
-              $extra .= "<link rel='stylesheet' href='__CSS:{$METHOD}__'>";
+              $extra .= "<link rel=\"stylesheet\" href=\"__CSS:{$METHOD}__\">";
             }
             if(file_exists($P_APP_TPL.$CONTROLLER."{$D}js{$D}".$METHOD.$JS)){
-              $extra .= "<script src='__JS:{$METHOD}__'></script>";
+              $extra .= "<script type=\"text/javascript\" src=\"__JS:{$METHOD}__\"></script>";
             }
             $text = \TUnit\Storage\StorageCore::Read($P_APP_PUBLIC_TPL."html{$D}{$matches[2][$i]}{$TPL}");
             $content = (!$text) ? $content : str_replace($origin,"{$text}\n{$extra}",$content);

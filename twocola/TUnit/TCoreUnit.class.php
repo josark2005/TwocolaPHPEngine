@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心引导类
-** Ver 1.1.5.2201
+** Ver 1.1.6.2201
 */
 namespace TUnit;
 class TCoreUnit {
@@ -38,12 +38,15 @@ class TCoreUnit {
    * @return void
   */
   static public function autoload($class){
-    $class = DIRECTORY_SEPARATOR.$class;
-    $class = str_replace("\\",DIRECTORY_SEPARATOR,$class);
-    $path = TCE_PATH.$class.CLASS_EXT;
+    $class = "\\".$class;
+    $path = str_replace("\\" ,DIRECTORY_SEPARATOR ,TCE_PATH.$class.CLASS_EXT);
+    $path2 = str_replace("\\" ,DIRECTORY_SEPARATOR ,TCE_PATH."\TUnit".$class.CLASS_EXT);
     // 引擎内搜索
     if(is_file($path)){
       include_once($path);
+      return ;
+    }else if( is_file($path2) ){
+      include_once($path2);
       return ;
     }
     // 应用内搜索

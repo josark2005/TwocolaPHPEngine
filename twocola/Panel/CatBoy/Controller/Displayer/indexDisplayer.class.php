@@ -36,12 +36,13 @@ class indexDisplayer extends indexBehavior{
     $this->show();
   }
   public function app_delete(){
+    $app_list = \TUnit\App::AppList();
+    $this->assign("app_list",$app_list);
     $this->show();
   }
   public function app_settings(){
     $this->show();
   }
-
   // 参与开发
   public function dev_tce(){
     $this->show();
@@ -49,7 +50,6 @@ class indexDisplayer extends indexBehavior{
   public function dev_panel(){
     $this->show();
   }
-
   // 404页面
   public function pnf(){
     $this->show();

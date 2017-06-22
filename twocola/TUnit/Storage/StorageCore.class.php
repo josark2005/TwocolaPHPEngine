@@ -159,12 +159,12 @@ class StorageCore{
 	* @param int $delDir 是否删除目录，1或true删除目录，0或false则只删除文件保留目录（包含子目录）
 	* @return bool 返回删除状态
 	**/
-	function DelDir($path, $delDir = true) {
+	static public function DelDir($path, $delDir = true) {
     $handle = opendir($path);
     if ($handle) {
       while (false !== ( $item = readdir($handle) )) {
         if ($item != "." && $item != "..")
-        is_dir("$path/$item") ? delDirAndFile("$path/$item", $delDir) : unlink("$path/$item");
+        is_dir("$path/$item") ? self::DelDir("$path/$item", $delDir) : unlink("$path/$item");
       }
       closedir($handle);
       if ($delDir)

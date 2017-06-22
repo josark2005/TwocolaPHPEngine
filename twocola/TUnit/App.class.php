@@ -10,10 +10,11 @@
 // +----------------------------------------------------------------------
 /*
 ** APP核心类
-** Version: 1.0.6.1501
+** Version: 1.0.6.2101
 */
 namespace TUnit;
 class App {
+
   /**
    * 运行应用
    * @param  void
@@ -47,10 +48,40 @@ class App {
     }
   }
 
+  /**
+   * 判断应用是否存在
+   * @param  void
+   * @return void
+  **/
   static public function AppExist($app){
-    $path = ".".TLaungher::getRealPath(APP_PATH);
+    $path = ".".TLaungher::GetRealPath(APP_PATH);
     if(Storage\StorageCore::FolderExist($path.DIRECTORY_SEPARATOR.$app)){
       return true;
+    }else{
+      return false;
+    }
+  }
+
+  /**
+   * 获取应用一览
+   * @param  void
+   * @return void
+  **/
+  static public function AppList($path = APP_PATH){
+    $path = ".".TLaungher::GetRealPath($path);
+    // 判断目录是否存在
+    if( !is_dir($path) ){
+      return false;
+    }
+    $dh = opendir($path);
+    $dir = array();  // 初始化
+    while ( ($t_dir = readdir($dh)) !== false ) {
+      if($t_dir != "." && $t_dir != ".."){
+        $dir[] = $t_dir;
+      }
+    }
+    if( !empty($dir) ){
+      return $dir;
     }else{
       return false;
     }

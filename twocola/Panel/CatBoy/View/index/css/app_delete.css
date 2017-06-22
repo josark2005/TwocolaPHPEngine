@@ -1,0 +1,15 @@
+.bottom-space {
+  margin-bottom: 5px;
+}
+.warning {
+  color: rgb(221, 81, 76);
+}
+.am-g.list {
+  border-bottom: solid 1px #e4e4e4;
+}
+.am-g.list:last-child {
+  border-bottom: 0px;
+}
+.am-g.list:hover{
+  background-color: #f0f0f0;
+}

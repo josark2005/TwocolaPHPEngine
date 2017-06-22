@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.1.6.1501
+** Ver 1.1.6.2101
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -66,7 +66,7 @@ class TLaungher {
     // Panel驱动
     Drivers\Panel::driver();
     // 获取真实APP路径
-    C("APP_PATH" ,self::getRealPath(C("APP_PATH")) );
+    C("APP_PATH" ,self::GetRealPath(C("APP_PATH")) );
     // 检查、修复、创建应用
     self::GeneralConsturct();
     // 设置当前模块、控制器、行为
@@ -161,7 +161,7 @@ class TLaungher {
     if( $AppPath == false ){
       $APP_PATH = ".".C("APP_PATH");
     }else{
-      $APP_PATH = ".".self::getRealPath($AppPath);
+      $APP_PATH = ".".self::GetRealPath($AppPath);
     }
     // Application
     self::CreateFolder( $APP_PATH );
@@ -253,11 +253,12 @@ class TLaungher {
    * @param  void
    * @return void
   **/
-  static public function getRealPath($path){
+  static public function GetRealPath($path){
     // 获取真实APP路径
     $preg = preg_match("/^\.(.+)(?:[\/|\\\])*$/U" ,$path ,$match);
     if($preg != 0){
-      $path = $match[1];
+      $path = str_replace("\\",DIRECTORY_SEPARATOR,$match[1]);
+      $path = str_replace("/",DIRECTORY_SEPARATOR,$path);
     }
     return $path;
   }

@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** 数据库操作驱动
-** Version 1.0.5.2801
+** Version 1.0.6.2201
 */
 namespace TUnit\Database;
 class DatabaseLaungher {
