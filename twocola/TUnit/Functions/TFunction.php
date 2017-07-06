@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心方法
-** Ver 1.3.6.1301
+** Ver 1.3.7.0601
 */
 /**
  * 读取存储配置
@@ -122,16 +122,17 @@ function U($paths){
  * @param  err string
  * @return void
 **/
-function E($err){
-  if(APP_DEBUG == true){
-    ob_end_clean();
-    $tpl = getPresetTpl("TUnit/ErrorException");
-    //--处理模板
-    exit($tpl);
+function E($rea="框架系统报错"){
+  ob_clean();
+  if( APP_DEBUG != false ){
+    $tpl = getPresetTpl("TUnit/Error/Error");
+    $content = str_replace("{\$error}",$rea,$tpl);
+    echo $content;
   }else{
-    ob_end_clean();
-    exit(getPresetTpl("TUnit/ErrorException_Secure"));
+    $tpl = getPresetTpl("TUnit/Error/ErrorException_Secure");
+    echo $content;
   }
+  exit();
 }
 /**
  * COOKIE操作
@@ -195,19 +196,21 @@ function getPresetTpl($name){
   }
 }
 /**
- * 获取用户设置模板
+ * 显示用户设置模板
  * @param  name string
- * @return string/boolean
+ * @return void
 **/
-function getUserTpl($name){
+function showUserTpl($name){
   $D = DIRECTORY_SEPARATOR;
   $name = str_replace("\\" ,$D ,$name);
   // 判断是否为相对路径
   if( substr($name,0,1) == "." ){
     if( file_exists($name) ){
-      return $name;
+      include $name;
+      return ;
     }else{
-      return false;
+      \TUnit\Template\Template::showError("E_S01_T1","自定义模板文件不存在。");
+      return ;
     }
   }else{
     // 非相对路径 进行Path解析
@@ -215,15 +218,13 @@ function getUserTpl($name){
     $app     = (isset($p['APP'])&&!empty($p['APP']))               ? $p['APP']        : C("APP_DEFAULT");
     $ctrl    = (isset($p['CONTROLLER'])&&!empty($p['CONTROLLER'])) ? $p['CONTROLLER'] : "index";
     $method  = (isset($p['METHOD'])&&!empty($p['METHOD']))         ? $p['METHOD']     : "index";
-    $tpl = ".".C("APP_PATH").$D.$app.$D."View".$D.$ctrl.$D.$method.C("TPL_EXT");
-    if( file_exists($tpl) ){
-      $file = file_get_contents($tpl);
-      \TUnit\Template\Template::ProcessTpl($file);
-      $file = \TUnit\Template\Template::GeneralCache(false,"_404");
-      return $file;
-    }else{
-      return false;
-    }
+    $path['APP'] = $app;
+    $path['CONTROLLER'] = $ctrl;
+    $path['METHOD'] = $method;
+    // 重定义Path
+    C("APP",$path['APP']);
+    C("CONTROLLER",$path['CONTROLLER']);
+    C("METHOD",$path['METHOD']);
+    \TUnit\App::load($path);
   }
-
 }

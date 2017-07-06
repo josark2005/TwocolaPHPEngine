@@ -21,9 +21,22 @@ class App {
    * @return void
   **/
   static public function run(){
-    $APP        =  C("APP");
-    $CONTROLLER =  C("CONTROLLER");
-    $METHOD     =  C("METHOD");
+    $path['APP']        =  C("APP");
+    $path['CONTROLLER'] =  C("CONTROLLER");
+    $path['METHOD']     =  C("METHOD");
+    self::load($path);
+  }
+
+  /**
+   * 载入应用
+   * @param  array path
+   * @return void
+  **/
+  static public function load( $path ){
+    // 分析路径
+    $APP        =  $path['APP'];
+    $CONTROLLER =  $path['CONTROLLER'];
+    $METHOD     =  $path['METHOD'];
     // 判断配置是否正确
     $D  = DIRECTORY_SEPARATOR;
     $CP = ".".C("APP_PATH").$D.$APP."{$D}Controller{$D}";

@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.1.6.2101
+** Ver 1.1.7.0601
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -28,13 +28,7 @@ class TLaungher {
     if( C("APP_RESPONSE") == false ){
       $path = C("TPL");
       if( isset($path['NoResponse']) && $path['NoResponse'] != false ){
-        $file = getUserTpl($path['NoResponse']);
-        if( $file == false ){
-          Template\Template::showError("E_S01_T0","自定义模板文件不存在。");
-          return ;
-        }else{
-          include $file;
-        }
+        showUserTpl($path['NoResponse']);
       }else{
         $tpl = getPresetTpl("App/Error/NoResponse");
         Template\Template::ProcessTpl($tpl);
@@ -63,20 +57,21 @@ class TLaungher {
     $conf = TConfigCore::IO();
     // 读取全局配置
     $conf->GetConfig( ".{$D}config".C("CONFIG_EXT") );
-    // Panel驱动
-    Drivers\Panel::driver();
     // 获取真实APP路径
     C("APP_PATH" ,self::GetRealPath(C("APP_PATH")) );
+    // Panel驱动
+    Drivers\Panel::driver();
     // 检查、修复、创建应用
     self::GeneralConsturct();
     // 设置当前模块、控制器、行为
-    if(C("URL_MODE") == "0"){
+    if(C("URL_MODE") == 0){
       define("APP"        ,UrlMode\UrlResolution::safer(isset($_GET['a'])&&!empty($_GET['a']) ? $_GET['a'] : C("APP_DEFAULT")) );
       define("CONTROLLER" ,UrlMode\UrlResolution::safer(isset($_GET['c'])&&!empty($_GET['c']) ? $_GET['c'] : "index") );
       define("METHOD"     ,UrlMode\UrlResolution::safer(isset($_GET['m'])&&!empty($_GET['m']) ? $_GET['m'] : "index") );
-    }
-    if(C("URL_MODE") == "1"){
+    }else if(C("URL_MODE") == 1){
       UrlMode\UrlResolution::TCE(); // 直接定义 App/Controller/Method
+    }else{
+      E("不存在的 URL_MODE 配置！");
     }
     // 判断应用是否存在
     if( !is_dir(".".C("APP_PATH").$D.C("APP")) ){
@@ -86,12 +81,7 @@ class TLaungher {
         $conf->GetConfig(".".C("APP_PATH").$D.C("APP").$D."config".CONFIG_EXT);
         $path = C("TPL");
         if( isset($path['AppNotFound']) && $path['AppNotFound'] != false ){
-          $file = getUserTpl($path['AppNotFound']);
-          if( $file == false ){
-            Template\Template::showError("E_S01_T2","自定义模板文件不存在。");
-          }else{
-            include $file;
-          }
+          showUserTpl($path['AppNotFound']);
         }else{
           $tpl = getPresetTpl("App/Error/AppNotFound");
           Template\Template::ProcessTpl($tpl);
@@ -101,12 +91,7 @@ class TLaungher {
       }else{
         $path = C("TPL");
         if( isset($path['AppNotFound']) && $path['AppNotFound'] != false ){
-          $file = getUserTpl($path['AppNotFound']);
-          if( $file == false ){
-            Template\Template::showError("E_S01_T2","自定义模板文件不存在。");
-          }else{
-            include $file;
-          }
+          showUserTpl($path['AppNotFound']);
         }else{
           $tpl = getPresetTpl("App/Error/AppNotFound");
           Template\Template::ProcessTpl($tpl);
@@ -130,7 +115,7 @@ class TLaungher {
       E("[TLaungher|PRE] 配置 APP_PATH 未定义！");
     }
     // 模式配置检查
-    if(URL_MODE==1 && !Storage\StorageCore::FileExist(PATH.DIRECTORY_SEPARATOR.".htaccess")){
+    if( URL_MODE==1 ){
       self::SaveFile(PATH.DIRECTORY_SEPARATOR.".htaccess" ,"TUnit/Default_Htaccess" ,1);
     }
     // 创建全局配置文件

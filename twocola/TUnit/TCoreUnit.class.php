@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心引导类
-** Ver 1.1.6.2201
+** Ver 1.1.7.0601
 */
 namespace TUnit;
 class TCoreUnit {
@@ -176,16 +176,12 @@ class TCoreUnit {
       // 定向到错误页面
       $path = C("TPL");
       if( isset($path['Error']) && $path['Error'] != false ){
-        if( !is_file($path['Error']) ){
-          self::showError("E_S01_T3","自定义模板文件不存在。");
-        }else{
-          $tpl = file_get_contents($path['Error']);
-        }
+        showUserTpl($path['Error']);
       }else{
         $tpl = getPresetTpl("TUnit/Error/ErrorException_Secure");
+        Template\Template::ProcessTpl($tpl);
+        include ( Template\Template::GeneralCache(false,"_Error") );
       }
-      Template\Template::ProcessTpl($tpl);
-      include ( Template\Template::GeneralCache(false,"_Error") );
       return ;
     }
     exit;

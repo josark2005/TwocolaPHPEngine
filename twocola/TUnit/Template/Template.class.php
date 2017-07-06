@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.1.6.2101
+** Ver 1.1.7.0601
 */
 namespace TUnit\Template;
 class Template {
@@ -42,12 +42,7 @@ class Template {
       // 不存在对应模板文件
       $path = C("TPL");
       if( isset($path['PageNotFound']) && $path['PageNotFound'] != false ){
-        $file = getUserTpl($path['PageNotFound']);  // 获取用户自定义模板
-        if( $file == false ){
-          self::showError("E_S01_T1","自定义模板文件不存在。");
-        }else{
-          include ( $file );
-        }
+        showUserTpl($path['PageNotFound']);  // 获取用户自定义模板
       }else{
         self::showError("E_S01_P0","模板文件不存在。");
       }
@@ -85,31 +80,21 @@ class Template {
       // 默认应用错误
       $path = C("TPL");
       if( isset($path['Error']) && $path['Error'] != false ){
-        $file = getUserTpl($path['Error']); //获取用户自定义模板
-        if( $file == false ){
-          self::showError("E_S01_T3","自定义模板文件不存在。");
-        }else{
-          include( $path['Error'] );
-        }
+        showUserTpl($path['Error']); //获取用户自定义模板
       }else{
         $tpl = getPresetTpl("TUnit/Error/ErrorException_Secure");
       }
     }
     $content = self::ProcessTpl($content);             // 处理模板
     $content = self::GeneralCache(false,"_".$errCode); // 生成缓存并获取路径
-    include $content;                                 // 展示页面
+    include $content;                                  // 展示页面
     return ;
   }
 
   static public function show404(){
     $path = C("TPL");
     if( isset($path['PageNotFound']) && $path['PageNotFound'] != false ){
-      $file = getUserTpl($path['PageNotFound']);
-      if( $file == false ){
-        self::showError("E_S01_T3","自定义模板文件不存在。");
-      }else{
-        include $file;
-      }
+      showUserTpl($path['PageNotFound']);
     }else{
       $content = getPresetTpl("APP/Error/PageNotFound");    // 获取模板
       $content = self::ProcessTpl($content);                // 处理模板
@@ -452,7 +437,7 @@ class Template {
   * @param  string  $content 内容
   * @return string  $content
   **/
-  /* 支持模板标签：<include file='PUBLIC-header' type='autoheader' /> */
+  /* 支持模板标签：<include file='PUBLIC-header' type='autoheader' > */
   static public function IncludeTpl($content){
     $D = DIRECTORY_SEPARATOR;
     $P_APP_TPL = ".".C("APP_PATH").$D.C("APP").$D."View".$D;
@@ -463,7 +448,7 @@ class Template {
     $JS = C("JS_EXT");
     $CSS = C("CSS_EXT");
     $TPL = C("TPL_EXT");
-    $pattern = "/<include file=['|\"](.+)-(.+)['|\"](?:[\s]+type=['|\"](.+)['|\"][\s]*|[\s]*)\/\>/iU";
+    $pattern = "/<include file=['|\"](.+)-(.+)['|\"](?:[\s]+type=['|\"](.+)['|\"][\s]*|[\s]*)(?:[\/][\s]*|[\s]*)\>/iU";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for($i=0;$i<count($matches[0]);$i++){
