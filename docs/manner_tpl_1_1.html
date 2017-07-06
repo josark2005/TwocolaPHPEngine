@@ -172,19 +172,19 @@
               <p><strong>对应文件名需要与模板文件名一致</strong></p>
               <p>
               <pre>
-                <code>&lt;Include File="" Type=""&gt;</code>
+                <code>&lt;Include File="" Type="" /&gt;</code>
               </pre>
 
               </p>
               <p>该标签会加载并显示对应文件夹下对应的模板（加载位置为被读取文件的尾部）。</p>
               <pre>
                 <code>&lt;!-- 自动加载模板与其对应的css/js文件 --&gt;
-&lt;Include File="a" Type="autoheader"&gt;</code>
+&lt;Include File="a" Type="autoheader" /&gt;</code>
               </pre>
               <p>以下代码会加载公共模板中header.tpl对应的css/js文件</p>
               <pre>
                 <code>&lt;!-- 自动加载公共模板中header.tpl并加载对应css/js文件 --&gt;
-&lt;Include File="PUBLIC-header" Type="autoheader"&gt;</code>
+&lt;Include File="PUBLIC-header" Type="autoheader" /&gt;</code>
               </pre>
 
               <hr />
