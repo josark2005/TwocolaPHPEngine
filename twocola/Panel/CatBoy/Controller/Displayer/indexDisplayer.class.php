@@ -4,7 +4,6 @@ use Controller\Behavior\indexBehavior;
 class indexDisplayer extends indexBehavior{
   /*Behavior与BehaviorCommon函数可以在这里直接调用*/
   public function index(){
-    getUserTpl("index/about?panel=tce");
     $this->show();
   }
   public function about(){
