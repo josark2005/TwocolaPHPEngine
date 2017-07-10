@@ -16,7 +16,7 @@
 // 基础常量定义
 define( 'FRAMENAME'      ,"Twocola PHP 引擎4.0"     );
 define( 'FRAMENAME_EN'   ,"Twocola PHP Engine V4.0" );
-define( 'VERSION'        ,"4.0.7.0601"              );
+define( 'VERSION'        ,"4.0.7.1001"              );
 
 // 版本判断
 if( version_compare(PHP_VERSION ,"5.6.0" ,"<") ){
