@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心方法
-** Ver 1.3.7.0601
+** Ver 1.3.7.1002
 */
 /**
  * 读取存储配置
@@ -123,7 +123,7 @@ function U($paths){
  * @return void
 **/
 function E($rea="框架系统报错"){
-  ob_clean();
+  ob_end_clean();
   if( APP_DEBUG != false ){
     $tpl = getPresetTpl("TUnit/Error/Error");
     $content = str_replace("{\$error}",$rea,$tpl);

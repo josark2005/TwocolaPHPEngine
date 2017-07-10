@@ -26,9 +26,25 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 
 > `大规模升级` | `v4.0及以上版本`可进行`平滑升级`（直接替换库文件夹即可）。
 
+[新增] `应用设置`APP_AUTO_FILE_VERSION，默认为true。
+
+> 开启后，使用include标签自动载入js/css文件时，框架会读取`APP_VERSION`，并给文件加上"`?ver=[APP_VERSION]`"。
+> 此功能会被include标签新增选项`css-ver`/`js-ver`覆盖。
+
+[新增] `模板引擎`include标签新增选项`css-ver`、`js-ver`。
+
+> 设置`css-ver`/`js-ver`后，自动载入的css/js文件会加上?ver=[css-ver/js-ver]。
+
 [优化] `E函数`报错机制。*(E报错不支持自定义模板)*
 
 > E报错属于框架报错，暂不支持模板函数，但可以修改报错模板。模板路径：twocola/Tpl/TUnit/Error/Error.tpl
+
+[优化] `模板引擎`运行效率。*(优化兼容上个版本)*
+
+[优化] `模板引擎`标签简化。*(优化兼容上个版本)*
+
+> 删除大部分标签最后的斜杠要求（可有可无）。
+> include标签除文件名外无需区分大小写。
 
 [优化] `自定义错误页`支持Controller动态载入。
 
@@ -36,7 +52,6 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 
 [优化] `启动器`增加URL_MODE配置检查。
 
-[优化] `模板引擎模板引入`标签简化（删除最后的斜杠要求）。*(优化兼容上个版本)*
 
 [修复] `数据库操作类`Mysql无法使用的问题。
 

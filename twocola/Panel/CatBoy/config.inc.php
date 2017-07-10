@@ -1,8 +1,8 @@
 <?php
-/*
-** TCE引擎独立应用配置文件
-** Version：1.1
- */
+/**
+ * 应用独立配置文件
+ * @version：1.2.7.1002
+**/
 $config = array (
   "APP_NAME" => "CatBoy",
   "APP_VERSION" => "1.1",
@@ -16,6 +16,7 @@ $config = array (
   "DB_PASSWORD" => "",
   "DB_PREFIX" => "",
   "DB_CHARSET" => "utf8",
+  "APP_AUTO_FILE_VERSION" => false,      // 默认false
 
   /* Panel模板设置 */
   "TPL"             => array(

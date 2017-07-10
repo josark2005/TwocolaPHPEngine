@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎模板处理核心类
-** Ver 1.1.7.0601
+** Ver 1.1.7.1002
 */
 namespace TUnit\Template;
 class Template {
@@ -192,9 +192,8 @@ class Template {
    * @return string  $content
   **/
   static public function Variable($content){
-    // 出错修复区
-    /* $content = str_replace("<else />","<?php else: ?>",$content); //通用else替换 */
-    $content = str_ireplace("<else />","<?php else: ?>",$content); //通用else替换
+    $pattern = "/<else[\s]*(?:[\/]*)[\s]*>/iUm";
+    $content = preg_replace($pattern, "<?php else: ?>", $content);
     $content = self::Tag_If($content);
     $content = self::Tag_Empty($content);
     $content = self::Tag_Volist($content);
@@ -244,7 +243,6 @@ class Template {
   **/
   static public function Tag_Empty($content){
     $content = str_ireplace("</empty>","<?php endif; ?>",$content);
-    $content = str_ireplace("<else />","<?php else: ?>",$content);
     $pattern = "/<empty[\s]*name=['|\"](.+)['|\"][\s]*>/iUm";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
@@ -279,14 +277,14 @@ class Template {
   **/
   static public function Tag_If($content){
     $content = str_ireplace("</if>","<?php endif; ?>",$content);
-    $pattern = "/<if[\s]*condition=['|\"](.+)['|\"][\s]*>/iUm";
+    $pattern = "/<if[\s]*condition=['|\"](.+)['|\"][\s]*(?:[\/]*)[\s]*>/iUm";
     $preg = preg_match_all($pattern,$content,$matches_font);
     if($preg!=0){
       for ($i=0; $i < $preg; $i++) {
         $content = str_replace($matches_font[0][$i],"<?php if({$matches_font[1][$i]}): ?>",$content);
       }
     }
-    $pattern = "/<else[\s]*condition=['|\"](.+)['|\"][\s]*\/>/iUm";
+    $pattern = "/<else[\s]*condition=['|\"](.+)['|\"][\s]*(?:[\/]*)[\s]*>/iUm";
     $preg = preg_match_all($pattern,$content,$matches_end);
     if($preg!=0){
       for ($i=0; $i < $preg; $i++) {
@@ -448,22 +446,27 @@ class Template {
     $JS = C("JS_EXT");
     $CSS = C("CSS_EXT");
     $TPL = C("TPL_EXT");
-    $pattern = "/<include file=['|\"](.+)-(.+)['|\"](?:[\s]+type=['|\"](.+)['|\"][\s]*|[\s]*)(?:[\/][\s]*|[\s]*)\>/iU";
+    $pattern = "/<include file=['|\"](.+)-(.+)['|\"][\s]*(?:type=['|\"]([\s\S]+)['|\"][\s]*|[\s]*)(?:[\/][\s]*|[\s]*)>/iU";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
-      for($i=0;$i<count($matches[0]);$i++){
+      for($i=0; $i<$preg; $i++){
         $origin = $matches[0][$i];  //源代码
         // 公共文件
-        if($matches[1][$i]=="PUBLIC"){
+        if(strtoupper($matches[1][$i]) == "PUBLIC"){
           // 判断type
           if($matches[3][$i]=="autoheader"){
             // 自动载入配套js/css
+            $version = "";
+            // 自动载入版本
+            if(C("APP_AUTO_FILE_VERSION") == true){
+              $version = "?ver=".C("APP_VERSION");
+            }
             $extra = "";
             if(file_exists($P_APP_TPL.$CONTROLLER."{$D}css{$D}".$METHOD.$CSS)){
-              $extra .= "<link rel=\"stylesheet\" href=\"__CSS:{$METHOD}__\">";
+              $extra .= "<link rel=\"stylesheet\" href=\"__CSS:{$METHOD}{$version}__\">";
             }
             if(file_exists($P_APP_TPL.$CONTROLLER."{$D}js{$D}".$METHOD.$JS)){
-              $extra .= "<script type=\"text/javascript\" src=\"__JS:{$METHOD}__\"></script>";
+              $extra .= "<script type=\"text/javascript\" src=\"__JS:{$METHOD}{$version}__\"></script>";
             }
             $text = \TUnit\Storage\StorageCore::Read($P_APP_PUBLIC_TPL."html{$D}{$matches[2][$i]}{$TPL}");
             $content = (!$text) ? $content : str_replace($origin,"{$text}\n{$extra}",$content);
