@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.1.7.0601
+** Ver 1.1.7.2401
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -115,7 +115,7 @@ class TLaungher {
       E("[TLaungher|PRE] 配置 APP_PATH 未定义！");
     }
     // 模式配置检查
-    if( URL_MODE==1 ){
+    if( URL_MODE == 1 ){
       self::SaveFile(PATH.DIRECTORY_SEPARATOR.".htaccess" ,"TUnit/Default_Htaccess" ,1);
     }
     // 创建全局配置文件
@@ -132,9 +132,11 @@ class TLaungher {
     if(C("APP_GENERATE")){
       self::CreateApp(C("APP_GENERATE"));
     }
-    // 检测默认APP是否存在
-    if(!Storage\StorageCore::FolderExist(".".C("APP_PATH")."/".C("APP_DEFAULT"))){
-      self::CreateApp(C("APP_DEFAULT"));
+    // 检测默认App是否存在并创建
+    self::CreateApp(C("APP_DEFAULT"));
+    // 检测正在访问的App是否存在并创建
+    if( C("APP_DEFAULT") !== C("APP") ){
+      self::CreateApp(C("APP"));
     }
     return ;
   }

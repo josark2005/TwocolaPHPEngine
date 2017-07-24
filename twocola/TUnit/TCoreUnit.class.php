@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心引导类
-** Ver 1.1.7.0601
+** Ver 1.1.7.2401
 */
 namespace TUnit;
 class TCoreUnit {
@@ -141,7 +141,7 @@ class TCoreUnit {
     // 修复工作目录
     chdir(PATH);
     $error['file'] = str_replace(PATH,"",$error['file']);
-    if(APP_DEBUG){
+    if(APP_DEBUG == true){
       // 调试模式下输出错误信息
       $trace = array_reverse(debug_backtrace(false,true));
       $file = "";
@@ -182,7 +182,6 @@ class TCoreUnit {
         Template\Template::ProcessTpl($tpl);
         include ( Template\Template::GeneralCache(false,"_Error") );
       }
-      return ;
     }
     exit;
   }

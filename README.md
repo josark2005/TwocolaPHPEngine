@@ -26,6 +26,10 @@ TCE框架引擎（全名Twocola PHP Engine），一款从实用角度出发的PH
 
 > `大规模升级` | `v4.0及以上版本`可进行`平滑升级`（直接替换库文件夹即可）。
 
+[新增] 运行时自动检测应用完整性。
+
+[修复] `报错机制`若干已知Bug。
+
 [新增] `应用设置`APP_AUTO_FILE_VERSION，默认为true。
 
 > 开启后，使用include标签自动载入js/css文件时，框架会读取`APP_VERSION`，并给文件加上"`?ver=[APP_VERSION]`"。
