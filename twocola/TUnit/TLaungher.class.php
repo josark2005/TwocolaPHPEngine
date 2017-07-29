@@ -135,7 +135,7 @@ class TLaungher {
     // 检测默认App是否存在并创建
     self::CreateApp(C("APP_DEFAULT"));
     // 检测正在访问的App是否存在并创建
-    if( C("APP_DEFAULT") !== C("APP") ){
+    if( App::AppExist(C("APP")) ){
       self::CreateApp(C("APP"));
     }
     return ;
