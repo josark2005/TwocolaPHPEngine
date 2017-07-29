@@ -211,11 +211,12 @@ class Template {
     // 处理Volist
     $pattern = "/<volist[\s\S]+>/iUm";
     $preg = preg_match_all($pattern,$content,$matches);
+    if($preg == 0) return $content;
     for ($i=0; $i < $preg; $i++){
       // name
       $pat_name = "/name=(['|\"])(?<name>.+)\\1/iUm";
       $preg_name = preg_match($pat_name,$matches[0][$i],$match);
-      if($preg != 0){
+      if($preg_name != 0){
         $name = $match['name'];
       }else{
         continue;
@@ -223,7 +224,7 @@ class Template {
       // value
       $pat_value = "/value=(['|\"])(?<value>.+)\\1/iUm";
       $preg_value = preg_match($pat_value,$matches[0][$i],$match);
-      if($preg != 0){
+      if($preg_value != 0){
         $value = $match['value'];
       }else{
         continue;
@@ -231,7 +232,7 @@ class Template {
       // key
       $pat_key = "/key=(['|\"])(?<key>.+)\\1/iUm";
       $preg_key = preg_match($pat_key,$matches[0][$i],$match);
-      if($preg != 0){
+      if($preg_key != 0){
         $key = $match['key'];
       }else{
         $key = false;
