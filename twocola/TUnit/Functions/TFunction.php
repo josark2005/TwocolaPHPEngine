@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎核心方法
-** Ver 1.3.7.1002
+** Ver 1.3.7.2901
 */
 /**
  * 读取存储配置
@@ -190,7 +190,8 @@ function getPresetTpl($name){
   $D = DIRECTORY_SEPARATOR;
   $name = str_replace("\\",$D,$name);
   if(file_exists(C("TCE_PATH").$D."Tpl".$D.$name.C("TPL_EXT"))){
-    return file_get_contents(C("TCE_PATH").$D."Tpl".$D.$name.C("TPL_EXT"));
+    $content =  file_get_contents(C("TCE_PATH").$D."Tpl".$D.$name.C("TPL_EXT"));
+    return $content;
   }else{
     return false;
   }

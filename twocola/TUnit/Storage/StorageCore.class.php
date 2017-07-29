@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
-/*
-** TCE引擎基本存储核心
-** Ver 1.2
-*/
+/**
+* 存储核心
+* Version 1.3.0
+**/
 namespace TUnit\Storage;
 class StorageCore{
 	/**
@@ -28,6 +28,8 @@ class StorageCore{
 	 * @return boolean
 	**/
 	static public function Read($filename){
+		// 判断是否可度
+		if(!is_readable($filename)) return false;
 		if( !self::FileExist($filename) ) return false ;
 		$content = file_get_contents($filename) ;
 		return $content;
@@ -42,10 +44,14 @@ class StorageCore{
 		if( is_file($filename) ) return false ;	//文件已存在
 		$dir = dirname($filename);
 		if( !is_dir($dir) ) {
-			mkdir($dir,0777,true);
+			if ( !self::CreateFolder($dir) ) return false;
 		}
-		if(false === file_put_contents($filename,$content)) return false ;
-		return true;
+		if( file_put_contents($filename,$content) ){
+			chmod($filename,0777);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	/**
 	 * 覆盖存储文件
@@ -143,7 +149,13 @@ class StorageCore{
 	 * @return boolean
 	**/
 	static public function CreateFolder($name){
-		return mkdir($name,0777,true);
+		if( mkdir($name,0777,true) ){
+			// 创建成功则修改权限并返回true
+			chmod($name,0777);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	/**
 	 * 创建空文件
@@ -173,7 +185,7 @@ class StorageCore{
       if (file_exists($path)) {
         return unlink($path);
       } else {
-        return FALSE;
+        return false;
       }
     }
 	}

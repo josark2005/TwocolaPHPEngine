@@ -1,7 +1,7 @@
 <?php
 /**
  * 应用独立配置文件
- * @version：1.2.7.1002
+ * @version：1.3.0
 **/
 $config = array (
   "APP_NAME" => "CatBoy",

@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** Panel驱动类
-** Version 1.0.6.2101
+** Version 1.0.7.2901
 */
 namespace TUnit\Drivers;
 class Panel {
@@ -64,9 +64,9 @@ class Panel {
   **/
   static private function enter(){
     // 进入Panel
-    C("APP_PATH" ,\TUnit\TLaungher::GetRealPath(self::$PATH) );
     C("IS_PANEL" ,true);                // 标记Panel模式
     C("APP" ,C("PANEL_NAME"));          // 修改为Panel名称
+    C("APP_PATH" ,\TUnit\TLaungher::GetRealPath(self::$PATH) );
     C("APP_DEFAULT" ,C("PANEL_NAME"));  // 错误阻止机制
   }
 

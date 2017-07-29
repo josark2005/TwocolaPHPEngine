@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.1.7.2401
+** Ver 1.1.7.2901
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -61,8 +61,6 @@ class TLaungher {
     C("APP_PATH" ,self::GetRealPath(C("APP_PATH")) );
     // Panel驱动
     Drivers\Panel::driver();
-    // 检查、修复、创建应用
-    self::GeneralConsturct();
     // 设置当前模块、控制器、行为
     if(C("URL_MODE") == 0){
       define("APP"        ,UrlMode\UrlResolution::safer(isset($_GET['a'])&&!empty($_GET['a']) ? $_GET['a'] : C("APP_DEFAULT")) );
@@ -73,6 +71,8 @@ class TLaungher {
     }else{
       E("不存在的 URL_MODE 配置！");
     }
+    // 检查、修复、创建应用
+    self::GeneralConsturct();
     // 判断应用是否存在
     if( !is_dir(".".C("APP_PATH").$D.C("APP")) ){
       // 判断是否为Panel模式

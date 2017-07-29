@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
-/*
-** TCE引擎模板处理核心类
-** Ver 1.1.7.1002
-*/
+/**
+* TCE模板引擎核心处理类
+* @version: 2.0.0
+**/
 namespace TUnit\Template;
 class Template {
   // 存储区
@@ -27,7 +27,6 @@ class Template {
   */
   static public $assign  =  "";
 
-
   /*
   ** 显示处理完成的页面
   ** @param  string $title
@@ -39,6 +38,7 @@ class Template {
     $tpl = ".".C("APP_PATH").$D.C("APP").$D."View".$D.C("CONTROLLER").$D.C("METHOD").C("TPL_EXT");
     // 检查是否存对应模板文件
     if( !is_file($tpl) ){
+      ob_end_clean();
       // 不存在对应模板文件
       $path = C("TPL");
       if( isset($path['PageNotFound']) && $path['PageNotFound'] != false ){
@@ -207,30 +207,39 @@ class Template {
    * @return string  $content
   **/
   static public function Tag_Volist($content){
-    // 出错修复区
     $content = str_ireplace("</volist>","<?php endforeach;endif; ?>",$content);
-    // 处理标准Volist
-    $pattern = "/<volist[\s]*name=['|\"](.+)['|\"][\s]*value=['|\"](.+)['|\"][\s]*key=['|\"](.+)['|\"][\s]*>/iUm";
+    // 处理Volist
+    $pattern = "/<volist[\s\S]+>/iUm";
     $preg = preg_match_all($pattern,$content,$matches);
-    if($preg!=0){
-      for ($i=0; $i < $preg; $i++) {
-        $content = str_replace($matches[0][$i],"<?php if(isset(\${$matches[1][$i]}) && is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[3][$i]}=>\${$matches[2][$i]}): ?>",$content);
+    for ($i=0; $i < $preg; $i++){
+      // name
+      $pat_name = "/name=(['|\"])(?<name>.+)\\1/iUm";
+      $preg_name = preg_match($pat_name,$matches[0][$i],$match);
+      if($preg != 0){
+        $name = $match['name'];
+      }else{
+        continue;
       }
-    }
-    // 处理标准Volist 2
-    $pattern = "/<volist[\s]*name=['|\"](.+)['|\"][\s]*key=['|\"](.+)['|\"][\s]*value=['|\"](.+)['|\"][\s]*>/iUm";
-    $preg = preg_match_all($pattern,$content,$matches);
-    if($preg!=0){
-      for ($i=0; $i < $preg; $i++) {
-        $content = str_replace($matches[0][$i],"<?php if(isset(\${$matches[1][$i]}) && is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[2][$i]}=>\${$matches[3][$i]}): ?>",$content);
+      // value
+      $pat_value = "/value=(['|\"])(?<value>.+)\\1/iUm";
+      $preg_value = preg_match($pat_value,$matches[0][$i],$match);
+      if($preg != 0){
+        $value = $match['value'];
+      }else{
+        continue;
       }
-    }
-    // 处理简化Volist
-    $pattern = "/<volist[\s]*name=['|\"](.+)['|\"][\s]*value=['|\"](.+)['|\"][\s]*>/iUm";
-    $preg = preg_match_all($pattern,$content,$matches);
-    if($preg!=0){
-      for ($i=0; $i < $preg; $i++) {
-        $content = str_replace($matches[0][$i],"<?php if(isset(\${$matches[1][$i]}) && is_array(\${$matches[1][$i]}) && !empty(\${$matches[1][$i]})):foreach(\${$matches[1][$i]} as \${$matches[2][$i]}): ?>",$content);
+      // key
+      $pat_key = "/key=(['|\"])(?<key>.+)\\1/iUm";
+      $preg_key = preg_match($pat_key,$matches[0][$i],$match);
+      if($preg != 0){
+        $key = $match['key'];
+      }else{
+        $key = false;
+      }
+      if($value && $key){
+        $content = str_replace($matches[0][$i],"<?php if(isset(\${$name}) && is_array(\${$name}) && !empty(\${$name})):foreach(\${$name} as \${$key}=>\${$value}): ?>",$content);
+      }else{
+        $content = str_replace($matches[0][$i],"<?php if(isset(\${$name}) && is_array(\${$name}) && !empty(\${$name})):foreach(\${$name} as \${$value}): ?>",$content);
       }
     }
     return $content;
@@ -243,11 +252,11 @@ class Template {
   **/
   static public function Tag_Empty($content){
     $content = str_ireplace("</empty>","<?php endif; ?>",$content);
-    $pattern = "/<empty[\s]*name=['|\"](.+)['|\"][\s]*>/iUm";
+    $pattern = "/<empty[\s]*name=(['|\"])(?<name>.+)\\1[\s\S]*>/iUm";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for ($i=0; $i < $preg; $i++) {
-        $content = str_replace($matches[0][$i],"<?php if(empty(\${$matches[1][$i]})): ?>",$content);
+        $content = str_replace($matches[0][$i],"<?php if(empty(\${$matches['name'][$i]})): ?>",$content);
       }
     }
     return $content;
@@ -260,11 +269,11 @@ class Template {
   **/
   static public function Tag_NotEmpty($content){
     $content = str_ireplace("</notempty>","<?php endif; ?>",$content);
-    $pattern = "/<notempty[\s]*name=['|\"](.+)['|\"][\s]*>/iUm";
+    $pattern = "/<notempty[\s]*name=(['|\"])(?<name>.+)\\1[\s]*>/iUm";
     $preg = preg_match_all($pattern,$content,$matches);
     if($preg!=0){
       for ($i=0; $i < $preg; $i++) {
-        $content = str_replace($matches[0][$i],"<?php if(!empty(\${$matches[1][$i]})): ?>",$content);
+        $content = str_replace($matches[0][$i],"<?php if(!empty(\${$matches['name'][$i]})): ?>",$content);
       }
     }
     return $content;
@@ -308,41 +317,29 @@ class Template {
     }
     $tpath = $wp.C("APP_PATH").$D.C("APP")."{$D}View$D";
     $tpath_p = $wp.C("APP_PATH").$D.C("APP")."{$D}View$D"."PUBLIC".$D;
-    /*配套CSS*/
-    $pattern = "/__CSS:(.*)__/U";
+    $pattern = "/__(?<filetype>CSS|JS|IMG|STATIC):(?<filename>.+)__/U";
     $preg = preg_match_all($pattern,$content,$matches);
-    if($preg!=0){
-      for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$tpath.C("CONTROLLER")."/css/".$matches[1][$i].C("CSS_EXT"),$content);
-      }
-    }
-    /*配套JS*/
-    $pattern = "/__JS:(.*)__/U";
-    $preg = preg_match_all($pattern,$content,$matches);
-    if($preg!=0){
-      for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$tpath.C("CONTROLLER")."/js/".$matches[1][$i].C("JS_EXT"),$content);
-      }
-    }
-    /*配套IMG*/
-    $pattern = "/__IMG:(.*)__/U";
-    $preg = preg_match_all($pattern,$content,$matches);
-    if($preg!=0){
-      for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$tpath.C("CONTROLLER")."/img/".$matches[1][$i],$content);
-      }
-    }
-    /*公共静态文件*/
-    $pattern = "/__STATIC:(.*)__/U";
-    $preg = preg_match_all($pattern,$content,$matches);
-    if($preg!=0){
-      for($i=0;$i<count($matches[0]);$i++){
-        $content = str_replace($matches[0][$i],$tpath_p."static/".$matches[1][$i],$content);
+    if($preg != 0){
+      for($i=0; $i<count($matches[0]); $i++){
+        // 文件名称算法
+        $pat_name = "/(?<filename>.+)\?(?<get>.+)$/U";
+        $preg_name = preg_match($pat_name,$matches['filename'][$i],$match);
+        if( $preg_name != 0 ){
+          $filename = $match['filename'];
+          $get = "?".$match['get'];
+        }else{
+          $filename = $matches['filename'][$i];
+          $get = "";
+        }
+        if( in_array($matches['filetype'][$i],array("CSS","JS","IMG")) ){
+          $content = str_replace($matches[0][$i],$tpath.C("CONTROLLER")."/".strtolower($matches['filetype'][$i])."/".$filename.C($matches['filetype'][$i]."_EXT").$get,$content);
+        }else if( in_array($matches['filetype'][$i],array("STATIC")) ){
+          $content = str_replace($matches[0][$i],$tpath_p."static/".$filename.$get,$content);
+        }
       }
     }
     return $content;
   }
-
 
   /**
    * 清除注释
@@ -447,37 +444,88 @@ class Template {
     $CSS = C("CSS_EXT");
     $TPL = C("TPL_EXT");
     $pattern = "/<include file=['|\"](.+)-(.+)['|\"][\s]*(?:type=['|\"]([\s\S]+)['|\"][\s]*|[\s]*)(?:[\/][\s]*|[\s]*)>/iU";
+    $pattern = "/<include[\s\S]+>/iU";
     $preg = preg_match_all($pattern,$content,$matches);
-    if($preg!=0){
-      for($i=0; $i<$preg; $i++){
+    if($preg != 0){
+      for($i=0; $i < $preg; $i++){
         $origin = $matches[0][$i];  //源代码
+        // file
+        $pat_file = "/file=(['|\"])(?<file>.+)\\1/iU";
+        $preg_file = preg_match($pat_file, $origin, $match);
+        if($preg_file == 0){
+          continue;
+        }else{
+          $file = $match['file'];
+        }
+        // type
+        $pat_type = "/type=(['|\"])(?<type>.+)\\1/iU";
+        $preg_type = preg_match($pat_type, $origin, $match);
+        if( $preg_type == 0 ){
+          $type = false; // 默认不载入配套文件
+        }else{
+          $type = $match['type'];
+        }
+        // path
+        $pat_path = "/path=(['|\"])(?<path>.+)\\1/iU";
+        $preg_path = preg_match($pat_path, $origin, $match);
+        if( $preg_path == 0 ){
+          $path = false; // 当前应用View目录
+        }else{
+          $path = $match['path'];
+        }
+        // css-ver
+        $pat_cv = "/css-ver=(['|\"])(?<cv>.+)\\1/iU";
+        $preg_cv = preg_match($pat_cv, $origin, $match);
+        if( $preg_cv == 0 ){
+          $cv = false;
+        }else{
+          $cv = $match['cv'];
+        }
+        // js-ver
+        $pat_jv = "/js-ver=(['|\"])(?<jv>.+)\\1/iU";
+        $preg_jv = preg_match($pat_jv, $origin, $match);
+        if( $preg_jv == 0 ){
+          $jv = false;
+        }else{
+          $jv = $match['jv'];
+        }
+        // 兼容4.0及以下版本
+        $ext = explode("-",$file);
+        if( count($ext) != 1 ){
+          $path = $ext[0];
+          $file = $ext[1];
+        }
         // 公共文件
-        if(strtoupper($matches[1][$i]) == "PUBLIC"){
+        if(strtoupper($path) == "PUBLIC"){
           // 判断type
-          if($matches[3][$i]=="autoheader"){
+          if( in_array($type, array("auto","autoheader")) ){
             // 自动载入配套js/css
             $version = "";
             // 自动载入版本
             if(C("APP_AUTO_FILE_VERSION") == true){
               $version = "?ver=".C("APP_VERSION");
             }
+            // css version
+            $cv = (!$cv) ? $version : "?ver=".$cv;
+            // js version
+            $jv = (!$jv) ? $version : "?ver=".$jv;
             $extra = "";
             if(file_exists($P_APP_TPL.$CONTROLLER."{$D}css{$D}".$METHOD.$CSS)){
-              $extra .= "<link rel=\"stylesheet\" href=\"__CSS:{$METHOD}{$version}__\">";
+              $extra .= "<link rel=\"stylesheet\" href=\"__CSS:{$METHOD}{$cv}__\">";
             }
             if(file_exists($P_APP_TPL.$CONTROLLER."{$D}js{$D}".$METHOD.$JS)){
-              $extra .= "<script type=\"text/javascript\" src=\"__JS:{$METHOD}{$version}__\"></script>";
+              $extra .= "<script type=\"text/javascript\" src=\"__JS:{$METHOD}{$jv}__\"></script>";
             }
-            $text = \TUnit\Storage\StorageCore::Read($P_APP_PUBLIC_TPL."html{$D}{$matches[2][$i]}{$TPL}");
-            $content = (!$text) ? $content : str_replace($origin,"{$text}\n{$extra}",$content);
+            $text = \TUnit\Storage\StorageCore::Read($P_APP_PUBLIC_TPL."html{$D}{$file}{$TPL}");
+            $content = (!$text) ? $content : str_replace($origin,"{$text}{$extra}",$content);
           }else{
             // 常规输出
-            $text = \TUnit\Storage\StorageCore::Read($P_APP_PUBLIC_TPL."html{$D}{$matches[2][$i]}{$TPL}");
+            $text = \TUnit\Storage\StorageCore::Read($P_APP_PUBLIC_TPL."html{$D}{$file}{$TPL}");
             $content = (!$text) ? $content : str_replace($origin,$text,$content);
           }
         }else{
           // 自有文件
-          $text = \TUnit\Storage\StorageCore::Read($P_APP_TPL."{$matches[1][$i]}{$D}{$matches[2][$i]}{$TPL}");
+          $text = \TUnit\Storage\StorageCore::Read($P_APP_TPL."{$CONTROLLER}{$D}{$file}{$TPL}");
           $content = (!$text) ? $content : str_replace($origin,$text,$content);
         }
       }

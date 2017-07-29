@@ -14,9 +14,9 @@
 //----------------------------------
 
 // 基础常量定义
-define( 'FRAMENAME'      ,"Twocola PHP 引擎4.0"     );
+define( 'FRAMENAME'      ,"Twocola PHP 引擎4.0"      );
 define( 'FRAMENAME_EN'   ,"Twocola PHP Engine V4.0" );
-define( 'VERSION'        ,"4.0.7.2401"              );
+define( 'VERSION'        ,"4.1.7.2901"              );
 
 // 版本判断
 if( version_compare(PHP_VERSION ,"5.6.0" ,"<") ){
@@ -25,23 +25,27 @@ if( version_compare(PHP_VERSION ,"5.6.0" ,"<") ){
 // 报错抑制
 if( APP_DEBUG !== 2 ){
   error_reporting(0);
+}else{
+  error_reporting(E_ALL);
 }
 
-// 检查配置
+// default options
+if( !defined("APP_DEBUG")           ){ define("APP_DEBUG"         ,false           );     }
+if( !defined("DEFAULT_TIMEZONE")    ){ define("DEFAULT_TIMEZONE"  ,"PRC"           );     }
+// ->template engine
+if( !defined("APP_AUTO_FILE_VERSION")){ define("APP_AUTO_FILE_VERSION"  ,false     );     }
+// ->ext
 if( !defined("EXT")                 ){ define("EXT"               ,".php"          );     }
 if( !defined("TPL_EXT")             ){ define("TPL_EXT"           ,".tpl"          );     }
-
 if( !defined("JS_EXT")              ){ define("JS_EXT"            ,".js"           );     }
 if( !defined("CSS_EXT")             ){ define("CSS_EXT"           ,".css"          );     }
-
 if( !defined("CACHE_EXT")           ){ define("CACHE_EXT"         ,".php"          );     }
 if( !defined("CLASS_EXT")           ){ define("CLASS_EXT"         ,".class.php"    );     }
 if( !defined("CONFIG_EXT")          ){ define("CONFIG_EXT"        ,".inc.php"      );     }
+// ->database
 if( !defined("DB_EXT")              ){ define("DB_EXT"            ,".db"           );     }
-if( !defined("DEFAULT_TIMEZONE")    ){ define("DEFAULT_TIMEZONE"  ,"PRC"           );     }
 if( !defined("DB_TYPE")             ){ define("DB_TYPE"           ,"MYSQL"         );     }
-
-// Panel Portal
+// ->panel portal
 if( !defined("PANEL")               ){ define("PANEL"             ,false               );     }
 if( !defined("PANEL_PATH")          ){ define("PANEL_PATH"        ,"./twocola/Panel"   );     }
   // 入口方式： 1 GET 2 默认进入
@@ -50,7 +54,7 @@ if( !defined("PANEL_PORTAL")        ){ define("PANEL_PORTAL"      ,1           )
 if( !defined("PANEL_PORTAL_KEY")    ){ define("PANEL_PORTAL_KEY"  ,"panel"     );     }
 if( !defined("PANEL_PORTAL_VALUE")  ){ define("PANEL_PORTAL_VALUE","tce"       );     }
 
-// Api Portal
+// ->api portal
 if( !defined("API_PORTAL")          ){ define("API_PORTAL"      ,1             );     }
   // 此设置仅对GET方式进入生效
 if( !defined("API_PORTAL_KEY")      ){ define("API_PORTAL_KEY"  ,"apimode"     );     }
