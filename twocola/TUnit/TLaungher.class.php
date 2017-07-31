@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎驱动类库
-** Ver 1.1.7.2901
+** Ver 1.2.0
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -150,6 +150,9 @@ class TLaungher {
     }else{
       $APP_PATH = ".".self::GetRealPath($AppPath);
     }
+    // 判断应用是否第一次创建
+    $ftime = App::AppExist($AppName); // first time
+    $ftime = ($ftime) ? false : true;
     // Application
     self::CreateFolder( $APP_PATH );
     self::CreateFolder( $APP_PATH .$D.$AppName);
@@ -171,19 +174,23 @@ class TLaungher {
     // View
     self::CreateFolder( $APP_PATH .$D.$AppName.$D."View");
     self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC");
-    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index");
-    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."css");
-    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."js");
-    self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."img");
     self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC".$D."html");
     self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC".$D."static");
-    // Files
-    $Controller =   $APP_PATH .$D.$AppName.$D."Controller".$D;
-    self::SaveFile( $APP_PATH .$D.$AppName.$D."config".$CO         ,"App/App_Default_Config{$CO}"                    ,1 ,$AppName);
-    self::SaveFile( $APP_PATH .$D.$AppName.$D."Api".$D."index".$CL ,"App/App_Default_Api{$CL}"                       ,1 ,$AppName);
-    self::SaveFile($Controller."Common".$D."BehaviorCommon".$CL    ,"App/Controller/App_Default_BehaviorCommon{$CL}" ,1 ,$AppName);
-    self::SaveFile($Controller."Behavior".$D."indexBehavior".$CL   ,"App/Controller/App_Default_Behavior{$CL}"       ,1 ,$AppName);
-    self::SaveFile($Controller."Displayer".$D."indexDisplayer".$CL ,"App/Controller/App_Default_Displayer{$CL}"      ,1 ,$AppName);
+    if ($ftime) {
+      // index viewer
+      self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index");
+      self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."css");
+      self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."js");
+      self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."img");
+      // Files
+      $Controller =   $APP_PATH .$D.$AppName.$D."Controller".$D;
+      self::SaveFile( $APP_PATH .$D.$AppName.$D."config".$CO         ,"App/App_Default_Config{$CO}"                    ,1 ,$AppName);
+      self::SaveFile( $APP_PATH .$D.$AppName.$D."Api".$D."index".$CL ,"App/App_Default_Api{$CL}"                       ,1 ,$AppName);
+      self::SaveFile($Controller."Common".$D."BehaviorCommon".$CL    ,"App/Controller/App_Default_BehaviorCommon{$CL}" ,1 ,$AppName);
+      self::SaveFile($Controller."Behavior".$D."indexBehavior".$CL   ,"App/Controller/App_Default_Behavior{$CL}"       ,1 ,$AppName);
+      self::SaveFile($Controller."Displayer".$D."indexDisplayer".$CL ,"App/Controller/App_Default_Displayer{$CL}"      ,1 ,$AppName);
+    }
+    // 结束返回
     return ;
   }
 

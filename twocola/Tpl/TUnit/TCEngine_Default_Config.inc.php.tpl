@@ -1,15 +1,17 @@
 <?php
 /**
  * TCE引擎全局设置
- * Version: 1.4.6.1301
+ * Version: 1.5.0
  * Notice: APP_GENERATE可使用 APP_DEFAULT 代替 (默认APP不存在时会自动创建)
 **/
 $config = array (
   /* 系统设置 */
-  // "APP_GENERATE"    => "APP",  // 用于创建APP
-  "APP_SUFFIX"      => ".html",   // URL静态后缀（静态后缀名前必须加点以避免出现错误）
-  "APP_SUFFIX_SAFE" => true,      // 自动适应其他后缀
-  "APP_DEFAULT"     => "APP",     // 系统默认APP
+  // "APP_GENERATE"        => "App",       // 用于创建APP
+  "APP_SUFFIX"             => ".html",     // URL静态后缀（静态后缀名前必须加点以避免出现错误）
+  "APP_SUFFIX_SAFE"        => true,        // 自动适应其他后缀
+  "APP_DEFAULT"            => "App",       // 系统默认APP
+  "CONTROLLER_DEFAULT"     => "index",     // 系统默认CONTROLLER
+  "METHOD_DEFUALT"         => "index",     // 系统默认METHOD
 
   /* OAM系统设置 */
   "OAM"             => array(

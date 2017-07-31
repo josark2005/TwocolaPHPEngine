@@ -11,7 +11,8 @@
   </style>
 </head>
 <body>
-  <h1>{__FRAMENAME__} <small style="color:grey">{__VERSION__}</small></h1>
+  <h1 style="margin-bottom:5px;">{__FRAMENAME__}</h1>
+  <small style="color:grey;margin-bottom:10px;">Version {__VERSION__}</small>
   <p>简且易用。<br />
     <span style='color:#8e8e8e'>[Simple and Easy to use.]</span>
   </p>

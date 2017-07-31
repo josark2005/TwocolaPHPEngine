@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** TCE引擎路径解析核心类
-** Ver 1.2.5.2901
+** Ver 1.3.0
 */
 namespace TUnit\UrlMode;
 class UrlResolution {
@@ -36,8 +36,8 @@ class UrlResolution {
     if( !isset($_SERVER['PATH_INFO']) ){
       //全部使用默认配置
       $p["APP"]        = C("APP_DEFAULT");
-      $p["CONTROLLER"] = "index";
-      $p["METHOD"]     = "index";
+      $p["CONTROLLER"] = C("CONTROLLER_DEFUALT");
+      $p["METHOD"]     = C("METHOD_DEFUALT");
       return $p;
     }else{
       //对PATHINFO进行解析
@@ -112,8 +112,8 @@ class UrlResolution {
     if( $pathinfo == false){
       //无效的pathinfo
       $p["APP"]        = C("APP_DEFAULT");
-      $p["CONTROLLER"] = "index";
-      $p["METHOD"]     = "index";
+      $p["CONTROLLER"] = C("CONTROLLER_DEFUALT");
+      $p["METHOD"]     = C("METHOD_DEFUALT");
       return $p;
     }
     $pathinfo = explode("/",$pathinfo);

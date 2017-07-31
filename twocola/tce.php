@@ -14,9 +14,9 @@
 //----------------------------------
 
 // 基础常量定义
-define( 'FRAMENAME'      ,"Twocola PHP 引擎4.0"      );
-define( 'FRAMENAME_EN'   ,"Twocola PHP Engine V4.0" );
-define( 'VERSION'        ,"4.1.7.2901"              );
+define( 'FRAMENAME'      ,"Twocola PHP 引擎4.1"      );
+define( 'FRAMENAME_EN'   ,"Twocola PHP Engine V4.1" );
+define( 'VERSION'        ,"4.1.7.3101"              );
 
 // 版本判断
 if( version_compare(PHP_VERSION ,"5.6.0" ,"<") ){
@@ -32,6 +32,10 @@ if( APP_DEBUG !== 2 ){
 // default options
 if( !defined("APP_DEBUG")           ){ define("APP_DEBUG"         ,false           );     }
 if( !defined("DEFAULT_TIMEZONE")    ){ define("DEFAULT_TIMEZONE"  ,"PRC"           );     }
+// ->app default options
+if( !defined("APP_DEFUALT")         ){ define("APP_DEFUALT"         ,"App"         );     }
+if( !defined("CONTROLLER_DEFUALT")  ){ define("CONTROLLER_DEFUALT"  ,"index"       );     }
+if( !defined("METHOD_DEFUALT")      ){ define("METHOD_DEFUALT"      ,"index"       );     }
 // ->template engine
 if( !defined("APP_AUTO_FILE_VERSION")){ define("APP_AUTO_FILE_VERSION"  ,false     );     }
 // ->ext
