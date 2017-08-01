@@ -9,8 +9,8 @@
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
 /*
-** TCE引擎驱动类库
-** Ver 1.2.0
+ * TCE引擎驱动类库
+ * Ver 1.2.1
 */
 /* URL_MODE解释    0:兼容模式   1:Rewrite/Pathinfo模式 */
 namespace TUnit;
@@ -151,7 +151,7 @@ class TLaungher {
       $APP_PATH = ".".self::GetRealPath($AppPath);
     }
     // 判断应用是否第一次创建
-    $ftime = App::AppExist($AppName); // first time
+    $ftime = App::AppExist($AppName,$APP_PATH); // first time
     $ftime = ($ftime) ? false : true;
     // Application
     self::CreateFolder( $APP_PATH );
@@ -176,7 +176,7 @@ class TLaungher {
     self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC");
     self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC".$D."html");
     self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."PUBLIC".$D."static");
-    if ($ftime) {
+    if ( $ftime && !C("IS_PANEL") ) {
       // index viewer
       self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index");
       self::CreateFolder( $APP_PATH .$D.$AppName.$D."View".$D."index".$D."css");

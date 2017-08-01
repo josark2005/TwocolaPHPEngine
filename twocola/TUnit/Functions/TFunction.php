@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
-/*
-** TCE引擎核心方法
-** Ver 1.3.7.2901
-*/
+/**
+ * TCE引擎核心方法库
+ * @version: 1.3.8
+**/
 /**
  * 读取存储配置
  * @param  var string
@@ -20,7 +20,7 @@
 **/
 function C($var="none",$content=""){
   $conf = TUnit\TConfigCore::IO();
-  if(empty($content)){
+  if( empty($content) && $content !== false ){
     if(!$conf->ConfigExists($var)){
       //读取常量
       return (defined( strtoupper($var) )) ? constant( strtoupper($var) ) : false;

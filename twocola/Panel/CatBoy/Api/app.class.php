@@ -32,7 +32,7 @@ class app extends TJson{
     $this->json_e("1","Normal","1","app_name",$config['APP_NAME']);
     return ;
   }
-  
+
   /**
    * 创建应用
    * @param  void
@@ -53,6 +53,9 @@ class app extends TJson{
     // 调用应用创建函数
     // 使用用户设置的应用目录
     $path = ".".\TUnit\TLaungher::GetRealPath(APP_PATH);
+    var_dump(C("IS_PANEL"));
+    C("IS_PANEL",false);  // 暂时设置为非Panel模式
+    var_dump(C("IS_PANEL"));
     \TUnit\TLaungher::CreateApp($app ,$path);
     $appExist = \TUnit\App::AppExist($app);
     if(!$appExist){

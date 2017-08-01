@@ -5,7 +5,7 @@
   <article class="am-article">
     <div class="am-article-hd">
       <h1 class="am-article-title">关于{__APP_NAME__}</h1>
-      <p class="am-article-meta">Jokin（南国七旬）</p>
+      <p class="am-article-meta">Jokin</p>
     </div>
 
     <div class="am-article-bd">

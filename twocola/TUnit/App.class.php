@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
-/*
-** APP核心类
-** Version: 1.0.6.2101
-*/
+/**
+ * App核心类
+ * @version: 1.1.0
+**/
 namespace TUnit;
 class App {
 
@@ -66,8 +66,8 @@ class App {
    * @param  void
    * @return void
   **/
-  static public function AppExist($app){
-    $path = ".".TLaungher::GetRealPath(APP_PATH);
+  static public function AppExist($app,$path=APP_PATH){
+    $path = ".".TLaungher::GetRealPath($path);
     if(Storage\StorageCore::FolderExist($path.DIRECTORY_SEPARATOR.$app)){
       return true;
     }else{

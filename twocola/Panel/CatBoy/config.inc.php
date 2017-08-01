@@ -5,7 +5,7 @@
 **/
 $config = array (
   "APP_NAME" => "CatBoy",
-  "APP_VERSION" => "1.1",
+  "APP_VERSION" => "1.2",
   "PANEL_NAME" => "CatBoy",
   "APP_RESPONSE" => true,       //设置为false则拒绝访问
   "DB_TYPE" => "SQLite3",
