@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>TCE开发手册 - For v3.1</title>
+		<title>TCE开发手册 - For v4.2</title>
 		<meta charset="utf-8" />
 		<meta name="Keywords" content="php引擎,php框架,可乐引擎,web应用,tce官方网站,简洁开发,快速开发,开源框架,开发框架,MVC">
     <meta name="Description" content="TCE框架 - 由Jokin独立开发，遵循Apache2开源协议发布，致力于提高Web开发效率，解决部分服务器限制导致的问题。">
@@ -30,7 +30,7 @@
 			<!-- Main -->
 				<section id="main" class="wrapper">
 					<div class="inner">
-						<h1 class="major">Version 3.1 目录</h1>
+						<h1 class="major">Version 4.2 目录</h1>
 	          <div class="inner">
 	            <p>
 	              <ul>
@@ -39,10 +39,12 @@
 	                <li><a href="#Settings">个性化设置</a></li>
 	                <li><a href="#Dev-1">Controller编写</a></li>
 	                <li><a href="#FrameMechanism">框架机制</a></li>
-	                <li><a href="./manner_tpl_1_1.html">模板引擎</a></li>
+	                <li><a href="./manner_tpl_2_0.html">模板引擎</a></li>
 	                <li><a href="#Functions">框架函数</a></li>
 	                <li><a href="#Database">数据库操作类</a></li>
-	                <li><a href="#Logs">Debug日志</a></li>
+	                <li><a href="./api/manner.md">Api相关</a></li>
+	                <li><a href="#Panel">Panel</a></li>
+	                <li><a href="./manner_4_2_settings.html">设置项一览</a></li>
 								</ul>
 	            </p>
 	          </div>
@@ -100,7 +102,7 @@ require("./twocola/tce.php");             // 引入框架引擎</code>
 
 							<p>*请注意：C函数会优先读取使用C函数设置的设置项或全局/应用设置的设置项，若读取的设置项无法从以上方法中找到，则从常量中查找，若仍然无法找到则返回false。</p>
 
-							<a href="./manner_3_1_settings.html" target="_blank">&raquo; 设置项一览</a>
+							<a href="./manner_4_2_settings.html" target="_blank">&raquo; 设置项一览</a>
 
 	          </div>
 					</div>
@@ -208,9 +210,9 @@ class <strong>{Controller}</strong>Displayer extends <strong>{Controller}</stron
                 </tr>
 
                 <tr>
-                  <td>M(数据库名称)</td>
+                  <td>M(数据库名称[,前缀])</td>
                   <td>连接数据库</td>
-                  <td>详细操作方法参考数据库操作类</td>
+                  <td>详细操作方法参考数据库操作类，前缀不填写则取全局值或默认值。</td>
                 </tr>
 
                 <tr>
@@ -240,13 +242,7 @@ class <strong>{Controller}</strong>Displayer extends <strong>{Controller}</stron
                 <tr>
                   <td>org(PATH)</td>
                   <td>载入ORG类库</td>
-                  <td>类似vender，3.1不推荐使用</td>
-                </tr>
-
-                <tr>
-                  <td>getPresetTpl(PATH)</td>
-                  <td>载入预置模板文件</td>
-                  <td>类似vender，不推荐用户使用</td>
+                  <td>类似vender</td>
                 </tr>
 
               </table>
@@ -262,25 +258,45 @@ class <strong>{Controller}</strong>Displayer extends <strong>{Controller}</stron
 						<h1 class="major">数据库操作</h1>
 	          <div class="inner">
 							<p>数据库操作类可由M或Mx函数加载。M函数为加载单个数据表，Mx函数可进行多表查询。</p>
-							<p>M与Mx函数会返回一个object，用户可对该object进行调用。</p>
-							<p>具体调用方法<a href="https://coding.net/u/Jokin/p/Class-Mysqli/git/blob/master/README.md" target="_blank"><strong>[详见这里]</strong></a>
-								<br />
-								<small>*使用M或Mx实例化请忽略[实例化]章节，Mx方法请参考多表实例化章节（不用填写true）。</small>
+							<p>M与Mx函数会返回一个object，用户可对该object进行调用。Api请见本页“框架函数”</p>
+							<p>可以参考：
+							  <a href="./database/mysql.md" target="_blank">官方手册</a> |
+                <a href="https://github.com/jokin1999/class-mysqli/blob/master/README.md" target="_blank">Lib手册（旧版，可参考）</a>
+              </p>
+							<p>具体调用方法：
+							  <pre>
+<code>// 请在应用设置中设置数据表前缀，或在M/Mx函数中第二个参数声明前缀
+// 单表初始化
+$db = M("数据表名");
+// 多表联合
+$db = Mx("数据表a as a|数据表b as b");  // 以此类推
+$db = Mx("picture as a|cdn as b");    // 例子
+</code>
+                </pre>
 							</p>
 	          </div>
 					</div>
 				</section>
 
-			<!-- Logs -->
-				<section id="Logs" class="wrapper">
+			<!-- Panel -->
+				<section id="Panel" class="wrapper">
 					<div class="inner">
-						<h1 class="major">Debug日志</h1>
+						<h1 class="major">Panel</h1>
 	          <div class="inner">
-
-							<ul>
-								<li>2017-01-19 修复默认配置下，默认数据库类型错误的情况。[App->config.inc.php->DB_TYPE]</li>
-							</ul>
-
+							<p>Panel是TCE4.0及其以上版本拥有的面板设置GUI模块，以应用的形式存在于框架中。</p>
+							<p>Panel的默认目录为：./twocola/Panel</p>
+							<p>为了确保应用安全，我们进行了一系列安全优化。需要进入Panel首先需要进行全局设置，如下：</p>
+              <pre>
+              <code>
+"PANEL" => true,                 // 开启Panel
+"PANEL_PORTAL_KEY"   => "panel", // 访问锁
+"PANEL_PORTAL_VALUE" => "tce",   // 访问密钥
+</code>
+              </pre>
+              <p>
+                完成以上设置后您可以使用<strong>http(s)://{YourDomain}?{访问锁}={访问密钥}</strong>的形式进入Panel。您也可以将<strong>PANEL_PORTAL</strong>设置为<strong>2</strong>，这会导致无法进入其他应用而只能进入到Panel中。
+              </p>
+              <p>所有的Panel设置都在默认的配置文件中，更多信息请查看<a href="./manner_4_2_settings.html" target="_blank">&raquo; 设置项一览</a></p>
 	          </div>
 					</div>
 				</section>

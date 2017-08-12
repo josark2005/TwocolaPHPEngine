@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>TCE开发手册 - For TemplateEngine v1.1</title>
+		<title>TCE开发手册 - For TemplateEngine v2.0</title>
 		<meta charset="utf-8" />
 		<meta name="Keywords" content="php引擎,php框架,可乐引擎,web应用,tce官方网站,简洁开发,快速开发,开源框架,开发框架,MVC">
     <meta name="Description" content="TCE框架 - 由Jokin独立开发，遵循Apache2开源协议发布，致力于提高Web开发效率，解决部分服务器限制导致的问题。">
@@ -30,7 +30,7 @@
 			<!-- Main -->
 				<section id="main" class="wrapper">
 					<div class="inner">
-						<h1 class="major">TemplateEngine v1.1 开发手册</h1>
+						<h1 class="major">TemplateEngine v2.0 开发手册</h1>
 	          <div class="inner">
 	            <p>
 	              <ul>
@@ -47,9 +47,9 @@
                     <li><a href="#Con">常量引用</a></li>
                     <li><a href="#Include">模板引用</a></li>
                     <li><a href="#Url">路径生成</a></li>
+                    <li><a href="#Protected">源代码区块</a></li>
                   </ol>
 	                <li><a href="#Methods">模板方法</a></li>
-	                <li><a href="#Logs">Debug日志</a></li>
 								</ul>
 	            </p>
 	          </div>
@@ -126,7 +126,7 @@
                   <li>__STATIC:xxx__</li>
                 </ul>
               </p>
-              <p>以上标签分别替换该模板目录下的css文件夹、js文件夹、img文件夹、static文件夹中对应文件的路径。</p>
+              <p>以上标签分别替换该模板目录下的{CONTROLLER}\css文件夹、{CONTROLLER}\js文件夹、{CONTROLLER}\img文件夹、PUBLIC\static文件夹中对应文件的路径。</p>
               <p>*注意双下划线</p>
 
               <hr />
@@ -172,20 +172,22 @@
               <p><strong>对应文件名需要与模板文件名一致</strong></p>
               <p>
               <pre>
-                <code>&lt;Include File="" Type="" /&gt;</code>
+                <code>&lt;Include File="" Type="" js-ver="" css-ver="" /&gt;</code>
               </pre>
 
               </p>
               <p>该标签会加载并显示对应文件夹下对应的模板（加载位置为被读取文件的尾部）。</p>
               <pre>
                 <code>&lt;!-- 自动加载模板与其对应的css/js文件 --&gt;
-&lt;Include File="a" Type="autoheader" /&gt;</code>
+&lt;Include File="a" Type="auto" /&gt;</code>
               </pre>
               <p>以下代码会加载公共模板中header.tpl对应的css/js文件</p>
               <pre>
                 <code>&lt;!-- 自动加载公共模板中header.tpl并加载对应css/js文件 --&gt;
-&lt;Include File="PUBLIC-header" Type="autoheader" /&gt;</code>
+&lt;Include File="PUBLIC-header" Type="auto" /&gt;</code>
               </pre>
+              <p>设置js-ver与css-ver后，自动加载的js/css文件将加上"?ver={value}"后缀。</p>
+              <p>设置全局设置项"APP_AUTO_FILE_VERSION"后，自动加载的js/css文件将加上"?ver={APP_VERSION}"后缀。</p>
 
               <hr />
 
@@ -245,16 +247,17 @@
 					</div>
 				</section>
 
-			<!-- Logs -->
-				<section id="Logs" class="wrapper">
+			<!-- Protected -->
+				<section id="Protected" class="wrapper">
 					<div class="inner">
-						<h1 class="major">Debug日志</h1>
+						<h1 class="major">源代码区块</h1>
 	          <div class="inner">
-
-							<ul>
-								<li>暂无Debug日志</li>
-							</ul>
-
+              <pre>
+                <code>&lt;protected&gt;
+这里的代码不会被引擎解析
+&lt;protected/&gt;
+</code>
+              </pre>
 	          </div>
 					</div>
 				</section>
