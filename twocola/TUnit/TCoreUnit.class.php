@@ -21,7 +21,9 @@ class TCoreUnit {
     // 注册autoload方法
     spl_autoload_register("TUnit\TCoreUnit::autoload");
     // 设定错误和异常处理
-    if(APP_DEBUG != 2) {
+    error_reporting(E_ALL);
+    // TCE报错系统
+    if(APP_DEBUG !== 2) {
       register_shutdown_function("TUnit\TCoreUnit::fatalError");
       set_error_handler("TUnit\TCoreUnit::appError");
       set_exception_handler("TUnit\TCoreUnit::appException");
@@ -75,9 +77,6 @@ class TCoreUnit {
       }
       $error['trace']     =   $e->getTraceAsString();
       // Log::record($error['message'],Log::ERR);
-      // 发送404信息
-      header('HTTP/1.1 404 Not Found');
-      header('Status:404 Not Found');
       self::halt($error);
   }
 

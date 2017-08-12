@@ -14,19 +14,13 @@
 //----------------------------------
 
 // 基础常量定义
-define( 'FRAMENAME'      ,"Twocola PHP 引擎4.1"      );
-define( 'FRAMENAME_EN'   ,"Twocola PHP Engine V4.1" );
-define( 'VERSION'        ,"4.1.8.0101"              );
+define( 'FRAMENAME'      ,"Twocola PHP 引擎4.2"      );
+define( 'FRAMENAME_EN'   ,"Twocola PHP Engine V4.2" );
+define( 'VERSION'        ,"4.2.8.1201"              );
 
 // 版本判断
 if( version_compare(PHP_VERSION ,"5.6.0" ,"<") ){
   die("使用此版本TCE框架要求PHP版本为5.6以上");
-}
-// 报错抑制
-if( APP_DEBUG !== 2 ){
-  error_reporting(0);
-}else{
-  error_reporting(E_ALL);
 }
 
 // default options

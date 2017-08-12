@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 /*
 ** Mysql数据库操作类
-** Version 2.6.6.2801
+** Version 2.7.0
 */
 namespace TUnit\Database\Drivers;
 class Mysql{
@@ -28,12 +28,12 @@ class Mysql{
 	public $errno = 0;
 	public $error = "";
 	public function __construct($host,$username,$password,$dbname,$port=3306,$charset="utf8"){
-		$this->Database = @new \mysqli($host,$username,$password,$dbname,$port);
+		$this->Database = @mysqli_connect($host,$username,$password,$dbname,$port);
 		//判断是否连接成功
-		if($this->Database->connect_errno){
-			$this->errno = $this->Database->connect_errno;
-			$this->error = $this->Database->connect_error;
-			return false;	//连接失败
+		if(!$this->Database){
+			$this->errno = mysqli_connect_errno();
+			$this->error = mysqli_connect_error();
+			return false;
 		}else{
 			$this->Database->set_charset($charset);
 		}
