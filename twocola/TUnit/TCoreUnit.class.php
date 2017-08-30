@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: Jokin <327928971@qq.com>
 // +----------------------------------------------------------------------
-/*
-** TCE引擎核心引导类
-** Ver 1.1.7.2401
-*/
+/**
+ * TCE引擎核心引导类
+ * @version 1.1.8.3001
+**/
 namespace TUnit;
 class TCoreUnit {
   /* 初始引导 */
@@ -142,7 +142,7 @@ class TCoreUnit {
     $error['file'] = str_replace(PATH,"",$error['file']);
     if(APP_DEBUG == true){
       // 调试模式下输出错误信息
-      $trace = array_reverse(debug_backtrace(false,true));
+      $trace = array_reverse(debug_backtrace(false,0));
       $file = "";
       $line = "";
       for ($i=0; $i < count($trace); $i++) {
