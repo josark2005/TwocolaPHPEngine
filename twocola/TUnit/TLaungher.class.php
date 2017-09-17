@@ -64,8 +64,8 @@ class TLaungher {
     // 设置当前模块、控制器、行为
     if(C("URL_MODE") == 0){
       define("APP"        ,UrlMode\UrlResolution::safer(isset($_GET['a'])&&!empty($_GET['a']) ? $_GET['a'] : C("APP_DEFAULT")) );
-      define("CONTROLLER" ,UrlMode\UrlResolution::safer(isset($_GET['c'])&&!empty($_GET['c']) ? $_GET['c'] : "index") );
-      define("METHOD"     ,UrlMode\UrlResolution::safer(isset($_GET['m'])&&!empty($_GET['m']) ? $_GET['m'] : "index") );
+      define("CONTROLLER" ,UrlMode\UrlResolution::safer(isset($_GET['c'])&&!empty($_GET['c']) ? $_GET['c'] : C("CONTROLLER_DEFAULT")) );
+      define("METHOD"     ,UrlMode\UrlResolution::safer(isset($_GET['m'])&&!empty($_GET['m']) ? $_GET['m'] : C("METHOD_DEFUALT")) );
     }else if(C("URL_MODE") == 1){
       UrlMode\UrlResolution::TCE(); // 直接定义 App/Controller/Method
     }else{
